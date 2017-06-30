@@ -7,7 +7,7 @@
  */
 
 session_start();
-
+include ("../UserClasses/Doctor.php");
 if(isset($_SESSION['login'])){
 
     $user=$_SESSION['username'];
