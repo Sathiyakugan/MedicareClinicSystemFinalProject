@@ -11,7 +11,6 @@ include ("../UserClasses/Receptionist.php");
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
-    $admin=new Admin($current_user);
     $userobject=null;
     $type=$_REQUEST['type'];
     switch ($type){
