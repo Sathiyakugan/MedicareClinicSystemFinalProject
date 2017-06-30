@@ -65,7 +65,7 @@ class UserLogin
                     $_SESSION['current_user']=$this->username;
                     $this->add_loginlog($this->username,$this->userip,1,'Patient');
                     $_SESSION['session_id']=$this->session_id;
-                    header("location:../UserDashboards/patientdashboard.php?username=$this->username&request=login&status=success");
+                    header("location:../Patient/patientdashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";

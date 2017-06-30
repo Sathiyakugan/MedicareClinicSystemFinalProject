@@ -2,11 +2,12 @@
 session_start();
 
 include "../Adaptor/mysql_crud.php";
-include ("../UserClasses/Admin.php");
+include "../UserClasses/User.php";
+include ("../UserClasses/Patient.php");
 
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
-    $admin=new Admin($current_user);
+    $patient=new Patient($current_user);
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
@@ -19,7 +20,7 @@ if(isset($_SESSION['login'])){
 <head>
 
     <?php include '../controllers/base/meta-tags.php' ?>
-    <title>Admin Pannel</title>
+    <title>Patient Pannel</title>
     <?php include '../controllers/base/head.php' ?>
     <link href="../style/main.css" rel="stylesheet">
 
@@ -29,7 +30,7 @@ if(isset($_SESSION['login'])){
 
 <div id="wrapper">
     <!-- Navigation -->
-    <?php include 'AdminTheme.php'?>
+    <?php include 'PatientTheme.php' ?>
 
     <div id="page-wrapper">
         <div class="row">
@@ -51,7 +52,7 @@ if(isset($_SESSION['login'])){
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">26</div>
-                                <div>Patients</div>
+                                <div>Reports</div>
                             </div>
                         </div>
                     </div>
@@ -73,7 +74,7 @@ if(isset($_SESSION['login'])){
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">12</div>
-                                <div>Doctors</div>
+                                <div>Appointments</div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +96,7 @@ if(isset($_SESSION['login'])){
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">124</div>
-                                <div>Receptionist</div>
+                                <div>Doctors</div>
                             </div>
                         </div>
                     </div>
@@ -108,54 +109,8 @@ if(isset($_SESSION['login'])){
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-medkit fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Pharmasist</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="Admin_pharmacist.php">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
         </div>
         <!-- /.row -->
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-heartbeat fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Nurse</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="Admin_Nurse.php">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
 
         <!-- /.row -->
     </div>
