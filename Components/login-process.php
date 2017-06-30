@@ -75,20 +75,18 @@ class UserLogin
                 break;
             Case   'Doctor':
                 $datafalg=$this->db->select('doctor','username,password',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
-
                 $res = $this->db->getResult();
-                print_r($res);
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
                     $_SESSION['current_user']=$this->username;
                     $this->add_loginlog($this->username,$this->userip,1,'Doctor');
                     $_SESSION['session_id']=$this->session_id;
-                    header("location:../Doctor/doctordashboard.php?username=$this->username&request=login&status=success");
+                    header("location:../UserDashboards/doctordashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
                     $this->add_loginlog($this->username,$this->userip,0,'Doctor');
-                    header("location: ../index.php?username=$this->username&request=login&status=Failed");
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
