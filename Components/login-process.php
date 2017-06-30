@@ -14,12 +14,15 @@ class UserLogin
     private $password;
     private $postition;
     private $db;
+    private $uip;
+    private $session_id;
     public function __construct($username,$password,$postition)
     {
         $this->username=$username;
         $this->password=$password;
         $this->postition=$postition;
         $this->db = Database::getInstance();
+        $this->userip=$_SERVER['REMOTE_ADDR'];
 
     }
 
@@ -39,13 +42,17 @@ class UserLogin
                 if(sizeof($res)>0) {
 
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
-                    echo $_SESSION['username'];
+                    $_SESSION['current_user']=$this->username;
+
+                    echo $_SESSION['current_user'];
+                    $this->add_loginlog($this->username,$this->userip,1,'Admin');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../Admin/admindashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Admin');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
@@ -55,12 +62,15 @@ class UserLogin
                 $res = $this->db->getResult();
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
+                    $_SESSION['current_user']=$this->username;
+                    $this->add_loginlog($this->username,$this->userip,1,'Patient');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../UserDashboards/patientdashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Patient');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
             Case   'Doctor':
@@ -68,12 +78,15 @@ class UserLogin
                 $res = $this->db->getResult();
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
+                    $_SESSION['current_user']=$this->username;
+                    $this->add_loginlog($this->username,$this->userip,1,'Doctor');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../UserDashboards/doctordashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Doctor');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
@@ -82,12 +95,15 @@ class UserLogin
                 $res = $this->db->getResult();
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
+                    $_SESSION['current_user']=$this->username;
+                    $this->add_loginlog($this->username,$this->userip,1,'Receptionist');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../UserDashboards/receptionistdashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Receptionist');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
@@ -96,12 +112,15 @@ class UserLogin
                 $res = $this->db->getResult();
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
+                    $_SESSION['current_user']=$this->username;
+                    $this->add_loginlog($this->username,$this->userip,1,'Pharmacist');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../UserDashboards/pharmasistdashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Pharmacist');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
@@ -110,17 +129,31 @@ class UserLogin
                 $res = $this->db->getResult();
                 if(sizeof($res)>0){
                     $_SESSION['login'] = true; // this login var will use for the session thing
-                    $_SESSION['username']=$this->username;
+                    $_SESSION['current_user']=$this->username;
+                    $this->add_loginlog($this->username,$this->userip,1,'Nurse');
+                    $_SESSION['session_id']=$this->session_id;
                     header("location:../UserDashboards/nursedashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
-                    header("location:../index.php?username=$this->username&request=login&status=success");
+                    $this->add_loginlog($this->username,$this->userip,0,'Nurse');
+                    header("location:../index.php?username=$this->username&request=login&status=Failed");
                 }
                 break;
 
         }
     }
+
+    public function add_loginlog($username,$userip,$status,$type){
+        $this->db->insert('userlog',array('username'=>$username,'userip'=>$userip,'status'=>$status,'type'=>$type));  // Table name, column names and respective values
+        $quer='username="'.$username.'" AND type="'.$type.'"';
+        $this->db->select('userlog','*',NULL,$quer,NULL);
+        $res = $this->db->getResult();
+        print_r($res);
+        echo $res[0];
+        $this->session_id=$res[0];
+    }
+
 
     public function get_session()
     {
@@ -129,8 +162,8 @@ class UserLogin
     /*** starting the session ***/
     public function get_username()
     {
-        $_SESSION['username']=$this->username;
-        return $_SESSION['username'];
+        $_SESSION['current_user']=$this->username;
+        return $_SESSION['current_user'];
     }
 
     public function user_logout()

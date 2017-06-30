@@ -2,7 +2,7 @@
 include "../Adaptor/mysql_crud.php";
 include ("../UserClasses/Admin.php");
 
-class Admin_Doctor
+class Admin_pharmacist
 {
     //essential constructor
     protected $db;
@@ -12,7 +12,7 @@ class Admin_Doctor
 
     public function getresults(){
         $this->db->connect();
-        $this->db->select('doctor','*',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('pharmacist','first_name,last_name,username,sex,DOB,address,email,phone,user_image,staff_id,pharmacist_id',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
     }
@@ -20,30 +20,30 @@ class Admin_Doctor
     public function getresultsforaperson($username){
         $quer='username="'.$username.'"';
         $this->db->connect();
-        $this->db->select('doctor','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('pharmacist','first_name,last_name,username,sex,DOB,address,email,phone,user_image,staff_id,pharmacist_id',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
     }
-    public function Update($username,$firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description){
+    public function Update($username,$firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$staff_id){
 
         $this->db->connect();
-        $this->db->update('doctor',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','field'=>'"'.$field.'"','description="'.$description.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
+        $this->db->update('pharmacist',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','staff_id'=>'"'.$staff_id.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description){
+    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id){
 
         $this->db->connect();
         $results=$this->getresultsforaperson($username);
         if (sizeof($results)==0){
             $address = $this->db->escapeString($address); // Escape any input before insert
             $email=$this->db->escapeString($email); // Escape any input before insert
-            $this->db->insert('doctor',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone,'field'=>$field,'description'=>$description));  // Table name, column names and respective values
+            $this->db->insert('pharmacist',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone));  // Table name, column names and respective values
             $_SESSION['message1']="<font color=blue>User Added Succesfully</font>";
-            header('Location: ..\Admin\Admin_Doctor.php');
+            header('Location: ..\Admin\Admin_Pharamacist.php');
         }
         else{
             $_SESSION['message']="<font color=blue>sorry the username entered already exists</font>";
-            header('Location: ..\Admin\Admin_Doctor.php');
+            header('Location: ..\Admin\Admin_Pharamacist.php');
 
         }
 
@@ -53,23 +53,22 @@ class Admin_Doctor
     public function Delete($username){
         $this->db->connect();
         $res=getresults();
-        $this->db->insert('deletedstaffs',$res);  // Table name, column names and respective values
-        $this->db->delete('doctor',"'".$username."'");  // Table name, WHERE conditions
+        $this->db->insert('deletedstaffs',$res);
+        $this->db->delete('pharmacist',"'".$username."'");  // Table name, WHERE conditions
     }
 
 }
 
 ?>
 <?php
-
 session_start();
 if(isset($_SESSION['current_user'])){
     //$id=$_SESSION['admin_id'];
     $current_user=$_SESSION['current_user'];
     $admin=new Admin($current_user);
-    $admin_doctor= new Admin_Doctor();
+    $admin_pharmacist= new Admin_pharmacist();
 }else{
-    header("location:../index.php");
+    header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
 }
 if(isset($_POST['submit'])){
@@ -83,16 +82,6 @@ if(isset($_POST['submit'])){
     $password=$_POST['password'];
     $sex=$_POST['sex'];
     $DOB=$_POST['DOB'];
-    $field=$_POST['field'];
-    $description='';
-    if (is_array ( $_POST ['description'] )) {
-        foreach ($_POST ['description'] as $value) {
-            $description = $value + $description;
-        }
-    }
-    else{
-        $description=$_POST ['description'];
-    }
     $Destination = '../userfiles/avatars';
     if(!isset($_FILES['ImageFile']) || !is_uploaded_file($_FILES['ImageFile']['tmp_name'])){
         $user_image= 'default.jpg';
@@ -108,9 +97,7 @@ if(isset($_POST['submit'])){
         $user_image = $ImageName.'-'.$RandomNum.'.'.$ImageExt;
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
     }
-
-    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description);
-
+    $admin_pharmacist->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id);
 }
 ?>
 <!DOCTYPE html>
@@ -124,6 +111,7 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
+
 
 
     <!--Script for Validating the data-->
@@ -191,7 +179,7 @@ if(isset($_POST['submit'])){
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Manage Doctor</h1>
+                <h1 class="page-header">Manage Pharmasist</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -235,7 +223,6 @@ if(isset($_POST['submit'])){
                                         <tr>
                                             <th>ID</th>
                                             <th>First Name</th>
-                                            <th>Field</th>
                                             <th>Phone No</th>
                                             <th>View Profile</th>
                                             <th>Update</th>
@@ -249,23 +236,20 @@ if(isset($_POST['submit'])){
                                         Displays all data from 'Pharmacist' table
                                         */
                                         // get results from database
-                                        $details=$admin_doctor->getresults();
+                                        $details=$admin_pharmacist->getresults();
                                         // display data in table
                                         $count=sizeof($details);
                                         // loop through results of database query, displaying them in the table
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            echo '<td>' . $details[$i]['doctor_id'] . '</td>';
+                                            echo '<td>' . $details[$i]['pharmacist_id'] . '</td>';
                                             echo '<td>' . $details[$i]['first_name'] . '</td>';
-                                            echo '<td>' . $details[$i]['field'] . '</td>';;
                                             echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
-
-
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><a href="../Admin/update.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
-                                            <td><a href="../Admin/delete.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-danger">Delete</button></a></td>
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Pharmacist&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td><a href="../Admin/update.php?type=Pharmacist&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
+                                            <td><a href="../Admin/delete.php?type=Pharmacist&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-danger">Delete</button></a></td>
                                             <?php
                                         }
                                         ?>
@@ -275,63 +259,44 @@ if(isset($_POST['submit'])){
                                 <!-- /.table-responsive -->
                             </div>
                             <div class="tab-pane fade" id="profile">
-
-                                <div class="row">
-                                    <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
-                                        <div class="col-md-4 column">
-                                            <hr>
-                                            <label>Username</label>
-                                            <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                            <label>Image</label>
-                                            <input type="file" id="ImageFile" name="ImageFile" class="form-control">
-                                            <label>First Name</label>
-                                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
-                                            <label>Last Name</label>
-                                            <input type="text" id="last_namer" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
-                                            <label>Staff ID</label>
-                                            <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="Staff_id"   required autofocus>
-                                            <p><label>Specilaization</label>
-                                                <select class="form-control" name="field" id="field">
-                                                    <option>CARDIAC SURGEON</option>
-                                                    <option>CARDIOTHORACIC SURGEON</option>
-                                                    <option>Dental Surgeon</option>
-                                                    <option>Ent-Surgeon</option>
-                                                    <option>NEUROLOGIST</option>
-                                                    <option>PHYSICIAN</option>
-                                                    <option>PLASTIC SURGEON</option>
-                                                    <option>CONSULTANT SURGEON</option>
-                                                    <option>NEPHOLODIST</option>
-                                                    <option>CANCER SURGEON</option>
-                                                    <option>PSYCHIATRIST</option>
-                                                </select></p>
-                                            <p><label>Sex</label>
-                                                <select class="form-control" name="sex" id="sex">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                    <option>Neutral</option>
-                                                </select></p>
-                                        </div>
-                                        <div class="col-md-4 column">
-                                            <hr>
-                                            <label>Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                                            <label>DOB</label>
-                                            <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
-                                            <label>Postal Address</label>
-                                            <input type="text" id="postal_address" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
-                                            <label>Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
-                                            <label>Email address</label>
-                                            <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
-                                            <label>Password</label>
-                                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                                            <P></P>
-                                            <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="Admin_Pharmacist.php" enctype="multipart/form-data">
+                                    <div class="col-md-4 column">
+                                        <hr>
+                                        <label>Username</label>
+                                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                        <label>Image</label>
+                                        <input type="file" id="user_image" name="user_image" class="form-control">
+                                        <label>First Name</label>
+                                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
+                                        <label>Last Name</label>
+                                        <input type="text" id="last_namer" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
+                                        <label>Staff ID</label>
+                                        <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="Staff_id"   required autofocus>
+                                        <p><label>Sex</label>
+                                            <select class="form-control" name="sex" id="sex">
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Neutral</option>
+                                            </select></p>
+                                    </div>
+                                    <div class="col-md-4 column">
+                                        <hr>
+                                        <label>DOB</label>
+                                        <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
+                                        <label>Postal Address</label>
+                                        <input type="text" id="postal_address" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                        <label>Phone</label>
+                                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                        <label>Email address</label>
+                                        <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
+                                        <label>Password</label>
+                                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                        <P></P>
+                                        <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
+                                    </div>
                                 </form>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -371,9 +336,6 @@ if(isset($_POST['submit'])){
     });
 </script>
 
-
-
-
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
     $(document).ready(function() {
@@ -382,6 +344,7 @@ if(isset($_POST['submit'])){
         });
     });
 </script>
+
 </body>
 
 </html>

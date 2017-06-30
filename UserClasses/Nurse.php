@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: -
- * Date: 4/12/2017
- * Time: 2:22 PM
- */
 class Nurse extends User
 {
     public function __construct($username){
@@ -121,18 +115,35 @@ class Nurse extends User
         $this->db->update('nurse',array('user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image){
-        $this->db->connect();
-        $this->user_image = $user_image;
-        $this->db->update('nurse',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->db->connect();
+        $this->phone = $phone;
+        $this->db->update('nurse',array('phone'=>'"'.$phone.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone){
+        $this->db->connect();
+        $this->db->update('nurse',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
     }
 
     Public function loadotherProperties(){
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $this->db->select('nurse','first_name,last_name,sex,DOB,address,email,user_image',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('nurse','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
@@ -141,6 +152,14 @@ class Nurse extends User
         $this->address=$res[0]['address'];
         $this->email=$res[0]['email'];
         $this->user_image=$res[0]['user_image'];
+        $this->phone=$res[0]['phone'];
 
+    }
+    public function loadBulk($username){
+        $quer='username="'.$username.'"';
+        $this->db->connect();
+        $this->db->select('nurse','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
     }
 }

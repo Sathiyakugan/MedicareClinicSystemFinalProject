@@ -1,7 +1,8 @@
 <?php
 include "../Adaptor/mysql_crud.php";
+include ("../UserClasses/Admin.php");
 
-class Admin_pharmacist
+class Admin_Patient
 {
     //essential constructor
     protected $db;
@@ -11,7 +12,7 @@ class Admin_pharmacist
 
     public function getresults(){
         $this->db->connect();
-        $this->db->select('pharmacist','first_name,last_name,username,sex,DOB,address,email,phone,user_image,staff_id,pharmacist_id',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('patient','first_name,last_name,username,sex,DOB,address,email,phone,user_image,patient_id',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
     }
@@ -19,72 +20,49 @@ class Admin_pharmacist
     public function getresultsforaperson($username){
         $quer='username="'.$username.'"';
         $this->db->connect();
-        $this->db->select('pharmacist','first_name,last_name,username,sex,DOB,address,email,phone,user_image,staff_id,pharmacist_id',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('patient','first_name,last_name,username,sex,DOB,address,email,phone,user_image,patient_id',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
     }
-    public function Update($username,$firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$staff_id){
+    public function Update($username,$firstName,$lastName,$sex,$DOB,$address, $email,$user_image){
 
         $this->db->connect();
-        $this->db->update('pharmacist',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','staff_id'=>'"'.$staff_id.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
+        $this->db->update('patient',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id){
+    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image){
 
         $this->db->connect();
         $results=$this->getresultsforaperson($username);
         if (sizeof($results)==0){
             $address = $this->db->escapeString($address); // Escape any input before insert
             $email=$this->db->escapeString($email); // Escape any input before insert
-            $this->db->insert('pharmacist',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone));  // Table name, column names and respective values
+            $this->db->insert('patient',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone));  // Table name, column names and respective values
             $_SESSION['message1']="<font color=blue>User Added Succesfully</font>";
-            header("Refresh:0");
+            header('Location: ..\Admin\Admin_Patient.php');
         }
         else{
             $_SESSION['message']="<font color=blue>sorry the username entered already exists</font>";
-            header("Refresh:0");
+            header('Location: ..\Admin\Admin_Patient.php');
 
         }
-
-
     }
-
     public function Delete($username){
         $this->db->connect();
         $res=getresults();
-//        $firstName=$res[0]['first_name'];
-//        $lastName=$res[0]['last_name'];
-//        $sex=$res[0]['sex'];
-//        $DOB=$res[0]['DOB'];
-//        $address=$res[0]['address'];
-//        $email=$res[0]['email'];
-//        $phone=$res[0]['phone'];
-//        $user_image=$res[0]['user_image'];
-//        $staff_id=$res[0]['staff_id'];
-//        $pharmacist_id=$res[0]['pharmacist_id'];
-//        //Before Deleting Users Adding to deleted Stafffs Table
-//        $this->db->insert('deletedstaffs',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone));  // Table name, column names and respective values
         $this->db->insert('deletedstaffs',$res);
-        $this->db->delete('pharmacist',"'".$username."'");  // Table name, WHERE conditions
+        $this->db->delete('patient',"'".$username."'");  // Table name, WHERE conditions
     }
-
 }
-
 ?>
-
-
-
-
-
-
-
 
 <?php
 session_start();
-if(isset($_SESSION['username'])){
+if(isset($_SESSION['current_user'])){
     //$id=$_SESSION['admin_id'];
-    $username=$_SESSION['username'];
-    $admin_pharmacist= new Admin_pharmacist();
+    $current_user=$_SESSION['current_user'];
+    $admin=new Admin($current_user);
+    $admin_patient= new Admin_Patient();
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
@@ -92,7 +70,6 @@ if(isset($_SESSION['username'])){
 if(isset($_POST['submit'])){
     $firstName=$_POST['first_name'];
     $lastName=$_POST['last_name'];
-    $staff_id=$_POST['staff_id'];
     $address=$_POST['postal_address'];
     $phone=$_POST['phone'];
     $email=$_POST['email'];
@@ -100,29 +77,26 @@ if(isset($_POST['submit'])){
     $password=$_POST['password'];
     $sex=$_POST['sex'];
     $DOB=$_POST['DOB'];
+    $Destination = '../userfiles/avatars';
+    if(!isset($_FILES['ImageFile']) || !is_uploaded_file($_FILES['ImageFile']['tmp_name'])){
+        $user_image= 'default.jpg';
+        move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
+    }
+    else{
+        $RandomNum = rand(0, 999999999);
+        $ImageName = str_replace(' ','-',strtolower($_FILES['ImageFile']['name']));
+        $ImageType = $_FILES['ImageFile']['type'];
+        $ImageExt = substr($ImageName, strrpos($ImageName, '.'));
+        $ImageExt = str_replace('.','',$ImageExt);
+        $ImageName = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
+        $user_image = $ImageName.'-'.$RandomNum.'.'.$ImageExt;
+        move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
+    }
+    $admin_patient->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image);
 
-    $admin_pharmacist->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,0,$staff_id);
 
-//    $sql1=mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM pharmacist WHERE username='$user'")or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-//    $result=mysqli_fetch_array($sql1);
-
-
-
-//    if($result>0){
-//        $message="<font color=blue>sorry the username entered already exists</font>";
-//    }else{
-//        $sql=mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO pharmacist(first_name,last_name,staff_id,postal_address,phone,email,username,password,date)
-//VALUES('$fname','$lname','$sid','$postal','$phone','$email','$user','$pas',NOW())");
-//        if($sql>0) {header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/admin_pharmacist.php");
-//        }else{
-//            $message1="<font color=red>Registration Failed, Try again</font>";
-//        }
-//    }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -199,7 +173,7 @@ if(isset($_POST['submit'])){
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Manage Pharmasist</h1>
+                <h1 class="page-header">Manage Patient</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -243,10 +217,8 @@ if(isset($_POST['submit'])){
                                         <tr>
                                             <th>ID</th>
                                             <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
                                             <th>Phone No</th>
+                                            <th>View Profile</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
@@ -255,25 +227,24 @@ if(isset($_POST['submit'])){
                                         <?php
                                         /*
                                         View
-                                        Displays all data from 'Pharmacist' table
+                                        Displays all data from 'Patient' table
                                         */
                                         // get results from database
-                                        $details=$admin_pharmacist->getresults();
+                                        $details=$admin_patient->getresults();
+
                                         // display data in table
                                         $count=sizeof($details);
                                         // loop through results of database query, displaying them in the table
-                                       for($i=0;$i<$count;$i++) {
+                                        for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            echo '<td>' . $details[$i]['pharmacist_id'] . '</td>';
+                                            echo '<td>' . $details[$i]['patient_id'] . '</td>';
                                             echo '<td>' . $details[$i]['first_name'] . '</td>';
-                                            echo '<td>' . $details[$i]['last_name'] . '</td>';
-                                            echo '<td>' . $details[$i]['username'] . '</td>';
-                                           echo '<td>' . $details[$i]['email'] . '</td>';
-                                           echo '<td>' . $details[$i]['phone'] . '</td>';
+                                            echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
-                                            <td><a href="../update_pharmacist.php?username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
-                                            <td><a href="../delete_pharmacist.php?pharmacist_id=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-danger">Delete</button></a></td>
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td><a href="../Admin/update.php?type=Patient&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
+                                            <td><a href="../Admin/delete.php?type=Patient&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-danger">Delete</button></a></td>
                                             <?php
                                         }
                                         ?>
@@ -283,25 +254,26 @@ if(isset($_POST['submit'])){
                                 <!-- /.table-responsive -->
                             </div>
                             <div class="tab-pane fade" id="profile">
-                                <div class="col-md-4 col-md-offset-4">
-                                    <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="admin_pharmacist.php">
-                                        <h2 class="form-signin-heading">Input Valid Entries</h2>
+                                <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="Admin_Patient.php" enctype="multipart/form-data">
+                                    <div class="col-md-4 column">
+                                        <hr>
                                         <label>Username</label>
                                         <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
                                         <label>Image</label>
-                                        <input type="file" id="user_image" name="user_image" class="form-control">
+                                        <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                         <label>First Name</label>
                                         <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
                                         <label>Last Name</label>
                                         <input type="text" id="last_namer" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
-                                        <label>Staff ID</label>
-                                        <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="Staff_id"   required autofocus>
                                         <p><label>Sex</label>
                                             <select class="form-control" name="sex" id="sex">
                                                 <option>Male</option>
                                                 <option>Female</option>
                                                 <option>Neutral</option>
                                             </select></p>
+                                    </div>
+                                    <div class="col-md-4 column">
+                                        <hr>
                                         <label>DOB</label>
                                         <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
                                         <label>Postal Address</label>
@@ -312,27 +284,53 @@ if(isset($_POST['submit'])){
                                         <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
                                         <label>Password</label>
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                        <P></P>
                                         <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
-                                    </form>
-                                </div>
+                                    </div>
                                 </form>
                             </div>
+                            </form>
                         </div>
                     </div>
-                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->
+                <!-- /.panel-body -->
             </div>
+            <!-- /.panel -->
         </div>
     </div>
-    <!-- /#page-wrapper -->
+</div>
+<!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
 
+<!-- Modal -->
+<!-- MODAL EDITAR-->
+<div id="editarUsuario" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include '../controllers/base/AfterBodyJS.php' ?>
 
+
+<script>
+    $('.modalEditarUsuario').click(function(){
+        var ID=$(this).attr('data-a');
+        $.ajax({url:""+ID,cache:false,success:function(result){
+            $(".modal-content").html(result);
+        }});
+    });
+</script>
+
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
 <script>
     $(document).ready(function() {
         $('#dataTables-example').DataTable({

@@ -46,7 +46,7 @@ $message1="<font color=red>Update Failed, Try again</font>";
 <div id="button">
 <ul>
 			<li><a href="admin.php">Dashboard</a></li>
-			<li><a href="Admin/admin_pharmacist.php">Pharmacist</a></li>
+			<li><a href="Admin/Admin_Pharmacist.php">Pharmacist</a></li>
 			<li><a href="Admin/admin_manager.php">Manager</a></li>
 			<li><a href="Admin/admin_cashier.php">Cashier</a></li>
 			<li><a href="logout.php">Logout</a></li>

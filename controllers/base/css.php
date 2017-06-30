@@ -17,3 +17,6 @@
 <!-- DataTables Responsive CSS -->
 <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
 
+<!--Defined Css-->
+<link href="../style/main.css" rel="stylesheet">
+

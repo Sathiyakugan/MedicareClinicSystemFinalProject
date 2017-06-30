@@ -2,9 +2,9 @@
 <?php
 session_start();
 require 'connect_db.php';
-if(isset($_SESSION['user_username'])){
-    header("location:home.php");
-}
+//if(isset($_SESSION['user_username'])){
+//    header("location:home.php");
+//}
 ?>
 <!DOCTYPE html>
 <html>
