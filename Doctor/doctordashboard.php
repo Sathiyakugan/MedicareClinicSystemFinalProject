@@ -7,7 +7,7 @@
  */
 
 session_start();
-
+include ("../UserClasses/Doctor.php");
 if(isset($_SESSION['login'])){
 
     $user=$_SESSION['username'];
@@ -297,7 +297,7 @@ if(isset($_SESSION['login'])){
                     </li>
                     <li>
                         <a href="doctordashboard.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        <a href="../profile/Doctor_profile.php"><i class="fa fa-dashboard fa-fw"></i> profile </a>
+                        <a href="../Admin/profile.php"><i class="fa fa-dashboard fa-fw"></i> profile </a>
 
                         <a href="Pataint_db.php"><i class="fa fa-edit fa-fw"></i>Patients</a>
 
