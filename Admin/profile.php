@@ -1,98 +1,154 @@
+<?php
+session_start();
 
-/**
- * Created by PhpStorm.
- * User: -
- * Date: 6/23/2017
- * Time: 3:22 PM
- */
-<?php include '../controllers/base/meta-tags.php' ?>
-<title>Admin Pannel</title>
-<?php include '../controllers/base/head.php' ?>
-<div class="container">
-      <div class="row">
-      <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-           <A href="edit.html" >Edit Profile</A>
+include "../Adaptor/mysql_crud.php";
+include ("../UserClasses/Admin.php");
+include ("../UserClasses/Nurse.php");
+include ("../UserClasses/Doctor.php");
+include ("../UserClasses/Patient.php");
+include ("../UserClasses/Pharmasist.php");
+include ("../UserClasses/Receptionist.php");
+if(isset($_SESSION['login'])){
+    $current_user= (string)$_SESSION['current_user'];
+    $username=$_REQUEST['username'];
+    $admin=new Admin($current_user);
+    $userobject=null;
+    $type=$_REQUEST['type'];
+    switch ($type){
+        case 'Admin':
+            $userobject=new Admin($username);
+            break;
+        case 'Nurse':
+            $userobject=new Nurse($username);
+            break;
+        case 'Patient':
+            $userobject=new Patient($username);
+            break;
+        case 'Receptionist':
+            $userobject=new Receptionist($username);
+            break;
+        case 'Pharmacist':
+            $userobject=new Pharmasist($username);
+            break;
+        case 'Doctor':
+            $userobject=new Doctor($username);
+            break;
+    }
+}else{
+    header("../index.php");
+    exit();
+}
+?>
 
-        <A href="edit.html" >Logout</A>
-       <br>
-<p class=" text-info">May 05,2014,03:00 pm </p>
-      </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
 
-
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Sheena Shrestha</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive"> </div>
-
-                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
-                  <dl>
-                    <dt>DEPARTMENT:</dt>
-                    <dd>Administrator</dd>
-                    <dt>HIRE DATE</dt>
-                    <dd>11/12/2013</dd>
-                    <dt>DATE OF BIRTH</dt>
-                       <dd>11/12/2013</dd>
-                    <dt>GENDER</dt>
-                    <dd>Male</dd>
-                  </dl>
-                </div>-->
-                <div class=" col-md-9 col-lg-9 ">
-                  <table class="table table-user-information">
-                    <tbody>
-                      <tr>
-                        <td>Department:</td>
-                        <td>Programming</td>
-                      </tr>
-                      <tr>
-                        <td>Hire date:</td>
-                        <td>06/23/2013</td>
-                      </tr>
-                      <tr>
-                        <td>Date of Birth</td>
-                        <td>01/24/1988</td>
-                      </tr>
-
-                         <tr>
-                             <tr>
-                        <td>Gender</td>
-                        <td>Female</td>
-                      </tr>
-                        <tr>
-                        <td>Home Address</td>
-                        <td>Kathmandu,Nepal</td>
-                      </tr>
-                      <tr>
-                        <td>Email</td>
-                        <td><a href="mailto:info@support.com">info@support.com</a></td>
-                      </tr>
-                        <td>Phone Number</td>
-                        <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
-</td>
-
-                      </tr>
-
-                    </tbody>
-                  </table>
-
-                  <a href="#" class="btn btn-primary">My Sales Performance</a>
-                  <a href="#" class="btn btn-primary">Team Sales Performance</a>
-                </div>
-              </div>
-            </div>
-                 <div class="panel-footer">
-                        <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
-                        <span class="pull-right">
-                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                            <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
-                        </span>
-                    </div>
-
-          </div>
-        </div>
-      </div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title">Profile view</h2>
     </div>
-<?php include '../controllers/base/AfterBodyJS.php' ?>
+
+            <div class="col-lg-12">
+                <div class="profile">
+                    <div class="row clearfix">
+                        <!-- <div class="col-md-12 column"> -->
+                        <div>
+                            <center>
+                                <img src="../userfiles/avatars/<?php echo $userobject->getUserImage();?>" class="img-responsive profile-avatar">
+                            </center>
+                            <h1 class="text-center profile-text profile-name"><?php echo $userobject->getFirstName();?> <?php echo $userobject->getLastName();?></h1>
+                            <hr>
+                            <h2 class="text-center profile-text profile-profession"><?php echo $type;?></h2>
+                            <br>
+
+                            <div class="panel-group white" id="panel-profile">
+                                <div class="panel panel-default">
+                                    <div id="panel-element-info" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="col-md-6 column">
+                                                <p class="text-center profile-title"><i class="fa fa-info"></i> Basic</p>
+                                                <hr>
+                                                <?php
+                                                if ($type=='Doctor'){
+                                                    ?>
+                                                    <div class="col-md-6">
+                                                        <p class="profile-details"><i class="fa fa-info"></i> Specialization</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p><?php echo $userobject->getField();?></p>
+                                                    </div>
+                                                <?php } ?>
+
+                                                <div class="col-md-6">
+                                                    <p class="profile-details"><i class="fa fa-info"></i> Location</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><?php echo $userobject->getAddress();?></p>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <p class="profile-details"><i class="fa fa-envelope"></i> Email</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><?php echo $userobject->getEmail();?></p>
+                                                </div>
+
+
+                                                <div class="col-md-6">
+                                                    <p class="profile-details"><i class="fa fa-info"></i> Country</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><?php echo "Srilanka";?></p>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6 column">
+                                                <p class="text-center profile-title"><i class="fa fa-info"></i> Personal</p>
+                                                <hr>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="profile-details"><i class="fa fa-user"></i> Gender</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p><?php echo $userobject->getSex();?></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="profile-details"><i class="fa fa-calendar"></i> Date of Birth</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p><?php echo $userobject->getDOB();?></p>
+                                                    </div>
+                                                </div>
+
+
+                                                <?php
+                                                if ($type=='Doctor'){
+                                                    ?>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p class="profile-details"><i class="fa fa-user"></i> Description</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <p><?php echo $userobject->getDescription();?></p>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+
+<div class="modal-footer">
+</div>

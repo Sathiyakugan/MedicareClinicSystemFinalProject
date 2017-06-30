@@ -40,7 +40,7 @@ class Database{
 
     public static function getInstance() {
 
-        if(self::$instance == false) {
+        if(self::$instance == null) {
 
             self::$instance = new Database();
 

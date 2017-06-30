@@ -1,13 +1,9 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: -
- * Date: 4/12/2017
- * Time: 2:20 PM
- */
 class Doctor extends User
 {
+    private $field;
+    private $description;
     public function __construct($username){
         parent::__construct($username);
         $this->loadotherProperties();
@@ -121,10 +117,63 @@ class Doctor extends User
         $this->db->update('doctor',array('user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image){
+    /**
+     * @return mixed
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param mixed $field
+     */
+    public function setField($field)
+    {
         $this->db->connect();
-        $this->user_image = $user_image;
-        $this->db->update('doctor',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
+        $this->field = $field;
+        $this->db->update('doctor',array('user_image'=>'"'.$field.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->db->connect();
+        $this->description = $description;
+        $this->db->update('doctor',array('description'=>'"'.$description.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->db->connect();
+        $this->user_image = $phone;
+        $this->db->update('doctor',array('phone'=>'"'.$phone.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone){
+        $this->db->connect();
+        $this->db->update('doctor',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'field'=>$field,'description'=>$description,'phone'=>$phone),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
 
     }
@@ -132,7 +181,7 @@ class Doctor extends User
     Public function loadotherProperties(){
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $datafalg =$this->db->select('doctor','first_name,last_name,sex,DOB,address,email,user_image',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $datafalg =$this->db->select('doctor','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
@@ -141,6 +190,17 @@ class Doctor extends User
         $this->address=$res[0]['address'];
         $this->email=$res[0]['email'];
         $this->user_image=$res[0]['user_image'];
+        $this->field=$res[0]['field'];
+        $this->description=$res[0]['description'];
+        $this->phone=$res[0]['phone'];
 
     }
+    public function loadBulk($username){
+        $quer='username="'.$username.'"';
+        $this->db->connect();
+        $this->db->select('doctor','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+    }
+
 }

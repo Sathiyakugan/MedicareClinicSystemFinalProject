@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once('connect_db.php');
 if(isset($_SESSION['login'])){
 $user=$_SESSION['username'];
 }else{
@@ -310,7 +309,7 @@ exit();
                         </li>
 
                         <li>
-                            <a href="Admin/Admin_patient.php"><i class="fa fa-edit fa-fw"></i>Patients</a>
+                            <a href="Admin/Admin_Patient.php"><i class="fa fa-edit fa-fw"></i>Patients</a>
                         </li>
                         <li>
                             <a href="Logout.php"><i class="fa fa-edit fa-fw"></i>logout</a>
@@ -344,7 +343,7 @@ exit();
                                 </div>
                             </div>
                         </div>
-                        <a href="Admin/Admin_patient.php">
+                        <a href="Admin/Admin_Patient.php">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

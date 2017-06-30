@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: -
- * Date: 4/12/2017
- * Time: 2:23 PM
- */
 class Pharmasist extends User
 {
     private 	$staff_id;
@@ -162,19 +156,35 @@ class Pharmasist extends User
 
     }
 
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$staff_id,$pharmacist_id){
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->db->connect();
+        $this->phone = $phone;
+        $this->db->update('pharmasist',array('phone'=>'"'.$phone.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+
+
+
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone){
         $this->db->connect();
         $this->user_image = $user_image;
-        $this->db->update('pharmacist',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','staff_id'=>'"'.$staff_id.'"','pharmacist_id'=>'"'.$pharmacist_id.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
-
+        $this->db->update('pharmacist',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
     }
 
     Public function loadotherProperties(){
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $this->db->select('pharmacist','first_name,last_name,sex,DOB,address,email,user_image,staff_id,pharmacist_id',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('pharmacist','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
@@ -185,6 +195,14 @@ class Pharmasist extends User
         $this->user_image=$res[0]['user_image'];
         $this->staff_id=$res[0]['staff_id'];
         $this->staff_id=$res[0]['pharmacist_id'];
+        $this->phone=$res[0]['phone'];
 
+    }
+    public function loadBulk($username){
+        $quer='username="'.$username.'"';
+        $this->db->connect();
+        $this->db->select('pharmacist','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
     }
 }

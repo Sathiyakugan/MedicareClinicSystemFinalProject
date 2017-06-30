@@ -1,11 +1,12 @@
 <?php
 session_start();
 
+include "../Adaptor/mysql_crud.php";
 include ("../UserClasses/Admin.php");
 
 if(isset($_SESSION['login'])){
-    $username= (string)$_SESSION['username'];
-    $admin=new Admin($username);
+    $current_user= (string)$_SESSION['current_user'];
+    $admin=new Admin($current_user);
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
@@ -20,6 +21,7 @@ if(isset($_SESSION['login'])){
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
+    <link href="../style/main.css" rel="stylesheet">
 
 </head>
 
@@ -53,7 +55,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="Admin_patient.php">
+                    <a href="Admin_Patient.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -162,7 +164,44 @@ if(isset($_SESSION['login'])){
 </div>
 <!-- /#wrapper -->
 
+<!-- Modal -->
+<!-- MODAL EDITAR-->
+<div id="editarUsuario" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <?php include '../controllers/base/AfterBodyJS.php' ?>
+<script>
+    $('.modalEditarUsuario').click(function(){
+        var ID=$(this).attr('data-a');
+        $.ajax({url:""+ID,cache:false,success:function(result){
+            $(".modal-content").html(result);
+        }});
+    });
+</script>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
+<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
 
 </body>
 

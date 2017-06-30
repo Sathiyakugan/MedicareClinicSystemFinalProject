@@ -32,7 +32,7 @@ height: 497px;
 <div id="button">
 <ul>
 			<li><a href="admin.php">Dashboard</a></li>
-			<li><a href="Admin/admin_pharmacist.php">Pharmacist</a></li>
+			<li><a href="Admin/Admin_Pharmacist.php">Pharmacist</a></li>
 			<li><a href="Admin/admin_manager.php">Manager</a></li>
 			<li><a href="Admin/admin_cashier.php">Cashier</a></li>
 			<li><a href="logout.php">Logout</a></li>
@@ -47,7 +47,7 @@ height: 497px;
                 	<img src="images/admin_icon.jpg" width="75" height="75" alt="edit" />
                 	<span>Dashboard</span>
                 </a>
-                <a href="Admin/admin_pharmacist.php" class="dashboard-module">
+                <a href="Admin/Admin_Pharmacist.php" class="dashboard-module">
                 	<img src="images/pharmacist_icon.jpg"  width="75" height="75" alt="edit" />
                 	<span>Manage Pharmacist</span>
                 </a>

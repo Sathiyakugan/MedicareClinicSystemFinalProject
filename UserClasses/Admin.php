@@ -9,8 +9,16 @@ include "User.php";
 
 class Admin extends User
 {
+    //Admin accessible Objects Has relation ship
+    private $nurse;
+    private $patient;
+    private $receptionist;
+    private $doctor;
+    private $pharmasist;
+
 
     public function __construct($username){
+
         parent::__construct($username);
         $this->loadotherProperties();
     }
@@ -125,18 +133,123 @@ class Admin extends User
         $this->db->update('admin',array('user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image){
-        $this->db->connect();
-        $this->user_image = $user_image;
-        $this->db->update('admin',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
+
+    //getters and setters for the staffs
+    /**
+     * @return mixed
+     */
+    public function getNurse()
+    {
+        return $this->nurse;
+    }
+
+    /**
+     * @param mixed $nurse
+     */
+    public function setNurse($nurse)
+    {
+        $this->nurse = $nurse;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatient()
+    {
+        return $this->patient;
+    }
+
+    /**
+     * @param mixed $patient
+     */
+    public function setPatient($patient)
+    {
+        $this->patient = $patient;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReceptionist()
+    {
+        return $this->receptionist;
+    }
+
+    /**
+     * @param mixed $receptionist
+     */
+    public function setReceptionist($receptionist)
+    {
+        $this->receptionist = $receptionist;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDoctor()
+    {
+        return $this->doctor;
+    }
+
+    /**
+     * @param mixed $doctor
+     */
+    public function setDoctor($doctor)
+    {
+        $this->doctor = $doctor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPharmasist()
+    {
+        return $this->pharmasist;
+    }
+
+    /**
+     * @param mixed $pharmasist
+     */
+    public function setPharmasist($pharmasist)
+    {
+        $this->pharmasist = $pharmasist;
+    }
+
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->db->connect();
+        $this->phone = $phone;
+        $this->db->update('admin',array('phone'=>'"'.$phone.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
+
+
+
+
+
+
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone){
+        $this->db->connect();
+        $this->db->update('admin',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone),'username="'.$this->username.'"');  // Table name, column names and values, WHERE conditions
+        $this->loadotherProperties();
 
     }
+
 
     Public function loadotherProperties(){
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $this->db->select('admin','first_name,last_name,sex,DOB,address,email,user_image',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('admin','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
@@ -145,6 +258,31 @@ class Admin extends User
         $this->address=$res[0]['address'];
         $this->email=$res[0]['email'];
         $this->user_image=$res[0]['user_image'];
+        $this->phone=$res[0]['phone'];
+
+    }
+    public function loadBulk($username){
+        $quer='username="'.$username.'"';
+        $this->db->connect();
+        $this->db->select('admin','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+    }
+
+
+    public function getstafflogs(){
+
+        $this->db->connect();
+        $this->db->select('userlog','*',NULL,'NOT type="Patient"',NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+
+    }
+    public function getPatientlogs(){
+        $this->db->connect();
+        $this->db->select('userlog','*',NULL,'type="Patient"',NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
 
     }
 

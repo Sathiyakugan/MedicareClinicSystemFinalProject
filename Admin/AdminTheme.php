@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php">Admin DB</a>
+            <a class="navbar-brand" href="#">Admin DB</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -207,12 +207,12 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> <?php //echo $admin->getFirstName();?> </a>
+                    <li><a href="../Admin/profile.php?type=Admin&username=<?php echo $admin->getUsername();?>"><i class="fa fa-user fa-fw"></i> <?php echo $admin->getFirstName();?> </a>
                     </li>
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="../logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -239,7 +239,20 @@
                         <a href="../Admin/admindashboard.php?"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="../Admin/admindashboard.php?"><i class="fa fa-bar-chart-o fa-fw"></i> Staffs<span class="fa arrow"></span></a>
+                        <a href=""><i class="fa fa-user fa-fw"></i> Profile<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="">UpdateProfile</a>
+                            </li>
+                            <li>
+                                <a href="">ChangePassword</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+
+                    <li>
+                        <a href="../Admin/admindashboard.php?"><i class="fa fa-user-md fa-fw"></i> Staffs<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="Admin_Doctor.php">Doctors</a>
@@ -251,17 +264,29 @@
                                 <a href="Admin_Nurse.php">Nurse</a>
                             </li>
                             <li>
-                                <a href="Admin_pharmacist.php">Pharmasist</a>
+                                <a href="Admin_Pharmacist.php">Pharmasist</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
 
                     <li>
-                        <a href="Admin_patient.php"><i class="fa fa-edit fa-fw"></i>Patients</a>
+                        <a href="Admin_Patient.php"><i class="fa  fa-wheelchair fa-fw"></i>Patients</a>
                     </li>
                     <li>
-                        <a href="Logout.php"><i class="fa fa-edit fa-fw"></i>logout</a>
+                        <a href=""><i class="fa fa-files-o fa-fw"></i>Reports<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="Userlogs.php">Login Details</a>
+                            </li>
+                            <li>
+                                <a href="">Monthly Apppointments</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="../logout.php"><i class="fa fa-edit fa-fw"></i>logout</a>
                     </li>
                 </ul>
             </div>

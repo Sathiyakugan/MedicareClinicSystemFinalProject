@@ -6,7 +6,7 @@
  * Date: 6/22/2017
  * Time: 8:42 PM
  */
-class Receptionist
+class Receptionist extends User
 {
     public function __construct($username){
         parent::__construct($username);
@@ -115,6 +115,21 @@ class Receptionist
         return $this->user_image;
     }
 
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->db->connect();
+        $this->user_image = $phone;
+        $this->db->update('receptionist',array('phone'=>'"'.$phone.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions;
+    }
+
 
     public function setUserImage($user_image)
     {
@@ -123,10 +138,12 @@ class Receptionist
         $this->db->update('receptionist',array('user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image){
+
+
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone){
+        echo $email;
         $this->db->connect();
-        $this->user_image = $user_image;
-        $this->db->update('receptionist',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"'),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
+        $this->db->update('receptionist',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
 
 
     }
@@ -134,8 +151,9 @@ class Receptionist
     Public function loadotherProperties(){
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $this->db->select('receptionist','first_name,last_name,sex,DOB,address,email,user_image',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $datafalg =$this->db->select('receptionist','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
+
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
         $this->sex=$res[0]['sex'];
@@ -143,6 +161,15 @@ class Receptionist
         $this->address=$res[0]['address'];
         $this->email=$res[0]['email'];
         $this->user_image=$res[0]['user_image'];
+        $this->phone=$res[0]['phone'];
 
+
+    }
+    public function loadBulk($username){
+        $quer='username="'.$username.'"';
+        $this->db->connect();
+        $this->db->select('receptionist','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
     }
 }

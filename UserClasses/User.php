@@ -1,5 +1,4 @@
 <?php
-include "../Adaptor/mysql_crud.php";
 
 abstract class User{
     protected $username;
@@ -10,6 +9,7 @@ abstract class User{
     protected $address;
     protected $email;
     protected $user_image;
+    protected $phone;
 
     protected $db;
     //essential constructor
@@ -37,6 +37,8 @@ abstract class User{
     abstract public function setEmail($email);
     abstract public function getUserImage();
     abstract public function setUserImage($user_image);
+    abstract public function getPhone();
+    abstract public function setPhone($phone);
     //abstract public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image);
     abstract public function loadotherProperties();
 }

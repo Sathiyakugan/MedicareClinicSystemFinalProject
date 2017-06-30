@@ -1,0 +1,47 @@
+.profile{
+    margin-top: 20px;
+}
+
+.profile-avatar{
+    height: 200px;
+}
+
+.white{
+    background-color: #fff !important;
+}
+
+.profile-title{
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.profile-text{
+    color: #666;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.profile-profession{
+    font-size: 15px;
+}
+
+.profile-details{
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+#imagePreview, #imageBackgroundPreview{
+    width: 100%;
+    height: auto;
+    /*background-position: center center;*/
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline-block;
+}
+
+#uploadImagePreview, #uploadBackgroundImagePreview {
+    display: none;
+}
