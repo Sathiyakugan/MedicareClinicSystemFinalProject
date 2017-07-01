@@ -8,8 +8,10 @@
  */
 
 include '../Adaptor/mysql_crud.php';
-include "../UserClasses/User.php";
+include '../UserClasses/User.php';
 include ("../UserClasses/Doctor.php");
+include '../connect_db.php';
+
 
 
 class Pataint_db
@@ -117,9 +119,7 @@ if(isset($_SESSION['username'])){
                                             <th>ID</th>
                                             <th>First Name</th>
                                             <th>Phone No</th>
-                                            <th>View Profile</th>
-                                            <th>Update</th>
-
+                                            <th>Action</th>
 
 
                                         </tr>
@@ -142,15 +142,16 @@ if(isset($_SESSION['username'])){
                                             echo '<td>' . $details[$i]['first_name'] . '</td>';
                                             echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td> <div class="btn-group">
+                                            <td>   <div class="btn-group">
                                                     <button type="button" class="btn btn-primary">Action</button>
                                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                                         <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" role="menu">
-                                                        <li><a href="#">Tablet</a></li>
-                                                        <li><a href="#">Smartphone</a></li>
+
+                                                       <li> <button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></li>
+                                                        <li><button type='button' data-a="View_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewPrescription</button></li>
+                                                        <li><button type='button' data-a="View_diagnoist.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewDiagnosis</button></li>
                                                     </ul>
                                                 </div></td>
                                             <?php

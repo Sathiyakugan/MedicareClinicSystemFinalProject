@@ -126,6 +126,7 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/head.php' ?>
 
 
+
     <!--Script for Validating the data-->
     <script>
         function validateForm()

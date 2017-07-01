@@ -1,5 +1,5 @@
 <?php
-//include 'User.php';
+
 class Doctor extends User
 {
     private $field;
