@@ -1,5 +1,6 @@
 <?php
 include "../Adaptor/mysql_crud.php";
+include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
 
 class Admin_Receptionist

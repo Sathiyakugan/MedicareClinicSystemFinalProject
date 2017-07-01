@@ -2,7 +2,8 @@
 session_start();
 
 include "../Adaptor/mysql_crud.php";
-include ("../UserClasses/Doctor.php");
+include "../UserClasses/User.php";
+include ("../UserClasses/Admin.php");
 
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];

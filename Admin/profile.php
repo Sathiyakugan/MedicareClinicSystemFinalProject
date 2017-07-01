@@ -2,6 +2,7 @@
 session_start();
 
 include "../Adaptor/mysql_crud.php";
+include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
 include ("../UserClasses/Nurse.php");
 include ("../UserClasses/Doctor.php");
@@ -65,24 +66,64 @@ if(isset($_SESSION['login'])){
                                             <div class="col-md-6 column">
                                                 <p class="text-center profile-title"><i class="fa fa-info"></i> Basic</p>
                                                 <hr>
+
                                                 <?php
                                                 if ($type=='Doctor'){
                                                     ?>
+                                                    <div class="row">
                                                     <div class="col-md-6">
                                                         <p class="profile-details"><i class="fa fa-info"></i> Specialization</p>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <p><?php echo $userobject->getField();?></p>
                                                     </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php
+                                                if ($type=='Doctor'){
+                                                    ?>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p class="profile-details"><i class="fa fa-info"></i> Time Slots</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <?php
+                                                            $times=$userobject->getTimeslots();
+                                                            $count=sizeof($times);
+                                                              for($i=0;$i<$count;$i++) { ?>
+                                                            <p><?php echo $times[$i]['timeslot'];?></p>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
                                                 <?php } ?>
 
+
+
+
+
+
+
+                                                <?php
+                                                if ($type=='Doctor'){
+                                                    ?>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="profile-details"><i class="fa fa-info"></i> Fees</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p><?php echo $userobject->getFees();?></p>
+                                                    </div>
+                                                </div>
+                                                <?php } ?>
+                                                <div class="row">
                                                 <div class="col-md-6">
                                                     <p class="profile-details"><i class="fa fa-info"></i> Location</p>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p><?php echo $userobject->getAddress();?></p>
                                                 </div>
-
+                                                </div>
+                                                <div class="row">
 
                                                 <div class="col-md-6">
                                                     <p class="profile-details"><i class="fa fa-envelope"></i> Email</p>
@@ -90,13 +131,14 @@ if(isset($_SESSION['login'])){
                                                 <div class="col-md-6">
                                                     <p><?php echo $userobject->getEmail();?></p>
                                                 </div>
-
-
+                                                </div>
+                                                <div class="row">
                                                 <div class="col-md-6">
                                                     <p class="profile-details"><i class="fa fa-info"></i> Country</p>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <p><?php echo "Srilanka";?></p>
+                                                </div>
                                                 </div>
 
                                             </div>
