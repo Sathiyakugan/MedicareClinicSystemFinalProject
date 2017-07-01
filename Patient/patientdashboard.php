@@ -78,7 +78,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="Admin_Doctor.php">
+                    <a href="Book_Appointment.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

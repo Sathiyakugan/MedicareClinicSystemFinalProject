@@ -252,7 +252,7 @@
                     </li>
 
                     <li>
-                        <a href="../Admin/admindashboard.php?"><i class="fa fa-user-md fa-fw"></i> Appointments<span class="fa arrow"></span></a>
+                        <a href="../Patient/Book_Appointment.php?"><i class="fa fa-user-md fa-fw"></i> Appointments<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                         </ul>
                         <!-- /.nav-second-level -->
