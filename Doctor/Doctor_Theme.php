@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" >
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -149,7 +149,7 @@
             <ul class="dropdown-menu dropdown-alerts">
                 <li>
                     <a href="#">
-                        <div>
+                        <div  id="appointment"  onclick="getappointment();">
                             <i class="fa fa-comment fa-fw"></i> New Comment
                             <span class="pull-right text-muted small">4 minutes ago</span>
                         </div>

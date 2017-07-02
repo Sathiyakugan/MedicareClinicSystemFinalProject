@@ -26,7 +26,7 @@ if(isset($_SESSION['login'])){
 
 </head>
 
-<body>
+<body >
 
 <div id="wrapper">
     <!-- Navigation -->

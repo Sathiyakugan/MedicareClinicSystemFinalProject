@@ -29,7 +29,7 @@ if(isset($_SESSION['login'])){
 
 </head>
 
-<body>
+<body onload="getappointment();">
 
 <div id="wrapper">
     <!-- Navigation -->
@@ -148,6 +148,7 @@ if(isset($_SESSION['login'])){
 
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
+<?php include 'js_for_ajax.php' ?>
 <script>
     $('.modalEditarUsuario').click(function(){
         var ID=$(this).attr('data-a');

@@ -68,7 +68,6 @@ class Admin_Doctor
 
 session_start();
 if(isset($_SESSION['current_user'])){
-    //$id=$_SESSION['admin_id'];
     $current_user=$_SESSION['current_user'];
     $admin=new Admin($current_user);
     $admin_doctor= new Admin_Doctor();

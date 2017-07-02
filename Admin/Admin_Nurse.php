@@ -64,7 +64,6 @@ class Admin_Nurse
 <?php
 session_start();
 if(isset($_SESSION['current_user'])){
-    //$id=$_SESSION['admin_id'];
     $current_user=$_SESSION['current_user'];
     $admin=new Admin($current_user);
     $admin_nurse= new Admin_Nurse();
