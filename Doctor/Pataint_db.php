@@ -191,7 +191,7 @@ if(isset($_SESSION['username'])){
 
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
-<?php include 'js_for_ajax.php' ?>
+<?php include 'js_for_notification.php' ?>
 <script>
     $('.modalEditarUsuario').click(function(){
         var ID=$(this).attr('data-a');

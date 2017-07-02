@@ -1,6 +1,6 @@
 <script type="text/javascript">
     function getappointment() {
-        setInterval(get_appointment,3000)
+        setInterval(get_appointment,500)
     }
     function get_appointment() {
         $.ajax({
@@ -8,11 +8,7 @@
             url: "getAppointments.php",
             data:'doctor=<?php echo $doctor->getUsername();?>',
             success: function(data){
-                alert("succeeeded"+data);
                 $("#appointment").html(data);
-            },
-            error: function (error) {
-                alert('error; ' + eval(error));
             }
         });
     }
@@ -30,11 +26,7 @@
             url: "onclick_change.php",
             data:'doctor=<?php echo $doctor->getUsername();?>',
             success: function(data){
-                alert("succeeeded"+data);
                 $("#appointment").html(data);
-            },
-            error: function (error) {
-                alert('error; ' + eval(error));
             }
         });
     }
