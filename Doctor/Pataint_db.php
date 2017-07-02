@@ -7,7 +7,11 @@
  * Time: 11:53 PM
  */
 
-include '../Adaptar.php';
+include '../Adaptor/mysql_crud.php';
+include "../UserClasses/User.php";
+include ("../UserClasses/Doctor.php");
+
+
 class Pataint_db
 {
     //essential constructor
@@ -18,7 +22,7 @@ class Pataint_db
 
     public function getresults(){
         $this->db->connect();
-        $this->db->select('patient','Patient_ID,FirstName,LastName,Sex,DOB,Adress,Image,email,username',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('patient','*',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
     }
@@ -39,6 +43,7 @@ class Pataint_db
 session_start();
 if(isset($_SESSION['username'])){
     $username=$_SESSION['username'];
+    $doctor= new Doctor($username);
     $pataint_db= new Pataint_db();
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
@@ -67,7 +72,7 @@ if(isset($_SESSION['username'])){
 <div id="wrapper">
 
     <!-- Navigation -->
-    <?php include 'Doctor_thems.php' ?>
+    <?php include 'Doctor_Theme.php' ?>
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
@@ -109,15 +114,12 @@ if(isset($_SESSION['username'])){
                                         <thead>
                                         <tr>
 
-                                            <th>Patient ID</th>
-                                            <th>UserName</th>
+                                            <th>ID</th>
                                             <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Sex</th>
-                                            <th>DOB</th>
-                                            <th>Address</th>
-                                            <th>Image</th>
-                                            <th>Email</th>
+                                            <th>Phone No</th>
+                                            <th>View Profile</th>
+                                            <th>Update</th>
+
 
 
                                         </tr>
@@ -129,23 +131,29 @@ if(isset($_SESSION['username'])){
                                         Displays all data from 'Pharmacist' table
                                         */
                                         // get results from database
-                                        $row=$pataint_db->getresults();
+                                        $details=$pataint_db->getresults();
                                         // display data in table
-                                        $count=sizeof( $row);
+                                        $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            echo '<td>' . $row[$i]['Patient_ID'] . '</td>';
-                                            echo '<td>' . $row[$i]['username'] . '</td>';
-                                            echo '<td>' . $row[$i]['FirstName'] . '</td>';
-                                            echo '<td>' . $row[$i]['LastName'] . '</td>';
-                                            echo '<td>' . $row[$i]['Sex'] . '</td>';
-                                            echo '<td>' . $row[$i]['DOB'] . '</td>';
-                                            echo '<td>' . $row[$i]['Adress'] . '</td>';
-                                            echo '<td>' . $row[$i]['Image'] . '</td>';
-                                            echo '<td>' . $row[$i]['email'] . '</td>';
-
+                                            echo '<td>' . $details[$i]['patient_id'] . '</td>';
+                                            echo '<td>' . $details[$i]['first_name'] . '</td>';
+                                            echo '<td>' . $details[$i]['phone'] . '</td>';
+                                            ?>
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td> <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary">Action</button>
+                                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#">Tablet</a></li>
+                                                        <li><a href="#">Smartphone</a></li>
+                                                    </ul>
+                                                </div></td>
+                                            <?php
                                         }
                                         ?>
                                         </tbody>
@@ -166,8 +174,31 @@ if(isset($_SESSION['username'])){
 
 </div>
 <!-- /#wrapper -->
+<!-- Modal -->
+<!-- MODAL EDITAR-->
+<div id="editarUsuario" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
+<script>
+    $('.modalEditarUsuario').click(function(){
+        var ID=$(this).attr('data-a');
+        $.ajax({url:""+ID,cache:false,success:function(result){
+            $(".modal-content").html(result);
+        }});
+    });
+</script>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
