@@ -215,7 +215,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </a>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider" #id="appointment"></li>
                     <li>
                         <a href="#">
                             <div>

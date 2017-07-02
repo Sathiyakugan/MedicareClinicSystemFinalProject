@@ -1,5 +1,6 @@
 <?php
 include "../Adaptor/mysql_crud.php";
+include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
 
 class Admin_Doctor
@@ -30,14 +31,17 @@ class Admin_Doctor
         $this->db->update('doctor',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','field'=>'"'.$field.'"','description="'.$description.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description){
+    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description,$fees,$timeslots){
 
         $this->db->connect();
         $results=$this->getresultsforaperson($username);
         if (sizeof($results)==0){
             $address = $this->db->escapeString($address); // Escape any input before insert
             $email=$this->db->escapeString($email); // Escape any input before insert
-            $this->db->insert('doctor',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone,'field'=>$field,'description'=>$description));  // Table name, column names and respective values
+            $this->db->insert('doctor',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone,'field'=>$field,'description'=>$description,'fees'=>$fees));  // Table name, column names and respective values
+            foreach ($timeslots as $value){
+                $this->db->insert('doctor_appointment_time',array('username'=>$username,'timeslot'=>$value));  // Table name, column names and respective values
+            }
             $_SESSION['message1']="<font color=blue>User Added Succesfully</font>";
             header('Location: ..\Admin\Admin_Doctor.php');
         }
@@ -64,7 +68,6 @@ class Admin_Doctor
 
 session_start();
 if(isset($_SESSION['current_user'])){
-    //$id=$_SESSION['admin_id'];
     $current_user=$_SESSION['current_user'];
     $admin=new Admin($current_user);
     $admin_doctor= new Admin_Doctor();
@@ -83,7 +86,10 @@ if(isset($_POST['submit'])){
     $password=$_POST['password'];
     $sex=$_POST['sex'];
     $DOB=$_POST['DOB'];
+    $fees=$_POST['fees'];
     $field=$_POST['field'];
+    $timeslots=($_POST['timeslots']);
+    print_r($timeslots);
     $description='';
     if (is_array ( $_POST ['description'] )) {
         foreach ($_POST ['description'] as $value) {
@@ -109,7 +115,7 @@ if(isset($_POST['submit'])){
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
     }
 
-    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description);
+    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description,$fees,$timeslots);
 
 }
 ?>
@@ -278,7 +284,7 @@ if(isset($_POST['submit'])){
                             <div class="tab-pane fade" id="profile">
 
                                 <div class="row">
-                                    <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                    <form name="form1" class="form-signin" id="form1" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                         <div class="col-md-4 column">
                                             <hr>
                                             <label>Username</label>
@@ -314,8 +320,28 @@ if(isset($_POST['submit'])){
                                         </div>
                                         <div class="col-md-4 column">
                                             <hr>
+
+
                                             <label>Description</label>
                                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                            <P><label>Fees</label>
+                                                <select class="form-control" name="fees" id="fees">
+                                                    <option>800Rs</option
+                                                    <option>1000Rs</option>
+                                                    <option>1500Rs</option>
+                                                    <option>2000Rs</option>
+                                                    <option>2500Rs</option>
+                                                </select></p>
+                                            <div class="form-group">
+                                                <label>Time Slots</label>
+                                                <select multiple  class="form-control" name="timeslots[]" id="timeslots">
+                                                    <option>06:00:00</option><option>07:00:00</option><option>08:00:00</option><option>09:00:00</option>
+                                                    <option>10:00:00</option><option>11:00:00</option><option>12:00:00</option><option>13:00:00</option>
+                                                    <option>14:00:00</option><option>15:00:00</option><option>16:00:00</option><option>17:00:00</option>
+                                                    <option>18:00:00</option><option>19:00:00</option><option>20:00:00</option><option>21:00:00</option>
+                                                    <option>22:00:00</option><option>23:00:00</option><option>00:00:00</option>
+                                                </select>
+                                            </div>
                                             <label>DOB</label>
                                             <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
                                             <label>Postal Address</label>
@@ -327,7 +353,7 @@ if(isset($_POST['submit'])){
                                             <label>Password</label>
                                             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                                             <P></P>
-                                            <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
+                                            <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" id="formbutton">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -361,6 +387,8 @@ if(isset($_POST['submit'])){
 </div>
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
+
+
 
 
 <script>

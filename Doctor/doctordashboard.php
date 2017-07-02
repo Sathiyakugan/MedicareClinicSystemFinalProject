@@ -29,7 +29,7 @@ if(isset($_SESSION['login'])){
 
 </head>
 
-<body>
+<body onload="getappointment();">
 
 <div id="wrapper">
     <!-- Navigation -->
@@ -148,6 +148,13 @@ if(isset($_SESSION['login'])){
 
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
+<?php include 'js_for_notification.php' ?>
+
+
+<script>
+    $(".prettydate").prettydate();
+</script>
+
 <script>
     $('.modalEditarUsuario').click(function(){
         var ID=$(this).attr('data-a');
@@ -166,6 +173,9 @@ if(isset($_SESSION['login'])){
         });
     });
 </script>
+
+
+
 
 </body>
 

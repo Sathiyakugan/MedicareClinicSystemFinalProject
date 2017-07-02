@@ -1,5 +1,6 @@
 <?php
 include "../Adaptor/mysql_crud.php";
+include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
 
 class Admin_Patient
@@ -59,7 +60,6 @@ class Admin_Patient
 <?php
 session_start();
 if(isset($_SESSION['current_user'])){
-    //$id=$_SESSION['admin_id'];
     $current_user=$_SESSION['current_user'];
     $admin=new Admin($current_user);
     $admin_patient= new Admin_Patient();
