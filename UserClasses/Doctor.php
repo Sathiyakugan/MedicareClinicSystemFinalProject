@@ -6,6 +6,7 @@ class Doctor extends User
     private $description;
     private $fees;
     private $timeslots;
+
     public function __construct($username){
         parent::__construct($username);
         $this->loadotherProperties();

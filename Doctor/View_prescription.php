@@ -2,7 +2,6 @@
 session_start();
 include '../connect_db.php';
 include '../Adaptor/mysql_crud.php';
-//include '../UserClasses/preAbstract.php';
 include '../UserClasses/User.php';
 include  '../UserClasses/Patient.php';
 include '../UserClasses/Prescription.php';
@@ -12,7 +11,7 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
     $userobject=new Patient($username);
-    $userPatiant= new Prescription($username);
+    $prescription= new Prescription($username);
 
 
 }else{
@@ -47,76 +46,66 @@ if(isset($_SESSION['login'])){
                                 <div class="col-md-6 column">
                                     <p class="text-center profile-title"><i class="fa fa-info"></i> Basic</p>
                                     <hr>
-                                    <?php
-                                    if ($type=='Doctor'){
-                                        ?>
+                                    <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-info"></i> Specialization</p>
+                                            <p class="profile-details"><i class="fa fa-info"></i> Date </p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getField();?></p>
+                                            <p><?php echo $prescription->getDate();?></p>
                                         </div>
-                                    <?php } ?>
-
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-info"></i> Location</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo $userPatiant->getmedication()?></p>
                                     </div>
 
 
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-envelope"></i> Email</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-envelope"></i> Doctor</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><?php echo $prescription->getDoctor();?></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo $userobject->getEmail();?></p>
-                                    </div>
-
-
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-info"></i> Country</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo "Srilanka";?></p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-info"></i> Country</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><?php echo "Srilanka";?></p>
+                                        </div>
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 column">
-                                    <p class="text-center profile-title"><i class="fa fa-info"></i> Personal</p>
+                                    <p class="text-center profile-title"><i class="fa fa-info"></i> Prescription</p>
                                     <hr>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-user"></i> Gender</p>
+                                            <p class="profile-details"><i class="fa fa-user"></i> Case Histroy</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getSex();?></p>
+                                            <p><?php echo $prescription->getCase();?></p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-calendar"></i> Date of Birth</p>
+                                            <p class="profile-details"><i class="fa fa-calendar"></i> Medication</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getDOB();?></p>
+                                            <p><?php echo $prescription->getmedication();?></p>
                                         </div>
                                     </div>
 
 
-                                    <?php
-                                    if ($type=='Doctor'){
-                                        ?>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="profile-details"><i class="fa fa-user"></i> Description</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><?php echo $userobject->getDescription();?></p>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-user"></i> Note</p>
                                         </div>
-                                    <?php } ?>
+                                        <div class="col-md-6">
+                                            <p><?php echo $prescription->getNote();?></p>
+                                        </div>
+                                    </div>
+
 
 
 

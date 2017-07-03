@@ -83,7 +83,7 @@ class Prescription extends preAbstract
 
     public function getNote()
     {
-        return $this->note;
+        return $this->Note;
         // TODO: Implement getNote() method.
     }
 
@@ -94,6 +94,7 @@ class Prescription extends preAbstract
         $this->db->select('prescription','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->id=$res[0]['id'];
+        $this->id=$res[0]['Date'];
         $this->UserName=$res[0]['UserName'];
         $this->Doctor=$res[0]['Doctor'];
         $this->Case_Histroy=$res[0]['Case_Histroy'];

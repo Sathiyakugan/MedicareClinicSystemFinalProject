@@ -76,10 +76,10 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="doctordashboard.php"><i class="fa  fa-wheelchair fa-fw"></i>Doctors</a>
+                    <a href="doctordashboard.php"><i class="fa  fa-wheelchair fa-fw"></i>Patiant </a>
                 </li>
                 <li>
-                    <a href="Admin_Patient.php"><i class="fa  fa-wheelchair fa-fw"></i>Reports</a>
+                    <a href="Admin_Patient.php"><i class="fa  fa-wheelchair fa-fw"></i>Edit Prescription</a>
                 </li>
                 <li>
                     <a href="../logout.php"><i class="fa fa-edit fa-fw"></i>logout</a>

@@ -28,14 +28,13 @@ if(isset($_SESSION['login'])){
     <link href="../style/main.css" rel="stylesheet">
 
 </head>
-
-<body onload="getappointment();">
+<body>
 
 <div id="wrapper">
     <!-- Navigation -->
     <?php include 'Doctor_Theme.php' ?>
 
-    <div id="page-wrapper">
+   <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
 
@@ -109,7 +108,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="prescription.php">
+                    <a href="Edit_prescription.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

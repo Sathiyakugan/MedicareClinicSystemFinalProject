@@ -11,7 +11,7 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
     $userobject=new Patient($username);
-    $userPatiant= new Diagnoist($username);
+    $diagnoist= new Diagnoist($username);
 
 
 }else{
@@ -19,7 +19,6 @@ if(isset($_SESSION['login'])){
     exit();
 }
 ?>
-
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -46,76 +45,66 @@ if(isset($_SESSION['login'])){
                                 <div class="col-md-6 column">
                                     <p class="text-center profile-title"><i class="fa fa-info"></i> Basic</p>
                                     <hr>
-                                    <?php
-                                    if ($type=='Doctor'){
-                                        ?>
+                                    <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-info"></i> Specialization</p>
+                                            <p class="profile-details"><i class="fa fa-info"></i> Date </p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getField();?></p>
+                                            <p><?php echo $diagnoist->getDate();?></p>
                                         </div>
-                                    <?php } ?>
-
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-info"></i> Location</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo $userPatiant->getDiscription()?></p>
                                     </div>
 
 
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-envelope"></i> Email</p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-envelope"></i> Doctor</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><?php echo $diagnoist->getDoctor();?></p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo $userobject->getEmail();?></p>
-                                    </div>
-
-
-                                    <div class="col-md-6">
-                                        <p class="profile-details"><i class="fa fa-info"></i> Country</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p><?php echo "Srilanka";?></p>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-info"></i> Country</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><?php echo "Srilanka";?></p>
+                                        </div>
                                     </div>
 
                                 </div>
                                 <div class="col-md-6 column">
-                                    <p class="text-center profile-title"><i class="fa fa-info"></i> Personal</p>
+                                    <p class="text-center profile-title"><i class="fa fa-info"></i> Prescription</p>
                                     <hr>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-user"></i> Gender</p>
+                                            <p class="profile-details"><i class="fa fa-user"></i> Report Type</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getSex();?></p>
+                                            <p><?php echo $diagnoist->getReport();?></p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-calendar"></i> Date of Birth</p>
+                                            <p class="profile-details"><i class="fa fa-calendar"></i> Discription</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $userobject->getDOB();?></p>
+                                            <p><?php echo $diagnoist->getDiscription();?></p>
                                         </div>
                                     </div>
 
 
-                                    <?php
-                                    if ($type=='Doctor'){
-                                        ?>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p class="profile-details"><i class="fa fa-user"></i> Description</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><?php echo $userPatiant->getDescription();?></p>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="profile-details"><i class="fa fa-user"></i> Note</p>
                                         </div>
-                                    <?php } ?>
+                                        <div class="col-md-6">
+                                            <p><?php echo $diagnoist->getNote();?></p>
+                                        </div>
+                                    </div>
+
 
 
 

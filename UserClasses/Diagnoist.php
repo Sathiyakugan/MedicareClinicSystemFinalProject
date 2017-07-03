@@ -84,7 +84,7 @@ class Diagnoist extends DiagnoistAbstract
 
     public function getNote()
     {
-        return $this->note;
+        return $this->Note;
         // TODO: Implement getNote() method.
     }
 
@@ -92,9 +92,10 @@ class Diagnoist extends DiagnoistAbstract
     {
         $quer='username="'.$this->username.'"';
         $this->db->connect();
-        $this->db->select('diagnoist','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $this->db->select('diagnoists','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->id=$res[0]['id'];
+        $this->id=$res[0]['Date'];
         $this->UserName=$res[0]['UserName'];
         $this->Doctor=$res[0]['Doctor'];
         $this->Report=$res[0]['Report_type'];
