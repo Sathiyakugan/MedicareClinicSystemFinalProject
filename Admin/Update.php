@@ -37,6 +37,7 @@ if(isset($_SESSION['login'])){
     exit();
 }
 if(isset($_POST['submit'])){
+
     $firstName=$_POST['first_name'];
     $lastName=$_POST['last_name'];
     $address=$_POST['postal_address'];

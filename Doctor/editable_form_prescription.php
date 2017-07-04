@@ -1,3 +1,4 @@
+
 <?php
 /**
  * Created by PhpStorm.
@@ -15,36 +16,32 @@ include '../UserClasses/Prescription.php';
 
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
-    $username=$_REQUEST['username'];
     $userobject=new Patient($username);
     $prescription= new Prescription($username);
-    $type=$_REQUEST['type'];
+    if(isset($_POST['submit'])) {
 
+        $UserName = $_POST['user_name'];
+        $Doctor = $_POST['doctor_name'];
+        $Date = $_POST['date'];
+        $Case_Histroy = $_POST['case_histroy'];
+        $medication = $_POST['medication'];
+        $note = $_POST['note'];
+
+
+        $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
+        $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
+        echo $_SESSION['message1'];
+        header("Location: editable_form_prescription.php?type=$type&username=$username");
+    }
 }else{
     header("../index.php");
     exit();
 }
 
-if(isset($_POST['submit'])) {
-    $UserName = $_POST['user_name'];
-    $Doctor = $_POST['doctor_name'];
-    $Date = $_POST['date'];
-    $Case_Histroy = $_POST['case_histroy'];
-    $medication = $_POST['medication'];
-    $note = $_POST['note'];
 
-
-    $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
-    $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
-    echo $_SESSION['message1'];
-    header("Location: editable_form_prescription.php?type=$type&username=$username");
-}
 ?>
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h2 class="modal-title"> Edit Prescription</h2>
-</div>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +77,10 @@ if(isset($_POST['submit'])) {
 </head>
 <body>
 
-
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h2 class="modal-title"> Edit Prescription</h2>
+</div>
 
 
     <div class="row">
@@ -109,19 +109,19 @@ if(isset($_POST['submit'])) {
                             <form method="post"  enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label>User Name</label>
-                                    <input type="text" id="user_name" name="user_name" class="form-control" placeholder="<?php echo $prescription->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
+                                    <input type="text"  name="user_name" class="form-control" placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
 
                                     <p class="help-block">type pataint user name.</p>
                                 </div>
                                 <div class="form-group">
                                     <label>Doctor Name</label>
-                                    <input type="text" id="doctor_name" name="doctor_name" class="form-control" placeholder="<?php echo $prescription->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
+                                    <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $prescription->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
 
 
                                 </div>
                                 <div class="form-group">
                                     <label>Date </label>
-                                    <input type="text" id="date" name="date" class="form-control" placeholder="<?php echo $prescription->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
+                                    <input type="date"  name="date" class="form-control" placeholder="<?php echo $prescription->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
 
 
                                 </div>
@@ -129,17 +129,20 @@ if(isset($_POST['submit'])) {
 
                                 <div class="form-group">
                                     <label>Case Histroy</label>
-                                    <textarea id="case_histroy"  class="form-control" rows="3" placeholder="<?php $prescription->getCase(); ?>"> <?php echo $prescription->getCase();?> </textarea>
+                                    <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $prescription->getCase(); ?>"> <?php echo $prescription->getCase();?> </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Medication</label>
-                                    <textarea id="mdication"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getmedication();?>"> <?php echo  $prescription->getmedication();?> </textarea>
+                                    <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getmedication();?>"> <?php echo  $prescription->getmedication();?> </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Note </label>
-                                    <textarea id="note"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
+                                    <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
                                 </div>
-                                <button class="btn btn-lg btn-primary btn-block" name="Save Change" type="submit">Submit</button>
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" name="submit">Submit</button>
+                                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                                </div>
                             </form>
                         </div>
 
@@ -165,6 +168,3 @@ if(isset($_POST['submit'])) {
 </script>
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
-
-<div class="modal-footer">
-</div>
