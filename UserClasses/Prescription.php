@@ -102,4 +102,12 @@ class Prescription extends preAbstract
         $this->Note=$res[0]['Note'];
 
     }
+
+    public function setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note)
+    {
+        $this->db->connect();
+        $this->db->update('prescription',array('Doctor'=>$Doctor,'UserName'=>$UserName,'Date'=>$Date,'Case_Histroy'=>$Case_Histroy,'medication'=>$medication,'note'=>$note),'UserName="'.$this->UserName.'"'); // Table name, column names and values, WHERE conditions
+
+        // TODO: Implement setbulk() method.
+    }
 }

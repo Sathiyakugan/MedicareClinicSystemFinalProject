@@ -47,7 +47,8 @@ session_start();
 if(isset($_SESSION['username'])){
     $username=$_SESSION['username'];
     $doctor= new Doctor($username);
-    $pataint_db= new Patient();
+    $pataint_db =new Pataint_db();
+
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();

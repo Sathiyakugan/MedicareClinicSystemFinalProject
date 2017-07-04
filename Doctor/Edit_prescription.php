@@ -143,7 +143,7 @@ if(isset($_SESSION['login'])){
                                             echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
                                             <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-a=".php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Edit Prescription</button></td>
+                                            <td><button type='button' data-a="editable_form_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Edit Prescription</button></td>
                                             <td><button type='button' data-a=".php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Edit Diagnoist</button></td>
                                             <?php
                                         }

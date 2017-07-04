@@ -35,5 +35,6 @@ abstract class preAbstract{
     abstract public function getNote();
 
     abstract public function loadotherProperties();
+    abstract public function setbulk( $Doctor,$UserName, $Date,$Case_Histroy, $medication, $note);
 }
 ?>
