@@ -16,10 +16,18 @@
 
         <li class="dropdown" id="appointment"  >
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-bell fa-fw"></i><span class="badge"></span> <i class="fa fa-caret-down"></i>
-            </a>
+                <i class="fa fa-bell fa-fw"></i><span class="badge"></span></a>
+
+            <!-- /.dropdown-alerts -->
         </li>
         <!-- /.dropdown -->
+        <li class="dropdown" id="appoint" >
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-calendar fa-fw"></i> <i class="fa fa-caret-down"></i>
+            </a>
+            <!-- /.dropdown-messages -->
+        </li>
+
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -68,15 +76,11 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-
-                <li>
-                    <a href="Appoinment_pat.php"><i class="fa fa-user-md fa-fw"></i> Appointments<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
                 <li>
                     <a href="doctordashboard.php"><i class="fa  fa-wheelchair fa-fw"></i>Doctors</a>
+                </li>
+                <li>
+                    <a href="Appointments.php"><i class="fa fa-user-md fa-fw"></i> Appointments</a>
                 </li>
                 <li>
                     <a href="Admin_Patient.php"><i class="fa  fa-wheelchair fa-fw"></i>Reports</a>

@@ -11,7 +11,7 @@ if(isset($_SESSION['login'])){
 
     $current_user= (string)$_SESSION['current_user'];
     $_SESSION['username']=$current_user;
-    $doctor=new Doctor($current_user);
+    $patient=new Patient($current_user);
     $appointment_cl=new Appointment_cl();
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
@@ -25,7 +25,7 @@ if(isset($_SESSION['login'])){
 <head>
 
     <?php include '../controllers/base/meta-tags.php' ?>
-    <title>Doctor Pannel</title>
+    <title>Patient Pannel</title>
     <?php include '../controllers/base/head.php' ?>
     <link href="../style/main.css" rel="stylesheet">
 
@@ -35,7 +35,7 @@ if(isset($_SESSION['login'])){
 
 <div id="wrapper">
     <!-- Navigation -->
-    <?php include 'Doctor_Theme.php' ?>
+    <?php include 'PatientTheme.php' ?>
 
     <div id="page-wrapper">
         <div class="row">
@@ -74,12 +74,11 @@ if(isset($_SESSION['login'])){
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Patient Name</th>
+                                            <th>Doctor Name</th>
                                             <th>Fees</th>
                                             <th>Appointment Date</th>
                                             <th>Appointment Time</th>
                                             <th>View Profile</th>
-                                            <th>Approve</th>
                                             <th>Cancel</th>
                                         </tr>
                                         </thead>
@@ -90,24 +89,23 @@ if(isset($_SESSION['login'])){
                                         Displays all data from 'Patient' table
                                         */
                                         // get results from database
-                                        $res_pending=$appointment_cl->getresultsbyDocPending($doctor->getUsername());
+                                        $res_pending=$appointment_cl->getresultsbyPatiPending($patient->getUsername());
 
                                         // display data in table
                                         $count=sizeof($res_pending);
                                         // loop through results of database query, displaying them in the table
-                                        $patient=null;
+                                        $doctor=null;
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            $patient=new Patient($res_pending[$i]['pusername']);
+                                            $doctor=new Doctor($res_pending[$i]['dusername']);
                                             echo '<td>' . $res_pending[$i]['id'] . '</td>';
-                                            echo '<td>' . $patient->getFirstName(); '</td>';
+                                            echo '<td>' . $doctor->getFirstName(); '</td>';
                                             echo '<td>' . $res_pending[$i]['consultancyFees'] . '</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentDate'] . '</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentTime'] . '</td>';
                                             ?>
-                                            <td><button  type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $res_pending[$i]['pusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Profile</button></td>
-                                            <td><a href="../Appintments/ApproveAppointment.php?id=<?php echo $res_pending[$i]['id']?>"><button id="approve"  type="button" class="btn btn-success">Approve</button></a></td>
+                                            <td><button  type='button' data-a="profile.php?type=Doctor&username=<?php echo $res_pending[$i]['dusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>D-Profile</button></td>
                                             <td><a href="../Appintments/CancelAppointment.php?id=<?php echo $res_pending[$i]['id']?>"><button id="cancel" type="button" class="btn btn-danger">Cancel</button></a></td>
                                             <?php
                                         }
@@ -128,7 +126,7 @@ if(isset($_SESSION['login'])){
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Patient Name</th>
+                                            <th>Doctors Name</th>
                                             <th>Fees</th>
                                             <th>Payment</th>
                                             <th>Appointment Date</th>
@@ -144,13 +142,13 @@ if(isset($_SESSION['login'])){
                                         Displays all data from 'Patient' table
                                         */
                                         // get results from database
-                                        $res_pending=$appointment_cl->getresultsbyDocApproved($doctor->getUsername());
+                                        $res_pending=$appointment_cl->getresultsbyPatiApproved($patient->getUsername());
 
 
                                         // display data in table
                                         $count=sizeof($res_pending);
                                         // loop through results of database query, displaying them in the table
-                                        $patient=null;
+                                        $doctor=null;
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             $Paid=null;
@@ -164,15 +162,15 @@ if(isset($_SESSION['login'])){
 
 
                                             echo "<tr>";
-                                            $patient=new Patient($res_pending[$i]['pusername']);
+                                            $doctor=new Doctor($res_pending[$i]['dusername']);
                                             echo '<td>' . $res_pending[$i]['id'] . '</td>';
-                                            echo '<td>' . $patient->getFirstName(); '</td>';
+                                            echo '<td>' . $doctor->getFirstName(); '</td>';
                                             echo '<td>' . $res_pending[$i]['consultancyFees'] . '</td>';
                                             echo '<td>' .$Paid.'</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentDate'] . '</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentTime'] . '</td>';
                                             ?>
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $res_pending[$i]['pusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Profile</button></td>
+                                            <td><button type='button' data-a="profile.php?type=Doctor&username=<?php echo $res_pending[$i]['dusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>D-Profile</button></td>
                                             <td><a href="../Appintments/CancelAppointment.php?id=<?php echo $res_pending[$i]['id']?>"><button id="cancel" type="button" class="btn btn-danger">Cancel</button></a></td>
                                             <?php
                                         }
@@ -196,7 +194,7 @@ if(isset($_SESSION['login'])){
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Patient Name</th>
+                                            <th>Doctor Name</th>
                                             <th>Fees</th>
                                             <th>Appointment Date</th>
                                             <th>Appointment Time</th>
@@ -210,24 +208,24 @@ if(isset($_SESSION['login'])){
                                         Displays all data from 'Patient' table
                                         */
                                         // get results from database
-                                        $res_pending=$appointment_cl->getresultsbyDocCanceled($doctor->getUsername());
+                                        $res_pending=$appointment_cl->getresultsbyPatiCanceled($patient->getUsername());
 
 
                                         // display data in table
                                         $count=sizeof($res_pending);
                                         // loop through results of database query, displaying them in the table
-                                        $patient=null;
+                                        $doctor=null;
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            $patient=new Patient($res_pending[$i]['pusername']);
+                                            $doctor=new Doctor($res_pending[$i]['dusername']);
                                             echo '<td>' . $res_pending[$i]['id'] . '</td>';
-                                            echo '<td>' . $patient->getFirstName(); '</td>';
+                                            echo '<td>' . $doctor->getFirstName(); '</td>';
                                             echo '<td>' . $res_pending[$i]['consultancyFees'] . '</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentDate'] . '</td>';
                                             echo '<td>' . $res_pending[$i]['appointmentTime'] . '</td>';
                                             ?>
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $res_pending[$i]['pusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Profile</button></td>
+                                            <td><button type='button' data-a="profile.php?type=Doctor&username=<?php echo $res_pending[$i]['dusername']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>D-Profile</button></td>
                                             <?php
                                         }
                                         ?>

@@ -149,7 +149,6 @@ class UserLogin
         $quer='username="'.$username.'" AND type="'.$type.'"';
         $this->db->select('userlog','*',NULL,$quer,NULL);
         $res = $this->db->getResult();
-        print_r($res);
         echo $res[0];
         $this->session_id=$res[0];
     }

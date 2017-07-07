@@ -333,7 +333,7 @@ if(isset($_POST['submit'])){
 </div>
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
-
+<?php include 'GetNotifications.php' ?>
 
 <script>
     $('.modalEditarUsuario').click(function(){

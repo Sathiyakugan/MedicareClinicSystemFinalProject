@@ -1,21 +1,19 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Anushan
- * Date: 6/27/2017
- * Time: 11:53 PM
+ * Date: 7/3/2017
+ * Time: 2:14 PM
  */
 
-include '../Adaptor/mysql_crud.php';
-include '../UserClasses/User.php';
+session_start();
+include  '../connect_db.php';
+include "../Adaptor/mysql_crud.php";
+include "../UserClasses/User.php";
 include ("../UserClasses/Doctor.php");
 include '../UserClasses/Patient.php';
-include '../connect_db.php';
 
-
-
-class Pataint_db
+class Edit_prescription
 {
     //essential constructor
     protected $db;
@@ -39,21 +37,19 @@ class Pataint_db
     }
 
 }
+if(isset($_SESSION['login'])){
 
-
-?>
-<?php
-session_start();
-if(isset($_SESSION['username'])){
-    $username=$_SESSION['username'];
-    $doctor= new Doctor($username);
-    $pataint_db =new Pataint_db();
-
+    $current_user= (string)$_SESSION['current_user'];
+    $_SESSION['username']=$current_user;
+    $doctor=new Doctor($current_user);
+    $edit_prescription =new Edit_prescription();
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +67,7 @@ if(isset($_SESSION['username'])){
 
 </head>
 
-<body onload="set_noti();">
+<body>
 
 <div id="wrapper">
 
@@ -92,7 +88,7 @@ if(isset($_SESSION['username'])){
             }
             ?>
         </div>
-        <div class="row">
+
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -103,7 +99,7 @@ if(isset($_SESSION['username'])){
 
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#home" data-toggle="tab">View Patient</a>
+                            <li class="active"><a href="#home" data-toggle="tab">Edit Patient</a>
                             </li>
 
                         </ul>
@@ -121,9 +117,9 @@ if(isset($_SESSION['username'])){
                                             <th>ID</th>
                                             <th>First Name</th>
                                             <th>Phone No</th>
-                                            <th>User Profile</th>
-                                            <th>View Prescription</th>
-                                            <th>View Diagnoist</th>
+                                            <th>View Profile</th>
+                                            <th>Edit Prescription</th>
+                                            <th>Edit Diagnoist</th>
 
 
                                         </tr>
@@ -135,7 +131,7 @@ if(isset($_SESSION['username'])){
                                         Displays all data from 'Pharmacist' table
                                         */
                                         // get results from database
-                                        $details=$pataint_db->getresults();
+                                        $details=$edit_prescription->getresults();
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
@@ -147,9 +143,9 @@ if(isset($_SESSION['username'])){
                                             echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
                                             <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-a="View_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Prescription</button></td>
-                                            <td><button type='button' data-a="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Diagnoist</button></td>
-                                        <?php
+                                            <td><button type='button' data-a="editable_form_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Edit Prescription</button></td>
+                                            <td><button type='button' data-a=".php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>Edit Diagnoist</button></td>
+                                            <?php
                                         }
 
 
@@ -166,7 +162,7 @@ if(isset($_SESSION['username'])){
                 </div>
                 <!-- /.panel -->
             </div>
-        </div>
+
     </div>
     <!-- /#page-wrapper -->
 
@@ -190,7 +186,6 @@ if(isset($_SESSION['username'])){
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
 <?php include 'js_for_notification.php' ?>
-<?php include 'js.php' ?>
 <script>
     $('.modalEditarUsuario').click(function(){
         var ID=$(this).attr('data-a');

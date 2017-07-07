@@ -9,13 +9,13 @@
 include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Doctor.php");
+include ("../UserClasses/Patient.php");
 include '../NotificationManager/Notification.php';
 include '../Appintments/Appointment_cl.php';
 $notification=new Notification();
-$doctor=new Doctor($_REQUEST['doctor']);
-$noti_res=$notification->getrdoctor($doctor->getUsername(),'appointment',0);
+$patient=new Patient($_REQUEST['patient']);
+$noti_res=$notification->getrpatient($patient->getUsername(),'approved_appointment',0);
 $appointment=new Appointment_cl();
-
 $noti_count=sizeof($noti_res);
 ?>
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -33,11 +33,11 @@ if(sizeof($noti_res)>0){
         <a href="reset_notification.php?username=<?php echo htmlentities($noti_res[$i]['reci_username']);?>">
             <div>
                 <div>
-                    Patient <strong><?php echo htmlentities($noti_res[$i]['sender_username']); ?></strong>
+                    Doctor<strong><?php echo htmlentities($noti_res[$i]['sender_username']); ?></strong>
                 </div>
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <i class="fa fa-calendar-check-o "></i> Wants Appointment with You..
+                        <i class="fa fa-calendar-check-o "></i><?php echo htmlentities($noti_res[$i]['parameters']); ?>
                     </div>
                     <span class="pull-right text-muted">
                                         <em ><span prettydate data-date-format="YYYY.M.D h:m:s"><?php echo$noti_res[$i]['created_at'];?></span></em>

@@ -4,6 +4,7 @@ session_start();
 include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Patient.php");
+include ("../NotificationManager/Notification.php");
 
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
@@ -21,38 +22,13 @@ if(isset($_POST['submit']))
     $fees=$_POST['fees'];
     $date=$_POST['date'];
     $time=$_POST['time'];
-    $userstatus=0;
-    $docstatus=1;
-    $AdminRead=0;
-    $DoctorRead=0;
-    $RecepionistRead=0;
-
     $db=Database::getInstance();
     $db->connect();
-    $db->insert('appointment',array('doctorSpecialization'=>$specilization,'dusername'=>$dusername,'pusername'=>$pusername,'consultancyFees'=>$fees,'appointmentDate'=>$date,'appointmentTime'=>$time,'patientStatus'=>$userstatus,'doctorStatus'=>$docstatus,'AdminRead'=>$AdminRead,'DoctorRead'=>$DoctorRead,'RecepionistRead'=>$RecepionistRead)); // Table name, column names and values
-
+    $db->insert('appointment',array('doctorSpecialization'=>$specilization,'dusername'=>$dusername,'pusername'=>$pusername,'consultancyFees'=>$fees,'appointmentDate'=>$date,'appointmentTime'=>$time)); // Table name, column names and values
+    $notification=new Notification();
+    $notification->Insert($dusername,$pusername,'appointment','wants Appointment with');
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

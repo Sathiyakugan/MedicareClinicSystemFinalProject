@@ -31,6 +31,8 @@ if(isset($_SESSION['login'])){
         case 'Doctor':
             $userobject=new Doctor($username);
             break;
+        case 'Admin':
+            $userobject=new Admin($username);
     }
 }else{
     header("../index.php");
@@ -98,6 +100,11 @@ if(isset($_POST['submit'])){
             break;
         case 'Doctor':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone,$fees,$timeslots);
+            $_SESSION['message1']="<font color=blue>Updated Successful</font>";
+            header("Location: ../Admin/update.php?type=$type&username=$username");
+            break;
+        case 'Admin':
+            $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
             header("Location: ../Admin/update.php?type=$type&username=$username");
             break;
@@ -241,11 +248,5 @@ if(isset($_POST['submit'])){
             <!-- </div> -->
         </div>
     </div>
-
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>

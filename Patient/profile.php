@@ -96,6 +96,13 @@ if(isset($_SESSION['login'])){
                                                         </div>
                                                     </div>
                                                 <?php } ?>
+
+
+
+
+
+
+
                                                 <?php
                                                 if ($type=='Doctor'){
                                                     ?>
@@ -109,15 +116,6 @@ if(isset($_SESSION['login'])){
                                                 </div>
                                                 <?php } ?>
                                                 <div class="row">
-                                                <div class="col-md-6">
-                                                    <p class="profile-details"><i class="fa fa-info"></i> Location</p>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <p><?php echo $userobject->getAddress();?></p>
-                                                </div>
-                                                </div>
-                                                <div class="row">
-
                                                 <div class="col-md-6">
                                                     <p class="profile-details"><i class="fa fa-envelope"></i> Email</p>
                                                 </div>
@@ -148,16 +146,6 @@ if(isset($_SESSION['login'])){
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <p class="profile-details"><i class="fa fa-calendar"></i> Date of Birth</p>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <p><?php echo $userobject->getDOB();?></p>
-                                                    </div>
-                                                </div>
-
-
                                                 <?php
                                                 if ($type=='Doctor'){
                                                     ?>
@@ -170,6 +158,9 @@ if(isset($_SESSION['login'])){
                                                         </div>
                                                     </div>
                                                 <?php } ?>
+
+
+
                                             </div>
                                         </div>
                                     </div>
