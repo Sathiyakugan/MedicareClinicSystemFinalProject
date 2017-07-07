@@ -18,9 +18,6 @@ abstract class preAbstract{
     }
 
     abstract public function getUsername();
-
-    //Can't set the user name.
-
     abstract public function getID();
     abstract public function setID($id);
     abstract public function setUserName($UserName);
@@ -35,6 +32,6 @@ abstract class preAbstract{
     abstract public function getNote();
 
     abstract public function loadotherProperties();
-    abstract public function setbulk( $Doctor,$UserName, $Date,$Case_Histroy, $medication, $note);
+    abstract public function setbulk( $Doctor, $Date,$Case_Histroy, $medication, $note);
 }
 ?>

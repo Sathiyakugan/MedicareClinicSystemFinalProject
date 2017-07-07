@@ -8,7 +8,6 @@ include '../UserClasses/Prescription.php';
 
 
 if(isset($_SESSION['login'])){
-    $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
     $userobject=new Patient($username);
     $prescription= new Prescription($username);

@@ -8,7 +8,6 @@ include '../UserClasses/Diagnoist.php;';
 
 
 if(isset($_SESSION['login'])){
-    $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
     $userobject=new Patient($username);
     $diagnoist= new Diagnoist($username);

@@ -146,9 +146,9 @@ if(isset($_SESSION['username'])){
                                             echo '<td>' . $details[$i]['first_name'] . '</td>';
                                             echo '<td>' . $details[$i]['phone'] . '</td>';
                                             ?>
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-a="View_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Prescription</button></td>
-                                            <td><button type='button' data-a="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Diagnoist</button></td>
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href="#editarUsuario1" class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td><button type='button' data-a="View_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario2' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Prescription</button></td>
+                                            <td><button type='button' data-a="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario3' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Diagnoist</button></td>
                                         <?php
                                         }
 
@@ -174,7 +174,27 @@ if(isset($_SESSION['username'])){
 <!-- /#wrapper -->
 <!-- Modal -->
 <!-- MODAL EDITAR-->
-<div id="editarUsuario" class="modal fade modal" role="dialog">
+<div id="editarUsuario1" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editarUsuario2" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="editarUsuario3" class="modal fade modal" role="dialog">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
             <div class="modal-content">

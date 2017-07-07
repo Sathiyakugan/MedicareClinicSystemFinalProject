@@ -18,26 +18,27 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $userobject=new Patient($username);
     $diagnoist= new Diagnoist($UserName);
-    if(isset($_POST['submit'])) {
 
-        $UserName = $_POST['user_name'];
-        $Doctor = $_POST['doctor_name'];
-        $Date = $_POST['date'];
-        $Case_Histroy = $_POST['case_histroy'];
-        $medication = $_POST['medication'];
-        $note = $_POST['note'];
 
 
         $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
         $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
         echo $_SESSION['message1'];
         header("Location: editable_form_prescription.php?type=$type&username=$username");
-    }
+
 }else{
     header("../index.php");
     exit();
 }
+if(isset($_POST['submit'])) {
 
+    $UserName = $_POST['user_name'];
+    $Doctor = $_POST['doctor_name'];
+    $Date = $_POST['date'];
+    $Case_Histroy = $_POST['case_histroy'];
+    $medication = $_POST['medication'];
+    $note = $_POST['note'];
+}
 
 ?>
 
@@ -115,13 +116,13 @@ if(isset($_SESSION['login'])){
                             </div>
                             <div class="form-group">
                                 <label>Doctor Name</label>
-                                <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $prescription->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
+                                <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $diagnoist->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
 
 
                             </div>
                             <div class="form-group">
                                 <label>Date </label>
-                                <input type="date"  name="date" class="form-control" placeholder="<?php echo $prescription->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
+                                <input type="date"  name="date" class="form-control" placeholder="<?php echo $diagnoist->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
 
 
                             </div>
@@ -129,15 +130,15 @@ if(isset($_SESSION['login'])){
 
                             <div class="form-group">
                                 <label>Case Histroy</label>
-                                <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $prescription->getCase(); ?>"> <?php echo $prescription->getCase();?> </textarea>
+                                <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $diagnoist->getReport() ?>"> <?php echo $prescription->getCase();?> </textarea>
                             </div>
                             <div class="form-group">
                                 <label>Medication</label>
-                                <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getmedication();?>"> <?php echo  $prescription->getmedication();?> </textarea>
+                                <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getDiscription();?>"> <?php echo  $prescription->getmedication();?> </textarea>
                             </div>
                             <div class="form-group">
                                 <label>Note </label>
-                                <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
+                                <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-success" name="submit">Submit</button>
