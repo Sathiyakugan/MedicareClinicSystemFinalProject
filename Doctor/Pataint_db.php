@@ -15,48 +15,22 @@ include 'Paidpatiant.php';
 include '../connect_db.php';
 
 
-/*
-class Pataint_db
-{
-    //essential constructor
-    protected $db;
-    public function __construct(){
-        $this->db=Database::getInstance();
-    }
-
-    public function getresults(){
-        $this->db->connect();
-        $this->db->select('patient','*',NULL,NULL,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
-        $res =$this->db->getResult();
-        return $res;
-    }
-
-    public function getresultsforaperson($username){
-        $quer='username="'.$username.'"';
-        $this->db->connect();
-        $this->db->select('patient','Patient_ID,FirstName,LastName,Sex,DOB,Adress,Image,email,username',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
-        $res =$this->db->getResult();
-        return $res;
-    }
-
-}
-
-*/
-
 ?>
 <?php
 session_start();
+if(isset($_SESSION['login'])){
 
-if(isset($_SESSION['username'])){
-    $username=$_SESSION['username'];
-    $doctor= new Doctor($username);
+    $current_user= (string)$_SESSION['current_user'];
+    $_SESSION['username']=$current_user;
+    $doctor=new Doctor($current_user);
     $paidpatiant= new Paidpatiant($username);
-
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -106,9 +80,12 @@ if(isset($_SESSION['username'])){
 
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#home" data-toggle="tab">View Patient</a>
+                            <li class="active"><a href="#home" data-toggle="tab">Today's Patients</a>
                             </li>
-
+                            <li><a href="#profile" data-toggle="tab">Upcoming Patients</a>
+                            </li>
+                            <li><a href="#messages" data-toggle="tab">Old Patients</a>
+                            </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -122,12 +99,72 @@ if(isset($_SESSION['username'])){
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>User Name</th>
-                                            <th>Consultancy Fees </th>
+                                            <th>Full Name</th>
                                             <th>Appoinment Date </th>
+                                            <th>Appoinment Time </th>
+                                            <th>Look Up</th>
+                                            <th>Check</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        /*
+                                        View
+                                        Displays all data from 'Pharmacist' table
+                                        */
+                                        // get results from database
+                                        $details=$paidpatiant->getresultstofday($doctor->getUsername());
+                                        $patient=new Patient($details[$i]['pusername']);
+                                        // display data in table
+                                        $count=sizeof( $details);
+                                        // loop through results of database query, displaying them in the table
+                                        for($i=0;$i<$count;$i++) {
+                                            // echo out the contents of each row into a table
+                                            echo "<tr>";
+                                            echo '<td>' . $details[$i]['id'] . '</td>';
+                                            echo '<td>' . $details[$i]['pusername'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentDate'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentTime'] . '</td>';
+                                            ?>
+
+                                            <td><a href="Patienetprofilefullview.php?username=<?php echo $details[$i]['pusername']?>&id=<?php echo $details[$i]['id']?>"><button type='button'   class='btn btn-primary'  title='Lookup'>Lookup</button></a></td>
+                                            <td><button type='button' class="btn btn-success" data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary' >Checkviewed</button></td>
+                                            <?php
+                                        }
+
+
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="tab-pane fade" id="profile">
+
+                                <br>
+                                <div class="table-responsive">
+                                    <table width="100%" class="table table-striped table-bordered table-hover" id="table2">
+                                        <thead>
+                                        <tr>
+
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Appoinment Date </th>
+                                            <th>Appoinment Time </th>
                                             <th>User Profile</th>
-                                            <th>View Prescription</th>
-                                            <th>View Diagnoist</th>
+
 
 
                                         </tr>
@@ -139,7 +176,8 @@ if(isset($_SESSION['username'])){
                                         Displays all data from 'Pharmacist' table
                                         */
                                         // get results from database
-                                        $details=$paidpatiant->getresults();
+                                        $details=$paidpatiant->getresultsnotviewed($doctor->getUsername());
+                                        $patient=new Patient($details[$i]['pusername']);
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
@@ -148,14 +186,91 @@ if(isset($_SESSION['username'])){
                                             echo "<tr>";
                                             echo '<td>' . $details[$i]['id'] . '</td>';
                                             echo '<td>' . $details[$i]['pusername'] . '</td>';
-                                            echo '<td>' . $details[$i]['consulancyFees'] . '</td>';
-                                            echo '<td>' . $details[$i]['appoinmentDate'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentDate'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentTime'] . '</td>';
                                             ?>
 
                                             <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary'  data-toggle='' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-b="View_prescription.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario2" class='modalEditarUsuario2 btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-c="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario3" class='modalEditarUsuario3 btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <?php
+                                        }
+
+
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="tab-pane fade" id="messages">
+                                <br>
+                                <div class="table-responsive">
+                                    <table width="100%" class="table table-striped table-bordered table-hover" id="table3">
+                                        <thead>
+                                        <tr>
+
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Appoinment Date </th>
+                                            <th>Appoinment Time </th>
+                                            <th>User Profile</th>
+
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
                                         <?php
+                                        /*
+                                        View
+                                        Displays all data from 'Pharmacist' table
+                                        */
+                                        // get results from database
+                                        $details=$paidpatiant->getresultsviewed($doctor->getUsername());
+                                        $patient=new Patient($details[$i]['pusername']);
+                                        // display data in table
+                                        $count=sizeof( $details);
+                                        // loop through results of database query, displaying them in the table
+                                        for($i=0;$i<$count;$i++) {
+                                            // echo out the contents of each row into a table
+                                            echo "<tr>";
+                                            echo '<td>' . $details[$i]['id'] . '</td>';
+                                            echo '<td>' . $details[$i]['pusername'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentDate'] . '</td>';
+                                            echo '<td>' . $details[$i]['appointmentTime'] . '</td>';
+                                            ?>
+
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary'  data-toggle='' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <?php
                                         }
 
 
@@ -165,6 +280,7 @@ if(isset($_SESSION['username'])){
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
+
 
                         </div>
                     </div>
@@ -215,32 +331,6 @@ if(isset($_SESSION['username'])){
 
 
 <?php include '../controllers/base/AfterBodyJS.php' ?>
-<?php include 'js_for_notification.php' ?>
-<script>
-    $('.modalEditarUsuario1').click(function(){
-        var ID=$(this).attr('data-a');
-        $.ajax({url:""+ID,cache:false,success:function(result){
-            $(".modal-content").html(result);
-        }});
-    });
-</script>
-<script>
-    $('.modalEditarUsuario2').click(function(){
-        var ID=$(this).attr('data-b');
-        $.ajax({url:""+ID,cache:false,success:function(result){
-            $(".modal-content").html(result);
-        }});
-    });
-</script>
-
-<script>
-    $('.modalEditarUsuario3').click(function(){
-        var ID=$(this).attr('data-c');
-        $.ajax({url:""+ID,cache:false,success:function(result){
-            $(".modal-content").html(result);
-        }});
-    });
-</script>
 
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
@@ -250,6 +340,14 @@ if(isset($_SESSION['username'])){
             responsive: true
         });
     });
+
+    $('#table2').DataTable()
+        .columns.adjust()
+        .responsive.recalc();
+
+    $('#table3').DataTable()
+        .columns.adjust()
+        .responsive.recalc();
 </script>
 
 </body>

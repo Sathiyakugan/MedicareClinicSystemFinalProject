@@ -7,10 +7,10 @@
  */
 
 session_start();
-include  '../connect_db.php';
+include '../connect_db.php';
 include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
-include ("../UserClasses/Doctor.php");
+include("../UserClasses/Doctor.php");
 include '../UserClasses/Patient.php';
 
 

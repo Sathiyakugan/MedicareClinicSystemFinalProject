@@ -103,9 +103,9 @@ class Paidpatiant extends paidpatiaintAbs
         $this->id=$res[0]['id'];
         $this->dusername=$res[0]['dusername'];
         $this->pusername=$res[0]['pusername'];
-        $this->consulancyFees=$res[0]['consulancyFees'];
-        $this->appoinmentDate=$res[0]['appoinmentDate'];
-        $this->appoinmentTime=$res[0]['appoinmentTime'];
+        $this->consulancyFees=$res[0]['consultancyFees'];
+        $this->appoinmentDate=$res[0]['appointmentDate'];
+        $this->appoinmentTime=$res[0]['appointmentTime'];
         $this->postingDate=$res[0]['postingDate'];
     }
     public function getresults(){
@@ -114,5 +114,39 @@ class Paidpatiant extends paidpatiaintAbs
         $this->db->select('paidpatients','*',NULL,$que,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
+    }
+
+    public function  getresultstofday($dusername){
+        $appointmentDate=date("Y-m-d");
+        $viewed=0;
+//        $new_time = DateTime::createFromFormat('h:i A', date("h:i:sa"));
+//        $appointmentTime=$new_time->format('H:i:s');
+        $quer = 'dusername="'.$dusername.'" AND appointmentDate="' .$appointmentDate.'"AND viewed="'.$viewed.'"';
+        $this->db->connect();
+        $this->db->select('paidpatients','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+
+    }
+
+    public function  getresultsnotviewed($dusername){
+        $viewed=0;
+        $quer = 'dusername="'.$dusername.'" AND viewed="'.$viewed.'"';
+        $this->db->connect();
+        $this->db->select('paidpatients','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+
+    }
+
+    public function  getresultsviewed($dusername){
+        $appointmentDate=date("Y-m-d");
+        $viewed=1;
+        $quer = 'dusername="'.$dusername.'" AND viewed="'.$viewed.'"';
+        $this->db->connect();
+        $this->db->select('paidpatients','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+
     }
 }
