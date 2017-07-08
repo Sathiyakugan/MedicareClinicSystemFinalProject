@@ -98,7 +98,7 @@ class UserLogin
                     $_SESSION['current_user']=$this->username;
                     $this->add_loginlog($this->username,$this->userip,1,'Receptionist');
                     $_SESSION['session_id']=$this->session_id;
-                    header("location:../UserDashboards/receptionistdashboard.php?username=$this->username&request=login&status=success");
+                    header("location:../Receptionist/receptionistdashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
@@ -132,7 +132,7 @@ class UserLogin
                     $_SESSION['current_user']=$this->username;
                     $this->add_loginlog($this->username,$this->userip,1,'Nurse');
                     $_SESSION['session_id']=$this->session_id;
-                    header("location:../UserDashboards/nursedashboard.php?username=$this->username&request=login&status=success");
+                    header("location:../Nurse/nursedashboard.php?username=$this->username&request=login&status=success");
                 }
                 else{
                     $_SESSION['message']="<font color=red>Invalid login Try Again</font>";
@@ -149,7 +149,6 @@ class UserLogin
         $quer='username="'.$username.'" AND type="'.$type.'"';
         $this->db->select('userlog','*',NULL,$quer,NULL);
         $res = $this->db->getResult();
-        print_r($res);
         echo $res[0];
         $this->session_id=$res[0];
     }

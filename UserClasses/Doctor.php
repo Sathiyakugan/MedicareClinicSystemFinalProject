@@ -1,12 +1,11 @@
 <?php
-
+//include 'User.php';
 class Doctor extends User
 {
     private $field;
     private $description;
     private $fees;
     private $timeslots;
-
     public function __construct($username){
         parent::__construct($username);
         $this->loadotherProperties();

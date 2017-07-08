@@ -11,10 +11,11 @@ include '../Adaptor/mysql_crud.php';
 include '../UserClasses/User.php';
 include ("../UserClasses/Doctor.php");
 include '../UserClasses/Patient.php';
+include 'Paidpatiant.php';
 include '../connect_db.php';
 
 
-
+/*
 class Pataint_db
 {
     //essential constructor
@@ -40,14 +41,16 @@ class Pataint_db
 
 }
 
+*/
 
 ?>
 <?php
 session_start();
+
 if(isset($_SESSION['username'])){
     $username=$_SESSION['username'];
     $doctor= new Doctor($username);
-    $pataint_db =new Pataint_db();
+    $paidpatiant= new Paidpatiant($username);
 
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
@@ -119,8 +122,9 @@ if(isset($_SESSION['username'])){
                                         <tr>
 
                                             <th>ID</th>
-                                            <th>First Name</th>
-                                            <th>Phone No</th>
+                                            <th>User Name</th>
+                                            <th>Consultancy Fees </th>
+                                            <th>Appoinment Date </th>
                                             <th>User Profile</th>
                                             <th>View Prescription</th>
                                             <th>View Diagnoist</th>
@@ -135,20 +139,22 @@ if(isset($_SESSION['username'])){
                                         Displays all data from 'Pharmacist' table
                                         */
                                         // get results from database
-                                        $details=$pataint_db->getresults();
+                                        $details=$paidpatiant->getresults();
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
                                         for($i=0;$i<$count;$i++) {
                                             // echo out the contents of each row into a table
                                             echo "<tr>";
-                                            echo '<td>' . $details[$i]['patient_id'] . '</td>';
-                                            echo '<td>' . $details[$i]['first_name'] . '</td>';
-                                            echo '<td>' . $details[$i]['phone'] . '</td>';
+                                            echo '<td>' . $details[$i]['id'] . '</td>';
+                                            echo '<td>' . $details[$i]['pusername'] . '</td>';
+                                            echo '<td>' . $details[$i]['consulancyFees'] . '</td>';
+                                            echo '<td>' . $details[$i]['appoinmentDate'] . '</td>';
                                             ?>
-                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['username']?>" href="#editarUsuario1" class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-a="View_prescription.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario2' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Prescription</button></td>
-                                            <td><button type='button' data-a="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['username']?>" href='#editarUsuario3' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>View Diagnoist</button></td>
+
+                                            <td><button type='button' data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary'  data-toggle='' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td><button type='button' data-b="View_prescription.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario2" class='modalEditarUsuario2 btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                            <td><button type='button' data-c="View_diagnoise.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario3" class='modalEditarUsuario3 btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
                                         <?php
                                         }
 
@@ -211,13 +217,31 @@ if(isset($_SESSION['username'])){
 <?php include '../controllers/base/AfterBodyJS.php' ?>
 <?php include 'js_for_notification.php' ?>
 <script>
-    $('.modalEditarUsuario').click(function(){
+    $('.modalEditarUsuario1').click(function(){
         var ID=$(this).attr('data-a');
         $.ajax({url:""+ID,cache:false,success:function(result){
             $(".modal-content").html(result);
         }});
     });
 </script>
+<script>
+    $('.modalEditarUsuario2').click(function(){
+        var ID=$(this).attr('data-b');
+        $.ajax({url:""+ID,cache:false,success:function(result){
+            $(".modal-content").html(result);
+        }});
+    });
+</script>
+
+<script>
+    $('.modalEditarUsuario3').click(function(){
+        var ID=$(this).attr('data-c');
+        $.ajax({url:""+ID,cache:false,success:function(result){
+            $(".modal-content").html(result);
+        }});
+    });
+</script>
+
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>

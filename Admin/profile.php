@@ -96,13 +96,6 @@ if(isset($_SESSION['login'])){
                                                         </div>
                                                     </div>
                                                 <?php } ?>
-
-
-
-
-
-
-
                                                 <?php
                                                 if ($type=='Doctor'){
                                                     ?>
@@ -177,9 +170,6 @@ if(isset($_SESSION['login'])){
                                                         </div>
                                                     </div>
                                                 <?php } ?>
-
-
-
                                             </div>
                                         </div>
                                     </div>

@@ -26,7 +26,7 @@ if(isset($_SESSION['login'])){
 
 </head>
 
-<body >
+<body onload="set_noti();" >
 
 <div id="wrapper">
     <!-- Navigation -->
@@ -78,7 +78,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="Book_Appointment.php">
+                    <a href="Appointments.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -100,7 +100,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="Admin_Receptionist.php">
+                    <a href="Patient_Doctor.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -157,7 +157,7 @@ if(isset($_SESSION['login'])){
         });
     });
 </script>
-
+<?php include 'js.php' ?>
 </body>
 
 </html>

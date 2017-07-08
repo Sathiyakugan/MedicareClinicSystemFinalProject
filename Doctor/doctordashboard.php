@@ -4,7 +4,6 @@ session_start();
 include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Doctor.php");
-include '../connect_db.php';
 
 if(isset($_SESSION['login'])){
 
@@ -28,13 +27,14 @@ if(isset($_SESSION['login'])){
     <link href="../style/main.css" rel="stylesheet">
 
 </head>
-<body>
+
+<body onload="set_noti();">
 
 <div id="wrapper">
     <!-- Navigation -->
     <?php include 'Doctor_Theme.php' ?>
 
-   <div id="page-wrapper">
+    <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
 
@@ -69,7 +69,7 @@ if(isset($_SESSION['login'])){
             </div>
 
             <div class="col-lg-3 col-md-6">
-                <div class="panel panel-primary">
+                <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
@@ -81,7 +81,7 @@ if(isset($_SESSION['login'])){
                             </div>
                         </div>
                     </div>
-                    <a href="Appoinment_pat.php">
+                    <a href="Appointments.php">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -100,7 +100,7 @@ if(isset($_SESSION['login'])){
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-heartbeat fa-5x"></i>
+                                <i class="fa fa-file-text fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">26</div>
@@ -141,18 +141,12 @@ if(isset($_SESSION['login'])){
 </div>
 
 
-
-
-
-
-
+<span id="test1"></span>
+<!--<span id="time_stamp" class="pull-right text-muted small" >2017-07-03 05:20:00</span>-->
 <?php include '../controllers/base/AfterBodyJS.php' ?>
-<?php include 'js_for_notification.php' ?>
 
 
-<script>
-    $(".prettydate").prettydate();
-</script>
+
 
 <script>
     $('.modalEditarUsuario').click(function(){
@@ -175,6 +169,7 @@ if(isset($_SESSION['login'])){
 
 
 
+<?php include 'js.php' ?>
 
 </body>
 

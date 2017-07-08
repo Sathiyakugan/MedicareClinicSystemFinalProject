@@ -11,7 +11,7 @@ include '../connect_db.php';
 include '../Adaptor/mysql_crud.php';
 include '../UserClasses/User.php';
 include  '../UserClasses/Patient.php';
-include  '../UserClasses/Diagnoist.php';
+include 'Diagnoist.php';
 
 
 if(isset($_SESSION['login'])){
@@ -21,10 +21,10 @@ if(isset($_SESSION['login'])){
 
 
 
-        $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
-        $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
-        echo $_SESSION['message1'];
-        header("Location: editable_form_prescription.php?type=$type&username=$username");
+    $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
+    $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
+    echo $_SESSION['message1'];
+    header("Location: editable_form_prescription.php?type=$type&username=$username");
 
 }else{
     header("../index.php");
@@ -77,88 +77,95 @@ if(isset($_POST['submit'])) {
 
 </head>
 <body>
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
-    <h2 class="modal-title"> Edit Prescription</h2>
-</div>
-
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="col-md-4 col-md-offset-4">
-            <?php
-            if ((!isset($_POST['submit']))){
-                if ( isset($_SESSION['message'])){
-                    echo '<div class="alert alert-danger"><strong>Invalid Login!</strong>'.$_SESSION['message'].'</div>';
-                    unset($_SESSION['message']);
-                }
-                if ( isset($_SESSION['message1'])){
-                    echo '<div class="alert alert-success"><strong>Success!</strong> '.$_SESSION['message1'].'</div>';
-                    unset($_SESSION['message1']);
-                }
-            }
-            ?>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Prescription Details
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <form method="post"  enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label>User Name</label>
-                                <input type="text"  name="user_name" class="form-control" placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
-
-                                <p class="help-block">type pataint user name.</p>
-                            </div>
-                            <div class="form-group">
-                                <label>Doctor Name</label>
-                                <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $diagnoist->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
-
-
-                            </div>
-                            <div class="form-group">
-                                <label>Date </label>
-                                <input type="date"  name="date" class="form-control" placeholder="<?php echo $diagnoist->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
-
-
-                            </div>
-
-
-                            <div class="form-group">
-                                <label>Case Histroy</label>
-                                <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $diagnoist->getReport() ?>"> <?php echo $prescription->getCase();?> </textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Medication</label>
-                                <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getDiscription();?>"> <?php echo  $prescription->getmedication();?> </textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Note </label>
-                                <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-success" name="submit">Submit</button>
-                                <a href="#" class="btn" data-dismiss="modal">Close</a>
-                            </div>
-                        </form>
-                    </div>
-
-
-                    <!-- /.col-lg-6 (nested) -->
+<div id="editarUsuario1" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2 class="modal-title"> Edit Prescription</h2>
                 </div>
-                <!-- /.row (nested) -->
+
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-md-4 col-md-offset-4">
+                            <?php
+                            if ((!isset($_POST['submit']))){
+                                if ( isset($_SESSION['message'])){
+                                    echo '<div class="alert alert-danger"><strong>Invalid Login!</strong>'.$_SESSION['message'].'</div>';
+                                    unset($_SESSION['message']);
+                                }
+                                if ( isset($_SESSION['message1'])){
+                                    echo '<div class="alert alert-success"><strong>Success!</strong> '.$_SESSION['message1'].'</div>';
+                                    unset($_SESSION['message1']);
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Prescription Details
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <form method="post"  enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label>User Name</label>
+                                                <input type="text"  name="user_name" class="form-control" placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
+
+                                                <p class="help-block">type pataint user name.</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Doctor Name</label>
+                                                <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $diagnoist->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
+
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date </label>
+                                                <input type="date"  name="date" class="form-control" placeholder="<?php echo $diagnoist->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
+
+
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Case Histroy</label>
+                                                <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $diagnoist->getReport() ?>"> <?php echo $prescription->getCase();?> </textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Medication</label>
+                                                <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getDiscription();?>"> <?php echo  $prescription->getmedication();?> </textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Note </label>
+                                                <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-success" name="submit">Submit</button>
+                                                <a href="#" class="btn" data-dismiss="modal">Close</a>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                    <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
     </div>
-    <!-- /.col-lg-12 -->
 </div>
-<!-- /.row -->
 
 </body>
 </html>

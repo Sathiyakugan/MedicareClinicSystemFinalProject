@@ -2,7 +2,7 @@
 session_start();
 
 include "../Adaptor/mysql_crud.php";
-include "../UserClasses/User.php";
+include ("../UserClasses/user.php");
 include ("../UserClasses/Admin.php");
 include ("../UserClasses/Nurse.php");
 include ("../UserClasses/Doctor.php");
@@ -45,7 +45,6 @@ if(isset($_POST['submit'])){
     $email=$_POST['email'];
     $sex=$_POST['sex'];
     $DOB=$_POST['DOB'];
-
     $Destination = '../userfiles/avatars';
     if(!isset($_FILES['ImageFile']) || !is_uploaded_file($_FILES['ImageFile']['tmp_name'])){
         $user_image= $userobject->getUserImage();
@@ -61,21 +60,21 @@ if(isset($_POST['submit'])){
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
     }
     if($type=='Doctor'){
-        $fees=$_POST['fees'];
-        $field=$_POST['field'];
-        $timeslots=($_POST['timeslots']);
-        $description='';
-        if (is_array ( $_POST ['description'] )) {
-            foreach ($_POST ['description'] as $value) {
-                $description = $value + $description;
-            }
-        }
-        else{
-            $description=$_POST ['description'];
+    $field=$_POST['field'];
+    $description='';
+
+
+    if (is_array ( $_POST ['description'] )) {
+        foreach ($_POST ['description'] as $value) {
+            $description = $value + $description;
         }
     }
+    else{
+        $description=$_POST ['description'];
+    }
+    }
 
-    switch ($type){
+     switch ($type){
         case 'Nurse':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
@@ -98,12 +97,21 @@ if(isset($_POST['submit'])){
             header("Location: ../Admin/update.php?type=$type&username=$username");
             break;
         case 'Doctor':
-            $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone,$fees,$timeslots);
+            $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-            header("Location: ../Admin/update.php?type=$type&username=$username");
+          header("Location: ../Admin/update.php?type=$type&username=$username");
             break;
     }
+
+
+
 }
+
+
+
+
+
+
 
 ?>
     <!DOCTYPE html>
@@ -128,14 +136,14 @@ if(isset($_POST['submit'])){
             <div class="col-md-4 col-md-offset-4">
                 <?php
                 if ((!isset($_POST['submit']))){
-                    if ( isset($_SESSION['message'])){
-                        echo '<div class="alert alert-danger"><strong>Invalid Login!</strong>'.$_SESSION['message'].'</div>';
-                        unset($_SESSION['message']);
-                    }
-                    if ( isset($_SESSION['message1'])){
-                        echo '<div class="alert alert-success"><strong>Success!</strong> '.$_SESSION['message1'].'</div>';
-                        unset($_SESSION['message1']);
-                    }
+                if ( isset($_SESSION['message'])){
+                    echo '<div class="alert alert-danger"><strong>Invalid Login!</strong>'.$_SESSION['message'].'</div>';
+                    unset($_SESSION['message']);
+                }
+                if ( isset($_SESSION['message1'])){
+                    echo '<div class="alert alert-success"><strong>Success!</strong> '.$_SESSION['message1'].'</div>';
+                    unset($_SESSION['message1']);
+                }
                 }
                 ?>
             </div>
@@ -199,28 +207,6 @@ if(isset($_POST['submit'])){
                                     <label>Description</label>
                                     <textarea class="form-control" id="description" name="description" rows="3"  placeholder="<?php echo $userobject->getDescription();?>" rows="3" placeholder="<?php echo $userobject->getAddress();?>  value="<?php echo $userobject->getDescription();?>"></textarea>
                                 <?php } ?>
-                                <?php
-                                if ($type=='Doctor'){
-                                    ?>
-                                    <P><label>Fees</label>
-                                        <select class="form-control"  name="fees" id="fees">
-                                            <option>800Rs</option
-                                            <option>1000Rs</option>
-                                            <option>1500Rs</option>
-                                            <option>2000Rs</option>
-                                            <option>2500Rs</option>
-                                        </select></p>
-                                    <div class="form-group">
-                                        <label>Time Slots</label>
-                                        <select multiple  class="form-control" name="timeslots[]" id="timeslots">
-                                            <option>06:00:00</option><option>07:00:00</option><option>08:00:00</option><option>09:00:00</option>
-                                            <option>10:00:00</option><option>11:00:00</option><option>12:00:00</option><option>13:00:00</option>
-                                            <option>14:00:00</option><option>15:00:00</option><option>16:00:00</option><option>17:00:00</option>
-                                            <option>18:00:00</option><option>19:00:00</option><option>20:00:00</option><option>21:00:00</option>
-                                            <option>22:00:00</option><option>23:00:00</option><option>00:00:00</option>
-                                        </select>
-                                    </div>
-                                <?php } ?>
                                 <label>DOB</label>
                                 <input type="date" id="DOB" name="DOB" class="form-control"  placeholder="<?php echo $userobject->getDOB();?>" value="<?php echo $userobject->getDOB();?>"  required autofocus>
                                 <label>Postal Address</label>
@@ -248,5 +234,4 @@ if(isset($_POST['submit'])){
             window.history.back();
         }
     </script>
-
 <?php include '../controllers/base/AfterBodyJS.php' ?>

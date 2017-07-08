@@ -4,7 +4,7 @@ include '../connect_db.php';
 include '../Adaptor/mysql_crud.php';
 include '../UserClasses/User.php';
 include  '../UserClasses/Patient.php';
-include '../UserClasses/Prescription.php';
+include 'Prescription.php';
 
 
 if(isset($_SESSION['login'])){
@@ -121,3 +121,4 @@ if(isset($_SESSION['login'])){
 
 <div class="modal-footer">
 </div>
+-->
