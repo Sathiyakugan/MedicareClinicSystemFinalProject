@@ -3,14 +3,14 @@ session_start();
 include '../connect_db.php';
 include '../Adaptor/mysql_crud.php';
 include '../UserClasses/User.php';
-include  '../UserClasses/Patient.php';
-include '../UserClasses/Diagnoist.php;';
+include '../UserClasses/Patient.php';
+include 'Prescription.php';
 
 
 if(isset($_SESSION['login'])){
     $username=$_REQUEST['username'];
     $userobject=new Patient($username);
-    $diagnoist= new Diagnoist($username);
+    $prescription= new Prescription($username);
 
 
 }else{
@@ -18,6 +18,7 @@ if(isset($_SESSION['login'])){
     exit();
 }
 ?>
+
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -49,7 +50,7 @@ if(isset($_SESSION['login'])){
                                             <p class="profile-details"><i class="fa fa-info"></i> Date </p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $diagnoist->getDate();?></p>
+                                            <p><?php echo $prescription->getDate();?></p>
                                         </div>
                                     </div>
 
@@ -59,7 +60,7 @@ if(isset($_SESSION['login'])){
                                             <p class="profile-details"><i class="fa fa-envelope"></i> Doctor</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $diagnoist->getDoctor();?></p>
+                                            <p><?php echo $prescription->getDoctor();?></p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -78,19 +79,19 @@ if(isset($_SESSION['login'])){
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-user"></i> Report Type</p>
+                                            <p class="profile-details"><i class="fa fa-user"></i> Case Histroy</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $diagnoist->getReport();?></p>
+                                            <p><?php echo $prescription->getCase();?></p>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="profile-details"><i class="fa fa-calendar"></i> Discription</p>
+                                            <p class="profile-details"><i class="fa fa-calendar"></i> Medication</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $diagnoist->getDiscription();?></p>
+                                            <p><?php echo $prescription->getmedication();?></p>
                                         </div>
                                     </div>
 
@@ -100,7 +101,7 @@ if(isset($_SESSION['login'])){
                                             <p class="profile-details"><i class="fa fa-user"></i> Note</p>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><?php echo $diagnoist->getNote();?></p>
+                                            <p><?php echo $prescription->getNote();?></p>
                                         </div>
                                     </div>
 
@@ -120,3 +121,4 @@ if(isset($_SESSION['login'])){
 
 <div class="modal-footer">
 </div>
+-->

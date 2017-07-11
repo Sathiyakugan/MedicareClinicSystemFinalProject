@@ -95,7 +95,7 @@ class Diagnoist extends DiagnoistAbstract
         $this->db->select('diagnoists','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         $this->id=$res[0]['id'];
-        $this->id=$res[0]['Date'];
+        $this->Date=$res[0]['Date'];
         $this->UserName=$res[0]['UserName'];
         $this->Doctor=$res[0]['Doctor'];
         $this->Report=$res[0]['Report_type'];
@@ -110,4 +110,21 @@ class Diagnoist extends DiagnoistAbstract
         $res =$this->db->getResult();
         return $res;
     }
+
+    public function getresults($dusername,$pusername){
+        $que='username="'.$this->username.'"';
+        $this->db->connect();
+        $this->db->select('diagnoists','*',NULL,$que,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+    }
+
+    public function getresults(){
+        $que='username="'.$this->username.'"';
+        $this->db->connect();
+        $this->db->select('diagnoists','*',NULL,$que,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
+        $res =$this->db->getResult();
+        return $res;
+    }
+
 }

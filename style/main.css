@@ -45,3 +45,7 @@
 #uploadImagePreview, #uploadBackgroundImagePreview {
     display: none;
 }
+
+.verticalLine {
+    border-left: thick solid #ff0000;
+}

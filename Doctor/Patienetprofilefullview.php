@@ -5,12 +5,15 @@ include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Doctor.php");
 include ("../UserClasses/Patient.php");
+include ("Loadfiles/Prescription.php");
 if(isset($_SESSION['login'])){
 
     $current_user= (string)$_SESSION['current_user'];
     $_SESSION['username']=$current_user;
     $doctor=new Doctor($current_user);
     $patient=new Patient($_REQUEST['username']);
+    $prescription=new Prescription();
+    $id=$_REQUEST['id'];
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
@@ -32,6 +35,9 @@ if(isset($_SESSION['login'])){
 <body onload="set_noti();">
 
 
+
+
+
 <div id="wrapper">
     <!-- Navigation -->
     <?php include 'Doctor_Theme.php' ?>
@@ -44,7 +50,9 @@ if(isset($_SESSION['login'])){
 
             </div>
             <!-- /.col-lg-12 -->
+
         </div>
+
         <!-- /.row -->
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -52,113 +60,171 @@ if(isset($_SESSION['login'])){
             </div>
             <div class="panel-body">
                 <div class="col-sm-12">
-            <div class="col-md-4">
-                <div class="profile">
-                    <center>
-                        <img src="../userfiles/avatars/<?php echo $patient->getUserImage();?>" class="img-responsive profile-avatar">
-                    </center>
-                    <hr>
-                </div>
-                </div>
-                <div class="col-md-8">
-
-                    <div class=" col-md-9 col-lg-9 hidden-xs hidden-sm">
-                        <strong><?php echo $patient->getFirstName();?></strong><br>
-                        <table class="table table-user-information">
-                            <tbody>
-                            <tr>
-                                <td>DOB:</td>
-                                <td><?php echo $patient->getDOB();?></td>
-                            </tr>
-                            <tr>
-                                <td>Gender:</td>
-                                <td><?php echo $patient->getSex();?></td>
-                            </tr>
-                            <tr>
-                                <td>B-G :</td>
-                                <td>O+</td>
-                            </tr>
-                            <tr>
-                                <td>Email :</td>
-                                <td><?php echo $patient->getEmail();?></td>
-                            </tr>
-                            <tr>
-                                <td>Address :</td>
-                                <td><?php echo $patient->getAddress();?></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-md-4">
+                        <div class="profile">
+                            <center>
+                                <img src="../userfiles/avatars/<?php echo $patient->getUserImage();?>" class="img-responsive profile-avatar">
+                            </center>
+                            <hr>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-md-8">
+
+                        <div class=" col-md-9 col-lg-9 hidden-xs hidden-sm">
+                            <strong><?php echo $patient->getFirstName();?></strong><br>
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>DOB:</td>
+                                    <td><?php echo $patient->getDOB();?></td>
+                                </tr>
+                                <tr>
+                                    <td>Gender:</td>
+                                    <td><?php echo $patient->getSex();?></td>
+                                </tr>
+                                <tr>
+                                    <td>B-G :</td>
+                                    <td>O+</td>
+                                </tr>
+                                <tr>
+                                    <td>Email :</td>
+                                    <td><?php echo $patient->getEmail();?></td>
+                                </tr>
+                                <tr>
+                                    <td>Address :</td>
+                                    <td><?php echo $patient->getAddress();?></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Pill Tabs
-                </div>
-            <div class="panel-body">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#home-pills" data-toggle="tab"><i class="fa  fa-pencil fa-fw"></i> Prescriptions</a>
-                    </li>
-                    <li><a href="#profile-pills" data-toggle="tab"> <i class="fa fa-list-ol fa-fw"></i> Diagnosis</a>
-                    </li>
-                    <li><a href="#messages-pills" data-toggle="tab"> <i class="fa fa-file-o fa-fw"></i> Reports</a>
-                    </li>
-                </ul>
 
-                <!-- Tab panes -->
-                <div class="tab-content">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Details Pannel
+                        </div>
+                        <!-- .panel-heading -->
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Prescription</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#add-p" data-toggle="tab">Add Prescription</a>
+                                                </li>
+                                                <li><a href="#old-p" data-toggle="tab">Old Prescription</a>
+                                                </li>
+                                                <li><a href="#other-p" data-toggle="tab">Others Prescription</a>
+                                                </li>
+                                            </ul>
+
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="add-p">
+                                                    <?php  include "Loadfiles/Add_prescription.php"?>
+                                                </div>
+                                                <div class="tab-pane fade" id="old-p">
+                                                    <h4>Old Prescription of current Doctor</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="other-p">
+                                                    <h4>Other doctor's Prescription</h4>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Diagnosis</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse">
+                                        <div class="panel-body">
+
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#add-d" data-toggle="tab">Add Diagnosis</a>
+                                                </li>
+                                                <li><a href="#old-d" data-toggle="tab">Old Diagnosis</a>
+                                                </li>
+                                                <li><a href="#other-d" data-toggle="tab">Others Diagnosis</a>
+                                                </li>
+                                            </ul>
+
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="add-d">
+                                                    <h4>Add Diagnosis</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="old-d">
+                                                    <h4>Old Diagnosis of current Doctor</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="other-d">
+                                                    <h4>Other doctor's Diagnosis</h4>
+                                                </div>
+                                            </div>
 
 
-                    <div class="tab-pane fade in active" id="Prescriptions">
-                        <div class="panel panel-default" id="Prescriptions_panel">
-                            <div class="panel-body">
-                        <ul class="nav nav-pills nav-stacked col-md-2">
-                            <li class="active"><a href="#tab_a" data-toggle="pill">Add New</a></li>
-                            <li><a href="#tab_c" data-toggle="pill">Old</a></li>
-                            <li><a href="#tab_d" data-toggle="pill">Others</a></li>
-                        </ul>
-                        <div class="tab-content col-md-10">
-                            <div class="tab-pane active" id="AddPrescription">
-                                <h4>Add Prescription</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Reports</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#ask-r" data-toggle="tab">Ask Report</a>
+                                                </li>
+                                                <li><a href="#pending-r" data-toggle="tab">Pending Report</a>
+                                                </li>
+                                                <li><a href="#old-r" data-toggle="tab">Old Prescription</a>
+                                                </li>
+                                                <li><a href="#other-r" data-toggle="tab">Others Prescription</a>
+                                                </li>
+                                            </ul>
+
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="ask-r">
+                                                    <h4>Ask Reports From Nurse</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="pending-r">
+                                                    <h4>Pending request for Reports From Nurse</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="old-r">
+                                                    <h4>Old reports from Nurse</h4>
+                                                </div>
+                                                <div class="tab-pane fade" id="other-r">
+                                                    <h4>Other doctor asked reports</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tab-pane" id="OldPrescription">
-                                <h4>Old Prescriptions</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                            <div class="tab-pane" id="OtherPrescription">
-                                <h4>OtherDoctors</h4>
-                                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-                                    ac turpis egestas.</p>
-                            </div>
-                        </div><!-- tab content -->
-                            </div></div>
-
+                        </div>
+                        <!-- .panel-body -->
                     </div>
-                    <div class="tab-pane fade" id="Diagnosis">
 
-
-
-                    </div>
-                    <div class="tab-pane fade" id="messages-pills">
-                        <h4>Messages Tab</h4>
-                        <p>Lorem ipsum dolor sit ame, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
                 </div>
             </div>
-            <!-- /.panel-body -->
-
-            </div>
-                </div>
         </div>
-        </div>
-        <!-- /.row -->
     </div>
-    <!-- /#page-wrapper -->
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
@@ -213,6 +279,31 @@ if(isset($_SESSION['login'])){
     });
 
 </script>
+
+<script>
+    $(function() {
+//twitter bootstrap script
+        $("#button_Add_p").click(function(){
+            console.log();
+            $.ajax({
+                    type: "POST",
+                    url: "AddAppointmentSubmit.php",
+                    data: $('#form_add_p').serialize();
+                    success: function(msg){
+                        $("#alert").html(msg)}
+                    window.setTimeout(function(){location.reload()},700),
+                error: function(){
+                alert("failure");
+            }
+        });
+        });
+    });
+</script>
+
+
+
+
+
 </body>
 
 </html>
