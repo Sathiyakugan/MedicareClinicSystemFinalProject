@@ -28,7 +28,7 @@
         <?php
         $_POST['pname']=$patient->getUsername();
         $_POST['dname']=$doctor->getUsername();
-        $_POST['id']=$id;
+       
         ?>
     </form>
     </form>
