@@ -92,7 +92,7 @@ if(isset($_SESSION['login'])){
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-success" id="submit" data-dismiss="modal">submit</button>
+    <button class="btn btn-success" id="submit" data-dismiss="modal">Saved</button>
 </div>
 
 

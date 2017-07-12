@@ -32,7 +32,7 @@ if(isset($_SESSION['login'])){
 
 </head>
 
-<body onload="set_noti();">
+<body onload="set_noti();getold_prescriptiondetails();getOther_prescriptiondetails()">
 
 
 
@@ -115,11 +115,12 @@ if(isset($_SESSION['login'])){
                                         </h4>
                                     </div>
                                     <div id="collapseOne" class="panel-collapse collapse in">
-                                        <div class="panel-body">
+                                        <div class="panel-body" >
+
                                             <ul class="nav nav-tabs">
                                                 <li class="active"><a href="#add-p" data-toggle="tab">Add Prescription</a>
                                                 </li>
-                                                <li><a href="#old-p" data-toggle="tab">Old Prescription</a>
+                                                <li><a href="#old-p" data-toggle="tab" >Old Prescription</a>
                                                 </li>
                                                 <li><a href="#other-p" data-toggle="tab">Others Prescription</a>
                                                 </li>
@@ -128,13 +129,44 @@ if(isset($_SESSION['login'])){
                                             <!-- Tab panes -->
                                             <div class="tab-content">
                                                 <div class="tab-pane fade in active" id="add-p">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <div class="col-md-4 col-md-offset-4" id="alertaddp"></div>
+                                                    </div>
                                                     <?php  include "Loadfiles/Add_prescription.php"?>
+
                                                 </div>
                                                 <div class="tab-pane fade" id="old-p">
                                                     <h4>Old Prescription of current Doctor</h4>
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <div class="col-md-4 col-md-offset-4" id="alertoldP"></div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                            <label>Select The Date</label>
+                                                            <p><select name="selectoldprescription" id="selectoldprescription" class="form-control" onChange="getCase_Histroy(this.value);getMedication(this.value);getNote(this.value)" required="required">
+                                                                    <option value="">Select Prescription</option>
+                                                                </select></p>
+                                                    </div>
+                                                    <?php  include "Loadfiles/OldPrescription.php"?>
+
+
                                                 </div>
                                                 <div class="tab-pane fade" id="other-p">
                                                     <h4>Other doctor's Prescription</h4>
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <div class="col-md-4 col-md-offset-4" id="alertOtherP"></div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <label>Select The Date</label>
+                                                        <p><select name="selectoldprescription" id="selectOtherprescription" class="form-control" onChange="getCase_Histroy_other(this.value);getMedication_Other(this.value);getNoteOther(this.value)" required="required">
+                                                                <option value="">Select Prescription</option>
+                                                            </select></p>
+                                                    </div>
+                                                    <?php  include "Loadfiles/OtherPrescription.php"?>
                                                 </div>
                                             </div>
 
@@ -271,7 +303,7 @@ if(isset($_SESSION['login'])){
 
 
 
-<?php include 'js.php' ?>
+
 <script>
     $("ul.nav-tabs a").click(function (e) {
         e.preventDefault();
@@ -280,29 +312,9 @@ if(isset($_SESSION['login'])){
 
 </script>
 
-<script>
-    $(function() {
-//twitter bootstrap script
-        $("#button_Add_p").click(function(){
-            console.log();
-            $.ajax({
-                    type: "POST",
-                    url: "AddAppointmentSubmit.php",
-                    data: $('#form_add_p').serialize();
-                    success: function(msg){
-                        $("#alert").html(msg)}
-                    window.setTimeout(function(){location.reload()},700),
-                error: function(){
-                alert("failure");
-            }
-        });
-        });
-    });
-</script>
 
-
-
-
+<?php include 'prescriptionJS.php ' ?>
+<?php include 'js.php' ?>
 
 </body>
 
