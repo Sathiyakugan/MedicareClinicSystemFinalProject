@@ -5,6 +5,7 @@ include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
 
+
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $admin=new Admin($current_user);
@@ -203,6 +204,21 @@ if(isset($_SESSION['login'])){
             responsive: true
         });
     });
+</script>
+
+
+<script>
+    function changepassword(val) {
+        console.log(val);
+        $.ajax({
+            url: "" + val, cache: false, success: function (result) {
+                $(".modal-content").html(result);
+            }
+        });
+
+        $('#editarUsuario').modal('show');
+    }
+
 </script>
 
 </body>

@@ -11,8 +11,7 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $patient=new Patient($current_user);
     if (!empty($_GET['username'])) {
-        $dusername=$_REQUEST['dusername'];
-        $pusername=$_REQUEST['dusername'];
+        $username=$_REQUEST['username'];
         $doctor=new Doctor($username);
     }
 
@@ -92,7 +91,7 @@ if(isset($_SESSION['login'])){
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-success" id="submit" data-dismiss="modal">Saved</button>
+    <button class="btn btn-success" id="submit" data-dismiss="modal">submit</button>
 </div>
 
 

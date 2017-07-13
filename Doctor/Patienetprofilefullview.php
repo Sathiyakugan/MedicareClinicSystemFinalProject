@@ -176,41 +176,6 @@ if(isset($_SESSION['login'])){
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Diagnosis</a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="panel-collapse collapse">
-                                        <div class="panel-body">
-
-                                            <ul class="nav nav-tabs">
-                                                <li class="active"><a href="#add-d" data-toggle="tab">Add Diagnosis</a>
-                                                </li>
-                                                <li><a href="#old-d" data-toggle="tab">Old Diagnosis</a>
-                                                </li>
-                                                <li><a href="#other-d" data-toggle="tab">Others Diagnosis</a>
-                                                </li>
-                                            </ul>
-
-                                            <!-- Tab panes -->
-                                            <div class="tab-content">
-                                                <div class="tab-pane fade in active" id="add-d">
-                                                    <h4>Add Diagnosis</h4>
-                                                </div>
-                                                <div class="tab-pane fade" id="old-d">
-                                                    <h4>Old Diagnosis of current Doctor</h4>
-                                                </div>
-                                                <div class="tab-pane fade" id="other-d">
-                                                    <h4>Other doctor's Diagnosis</h4>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Reports</a>
                                         </h4>
                                     </div>

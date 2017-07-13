@@ -50,7 +50,7 @@ if(isset($_SESSION['login'])){
         <div class="col-md-4 col-md-offset-4" id="alert">
 
         </div>
-        <div class="col-md-4 col-md-offset-4" id="alert">
+
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
