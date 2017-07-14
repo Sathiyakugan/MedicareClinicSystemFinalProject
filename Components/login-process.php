@@ -5,7 +5,6 @@
  * Date: 4/12/2017
  * Time: 5:00 PM
  */
-echo "dsdsd";
 
 include "../Adaptor/mysql_crud.php";
 class UserLogin
@@ -173,10 +172,9 @@ class UserLogin
 
 }
 
-//echo "dsdsd";
+
 session_start();
 if (isset($_REQUEST['login'])){
-    echo "dsdsd";
     echo "this is admin page";
     echo $_REQUEST['postition'];
     $userLogin=new UserLogin($_REQUEST['username'],$_REQUEST['password'],$_REQUEST['postition']);

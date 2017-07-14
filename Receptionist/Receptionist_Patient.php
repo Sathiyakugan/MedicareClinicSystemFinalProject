@@ -237,7 +237,7 @@ if (isset($_POST['submit'])) {
                                                 </button>
                                             </td>
                                             <td>
-                                                <a href="../Admin/update.php?type=Receptionist&username=<?php echo $details[$i]['username'] ?>">
+                                                <a href="update.php?type=Patient&username=<?php echo $details[$i]['username'] ?>">
                                                     <button type="button" class="btn btn-primary">Update</button>
                                                 </a></td>
                                             <td>

@@ -26,7 +26,7 @@
                 <ul class="dropdown-menu dropdown-user">
                     <li><a  data-a="../Admin/profile.php?type=Admin&username=<?php echo $admin->getUsername();?>" href='#editarUsuario' class='modalEditarUsuario'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'    ><i class="fa fa-user fa-fw"></i> <?php echo $admin->getFirstName();?> </a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Change password</a>
+                    <li><a href="changePassword.php"><i class="fa fa-gear fa-fw"></i> Change password</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="../logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -62,7 +62,7 @@
                                 <a href="../Admin/update.php?type=Admin&username=<?php echo $admin->getUsername();?>">UpdateProfile</a>
                             </li>
                             <li>
-                                <a href="">ChangePassword</a>
+                                <a href="changePassword.php">ChangePassword</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->

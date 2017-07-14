@@ -1,4 +1,5 @@
 <?php
+
 include "../Adaptor/mysql_crud.php";
 include "../UserClasses/User.php";
 include ("../UserClasses/Admin.php");
@@ -75,52 +76,51 @@ if(isset($_SESSION['current_user'])){
     header("location:../index.php");
     exit();
 }
-if(isset($_POST['submit'])){
-    $firstName=$_POST['first_name'];
-    $lastName=$_POST['last_name'];
-    $staff_id=$_POST['staff_id'];
-    $address=$_POST['postal_address'];
-    $phone=$_POST['phone'];
-    $email=$_POST['email'];
-    $username=$_POST['username'];
-    $password=$_POST['password'];
-    $sex=$_POST['sex'];
-    $DOB=$_POST['DOB'];
-    $fees=$_POST['fees'];
-    $field=$_POST['field'];
-    $timeslots=($_POST['timeslots']);
+if(isset($_POST['submit'])) {
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $staff_id = $_POST['staff_id'];
+    $address = $_POST['postal_address'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $sex = $_POST['sex'];
+    $DOB = $_POST['DOB'];
+    $fees = $_POST['fees'];
+    $field = $_POST['field'];
+    $timeslots = ($_POST['timeslots']);
     print_r($timeslots);
-    $description='';
-    if (is_array ( $_POST ['description'] )) {
+    $description = '';
+    if (is_array($_POST ['description'])) {
         foreach ($_POST ['description'] as $value) {
             $description = $value + $description;
         }
-    }
-    else{
-        $description=$_POST ['description'];
+    } else {
+        $description = $_POST ['description'];
     }
     $Destination = '../userfiles/avatars';
-    if(!isset($_FILES['ImageFile']) || !is_uploaded_file($_FILES['ImageFile']['tmp_name'])){
-        $user_image= 'default.jpg';
+    if (!isset($_FILES['ImageFile']) || !is_uploaded_file($_FILES['ImageFile']['tmp_name'])) {
+        $user_image = 'default.jpg';
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
-    }
-    else{
+    } else {
         $RandomNum = rand(0, 999999999);
-        $ImageName = str_replace(' ','-',strtolower($_FILES['ImageFile']['name']));
+        $ImageName = str_replace(' ', '-', strtolower($_FILES['ImageFile']['name']));
         $ImageType = $_FILES['ImageFile']['type'];
         $ImageExt = substr($ImageName, strrpos($ImageName, '.'));
-        $ImageExt = str_replace('.','',$ImageExt);
+        $ImageExt = str_replace('.', '', $ImageExt);
         $ImageName = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
-        $user_image = $ImageName.'-'.$RandomNum.'.'.$ImageExt;
+        $user_image = $ImageName . '-' . $RandomNum . '.' . $ImageExt;
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
     }
 
-    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description,$fees,$timeslots);
+    $admin_doctor->Insert($username, $password, $firstName, $lastName, $DOB, $address, $email, $phone, $sex, $user_image, $staff_id, $field, $description, $fees, $timeslots);
 
 }
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -132,63 +132,150 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/head.php' ?>
 
 
-
     <!--Script for Validating the data-->
-    <script>
-        function validateForm()
-        {
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/query-latest.js">
 
-//for alphabet characters only
-            var str=document.form1.first_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
-            {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
-                {
-                    alert("First Name Cannot Contain Numerical Values");
-                    document.form1.first_name.value="";
-                    document.form1.first_name.focus();
-                    return false;
-                }}
 
-            if(document.form1.first_name.value=="")
-            {
-                alert("Name Field is Empty");
-                return false;
+        function validateForm(){
+
+
+            var nameReg = /^[A-Za-z]+$/;
+            var numberReg =  /^[0-9]+$/;
+            var emailReg = /^([\w-]\.+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+            var username = $('#username').val();
+            var firstName = $('#first_name').val();
+            var lastName = $('#last_name').val();
+            var postaladdress = $('#postal_address').val();
+            var discription = $('#description').val();
+            var email = $('#email').val();
+            var telephone = $('#phone').val();
+            var staffID= $('#staff_id').val();
+
+            var inputVal = new Array(username, firstName, lastName, postaladdress, discription,email,telephone,staffID);
+
+            var inputMessage = new Array("user name", "firs tName", "last Name"," postal address", "discription"," email", "telephone","staff ID");
+
+            $('.error').hide();
+
+            if(inputVal[0] == ""){
+                $('#name_status').html('<span class="error"> Please enter your ' + inputMessage[0] + '</span>');
+            }
+            else if(!nameReg.test(username)){
+                $('#name_status').html('<span class="error"> Letters only</span>');
             }
 
-//for alphabet characters only
-            var str=document.form1.last_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
-            {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
-                {
-                    alert("Last Name Cannot Contain Numerical Values");
-                    document.form1.last_name.value="";
-                    document.form1.last_name.focus();
-                    return false;
-                }}
 
 
-            if(document.form1.last_name.value=="")
+            if(inputVal[3] == ""){
+                $('#postal_address').after('<span class="error"> Please enter your ' + inputMessage[3] + '</span>');
+            }
+            if(inputVal[4] == ""){
+                $('#description').after('<span class="error"> Please enter your ' + inputMessage[4] + '</span>');
+            }
+            else if(!emailReg.test(email)){
+                $('#email').after('<span class="error"> Please enter a valid email address</span>');
+            }
+
+            if(inputVal[6] == ""){
+                $('#phone').after('<span class="error"> Please enter your ' + inputMessage[6] + '</span>');
+            }
+            else if(!numberReg.test(telephone)){
+                $('#phone').after('<span class="error"> Numbers only</span>');
+            }
+
+            if(inputVal[7] == ""){
+                $('#staff_id').after('<span class="error"> Please enter your ' + inputMessage[7] + '</span>');
+            }
+            else if(!numberReg.test(staffID)){
+                $('#staff_id').after('<span class="error"> Numbers only</span>');
+            }
+        }
+
+
+    </script>
+    <script >
+        function checkname(val){
+
+            var name=val;
+
+            if(name)
             {
-                alert("Name Field is Empty");
+                $.ajax({
+                    type: 'POST',
+                    url: 'checkUserName.php?type=doctor',
+                    data: {
+                        user_name:name,
+                    },
+                    success: function (response) {
+                        $( '#name_status' ).html(response);
+                        if(response=="OK")
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $( '#name_status' ).html("");
                 return false;
+            }
+        }</script>
+    <script>function checkemail(va)
+        {
+            var email=va;
+
+            if(email)
+            {
+                $.ajax({
+                    type: 'post',
+                    url: 'checkEmail.php?type=doctor',
+                    data: {
+                        user_email:email,
+                    },
+                    success: function (response) {
+                        $( '#email-status' ).html(response);
+                        if(response=="OK")
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $( '#email-status' ).html("");
+                return false;
+            }
+        }</script>
+    <script>
+        function checkpassword (val) {
+            var x=val;
+            if(val.length<6){
+                $('#password-status').html("not strong")
+
+            }
+            else {
+                $('#password-status').html("fine")
+
             }
 
         }
-
     </script>
 </head>
 
-<body>
+<body >
 
 <div id="wrapper">
 
@@ -284,17 +371,20 @@ if(isset($_POST['submit'])){
                             <div class="tab-pane fade" id="profile">
 
                                 <div class="row">
-                                    <form name="form1" class="form-signin" id="form1" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                    <form name="form1"  id="form1"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                         <div class="col-md-4 column">
                                             <hr>
                                             <label>Username</label>
-                                            <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                            <label>Image</label>
+                                            <input type="text" name="username" id="UserName" onkeyup="checkname(this.value);" class="form-control" required autofocus>
+                                            <span id="name_status"></span>
+                                            <br>
                                             <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                             <label>First Name</label>
-                                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
+                                            <input type="text" id="first_name" name="first_name" onblur="validateForm(this.value)" class="form-control" placeholder="First Name"   required autofocus>
+                                            <span id="first_name_status"></span>
+                                            <br>
                                             <label>Last Name</label>
-                                            <input type="text" id="last_namer" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
+                                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
                                             <label>Staff ID</label>
                                             <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="Staff_id"   required autofocus>
                                             <p><label>Specilaization</label>
@@ -349,15 +439,18 @@ if(isset($_POST['submit'])){
                                             <label>Phone</label>
                                             <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
                                             <label>Email address</label>
-                                            <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
+                                            <input type="email" id="email" onkeyup="checkemail(this.value);" name="email" class="form-control" placeholder="Email address" required autofocus>
+                                            <span id="email-status"></span>
+                                            <br>
                                             <label>Password</label>
-                                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                            <input type="password" id="password" onkeyup="checkpassword(this.value);" name="password" class="form-control" placeholder="Password" required>
+                                            <span id="password-status"></span>
                                             <P></P>
-                                            <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" id="formbutton">Submit</button>
+                                            <button class="btn btn-lg btn-primary btn-block form-control"  name="submit" type="submit" id="sumbit">Submit</button>
                                         </div>
                                     </form>
                                 </div>
-                                </form>
+
                             </div>
                         </div>
                     </div>

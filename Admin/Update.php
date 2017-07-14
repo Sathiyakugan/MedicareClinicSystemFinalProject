@@ -31,13 +31,15 @@ if(isset($_SESSION['login'])){
         case 'Doctor':
             $userobject=new Doctor($username);
             break;
+        case 'Admin':
+            $userobject= new Admin($current_user);
     }
 }else{
     header("../index.php");
     exit();
 }
 if(isset($_POST['submit'])){
-
+    $username=$_POST['username'];
     $firstName=$_POST['first_name'];
     $lastName=$_POST['last_name'];
     $address=$_POST['postal_address'];
@@ -101,6 +103,12 @@ if(isset($_POST['submit'])){
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
           header("Location: ../Admin/update.php?type=$type&username=$username");
             break;
+         case 'Admin':
+             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
+             $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
+             echo $_SESSION['message1'];
+             header("Location: ../Admin/update.php?type=$type&username=$username");
+             break;
     }
 
 
@@ -122,11 +130,18 @@ if(isset($_POST['submit'])){
         <title>Admin Pannel</title>
         <?php include '../controllers/base/head.php' ?>
         <link href="../style/main.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript">
+
+
+        </script>
     </head>
+<body>
+
+
 <div id="wrapper">
 
     <!-- Navigation -->
-    <?php include 'AdminTheme.php'?>
+    <?php include 'AdminTheme.php';?>
 
     <div id="page-wrapper">
         <div class="row">
@@ -163,6 +178,9 @@ if(isset($_POST['submit'])){
                         </center>
                         <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="update.php?type=<?php echo $type; ?>&username=<?php echo $username; ?>" enctype="multipart/form-data">
                             <div class="col-md-4 column">
+                                <label> User name</label>
+                                <input class="form-control" name="username" type="text" id="username"  placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $userobject->getUsername();?>" required onfocus></br>
+                                <div id="disp"></div>
                                 <label>Image</label>
                                 <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                 <label>First Name</label>
@@ -228,7 +246,9 @@ if(isset($_POST['submit'])){
             <!-- </div> -->
         </div>
     </div>
-
+</div>
+</body>
+</html>
     <script>
         function goBack() {
             window.history.back();

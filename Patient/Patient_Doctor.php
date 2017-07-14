@@ -102,7 +102,7 @@ if(isset($_SESSION['current_user'])){
                                             echo '<td>' . $details[$i]['field'] . '</td>';;
                                             ?>
                                             <td><button type='button' data-a="profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-a="BookAppointmentModal.php?username=<?php echo $details[$i]['username']?>" id="bookappointment" href='#editarUsuario' class="btn btn-danger"  data-toggle='modal' data-backdrop='static' data-keyboard='false'>Get Appointment</button></td>
+                                            <td><button type='button' data-b="BookAppointmentModal.php?username=<?php echo $details[$i]['username']?>" id="bookappointment" href='#editarUsuario1' class=" modalEditarUsuario1 btn btn-danger"  data-toggle='modal' data-backdrop='static' data-keyboard='false'>Get Appointment</button></td>
                                             <?php
                                         }
                                         ?>
@@ -134,9 +134,23 @@ if(isset($_SESSION['current_user'])){
         </div>
     </div>
 </div>
+<div id="editarUsuario1" class="modal fade modal" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
 
-<?php include '../controllers/base/AfterBodyJS.php' ?>
-<?php include 'GetNotifications.php' ?>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+include '../controllers/base/AfterBodyJS.php';
+?>
+<?php
+include '../NotificationManager/Notification.php';
+?>
 
 
 
@@ -150,8 +164,8 @@ if(isset($_SESSION['current_user'])){
 </script>
 
 <script>
-    $('#bookappointment').click(function(){
-        var ID=$(this).attr('data-a');
+    $('.modalEditarUsuario1').click(function(){
+        var ID=$(this).attr('data-b');
         $.ajax({url:""+ID,cache:false,success:function(result){
             $(".modal-content").html(result);
         }});

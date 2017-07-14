@@ -251,6 +251,7 @@ class Admin extends User
         $this->db->connect();
         $this->db->select('admin','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
+
         $this->firstName=$res[0]['first_name'];
         $this->lastName=$res[0]['last_name'];
         $this->sex=$res[0]['sex'];
