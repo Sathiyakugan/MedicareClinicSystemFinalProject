@@ -68,10 +68,10 @@
                     <a href=""><i class="fa fa-user fa-fw"></i> Profile<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="">UpdateProfile</a>
+                            <a href="update.php?type=Receptionist&username=<?php echo $receptionist->getUsername();?>">UpdateProfile</a>
                         </li>
                         <li>
-                            <a href="">ChangePassword</a>
+                            <a href="../Admin/changePassword.php">ChangePassword</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->

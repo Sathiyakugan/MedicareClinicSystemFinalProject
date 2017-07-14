@@ -109,58 +109,139 @@ if(isset($_POST['submit'])){
 
 
     <!--Script for Validating the data-->
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <!-- jquery validation plugin //-->
+
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.js"></script>
+    <script type="text/javascript" src="validation_reg.js"></script>
     <script>
-        function validateForm()
-        {
 
-//for alphabet characters only
-            var str=document.form1.first_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
+
+    $(document).ready(function(
             {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
+                $("#form1").validate(
+
                 {
-                    alert("First Name Cannot Contain Numerical Values");
-                    document.form1.first_name.value="";
-                    document.form1.first_name.focus();
-                    return false;
-                }}
 
-            if(document.form1.first_name.value=="")
-            {
-                alert("Name Field is Empty");
-                return false;
-            }
-
-//for alphabet characters only
-            var str=document.form1.last_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
-            {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
-                {
-                    alert("Last Name Cannot Contain Numerical Values");
-                    document.form1.last_name.value="";
-                    document.form1.last_name.focus();
-                    return false;
-                }}
+                    rules: {
+                        first_name: {
+                            required: true
+                            maxlength: 10
+                            minLength: 5
+                            characters: string
 
 
-            if(document.form1.last_name.value=="")
-            {
-                alert("Name Field is Empty");
-                return false;
-            }
+                        },
+                        last_name{
+                            required: true
+                            maxlength: 10
+                            minLength: 5
+                            characters: string
 
-        }
+                        },
+                        phone{
+                            required: true
+                            maxlength: 10
+                            characters: number
+                        },
+
+
+                        email: {
+                            required: true,
+                            email: true //email is required AND must be in the form of a valid email address
+
+                        },
+                        password: {
+                            required: true,
+                            minlength: 6
+
+                        }
+                    },
+
+//specify validation error messages
+                    messages: {
+                        firs_tname: "First Name field cannot be blank!",
+                        last_name: "Last Name field cannot be blank!",
+                        password: {
+                            required: "Password field cannot be blank!",
+                            minlength: "Your password must be at least 6 characters long"
+                        },
+                        email: "Please enter a valid email address",
+                        phone: "enter numbers"
+                    },
+                    // Make sure the form is submitted to the destination defined
+                    // in the "action" attribute of the form when valid
+                    submitHandler: function(form) {
+                        form.submit();
+                    }
+                });
+            });
 
     </script>
+   <script >
+       function checkname(val){
+
+           var name=val;
+
+           if(name)
+           {
+               $.ajax({
+                   type: 'POST',
+                   url: 'checkUserName.php?type=patient',
+                   data: {
+                       user_name:name,
+                   },
+                   success: function (response) {
+                       $( '#name_status' ).html(response);
+                       if(response=="OK")
+                       {
+                           return true;
+                       }
+                       else
+                       {
+                           return false;
+                       }
+                   }
+               });
+           }
+           else
+           {
+               $( '#name_status' ).html("");
+               return false;
+           }
+       }</script>
+    <script>function checkemail(va)
+        {
+            var email=va;
+
+            if(email)
+            {
+                $.ajax({
+                    type: 'post',
+                    url: 'checkEmail.php',
+                    data: {
+                        user_email:email,
+                    },
+                    success: function (response) {
+                        $( '#email-status' ).html(response);
+                        if(response=="OK")
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $( '#email-status' ).html("");
+                return false;
+            }
+        }</script>
 </head>
 
 <body>
@@ -254,11 +335,13 @@ if(isset($_POST['submit'])){
                                 <!-- /.table-responsive -->
                             </div>
                             <div class="tab-pane fade" id="profile">
-                                <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="Admin_Patient.php" enctype="multipart/form-data">
+                                <form name="form1" id="form1" class="form-signin form-control"  method="post" action="Admin_Patient.php" enctype="multipart/form-data">
                                     <div class="col-md-4 column">
                                         <hr>
                                         <label>Username</label>
-                                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                        <input type="text" name="username" id="UserName" onkeyup="checkname(this.value);" class="form-control" required autofocus>
+                                        <span id="name_status"></span>
+                                        <br>
                                         <label>Image</label>
                                         <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                         <label>First Name</label>
@@ -281,7 +364,9 @@ if(isset($_POST['submit'])){
                                         <label>Phone</label>
                                         <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
                                         <label>Email address</label>
-                                        <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
+                                        <input type="email" id="email" onkeyup="checkemail(this.value);" name="email" class="form-control" placeholder="Email address" required autofocus>
+                                        <span id="email-status"></span>
+                                        <br>
                                         <label>Password</label>
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                                         <P></P>
