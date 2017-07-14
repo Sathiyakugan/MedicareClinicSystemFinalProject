@@ -2,14 +2,17 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
     <h2 class="modal-title">Change Password</h2>
 </div>
-
+<div class="col-md-12">
+    <br>
+    <div class="col-md-8 col-md-offset-2" id="alertmsg"></div>
+</div>
 
             <div class="col-lg-8 col-md-12">
             <div>
                 <br>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form role="form" name="chngpwd" method="post" onSubmit="return valid();">
+                        <form role="form" name="chngpwd" method="post" action="">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">
                                     Current Password
@@ -29,10 +32,7 @@
                                 </label>
                                 <input type="password" name="cfpass" class="form-control"  id="confirm_pass" placeholder="Confirm Password">
                             </div>
-
-
-
-                            <button type="submit" name="submit" class="btn btn-o btn-primary">
+                            <button id="button_change" name="submit" class="btn btn-o btn-primary">
                                 Submit
                             </button>
                         </form>

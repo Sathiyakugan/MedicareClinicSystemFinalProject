@@ -268,44 +268,11 @@ $admin=new Admin($current_user);
 </div>
 <!-- /#wrapper -->
 
-<!-- Modal -->
-<!-- MODAL EDITAR-->
-<div id="editarUsuario" class="modal fade modal" role="dialog">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<?php include '../controllers/base/AfterBodyJS.php' ?>
-
-
-
-
-<script>
-    $('.modalEditarUsuario').click(function(){
-        var ID=$(this).attr('data-a');
-        $.ajax({url:""+ID,cache:false,success:function(result){
-            $(".modal-content").html(result);
-        }});
-    });
-</script>
+<?php include 'end.php' ?>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
 <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-
 
     $('#table2').DataTable()
         .columns.adjust()
@@ -316,10 +283,6 @@ $admin=new Admin($current_user);
         .responsive.recalc();
 
 </script>
-
-
-
-<?php include 'GetNotifications.php' ?>
 
 </body>
 

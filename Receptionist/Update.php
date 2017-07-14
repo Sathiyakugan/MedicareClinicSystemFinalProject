@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include "../Adaptor/mysql_crud.php";
 include ("../UserClasses/user.php");
 include ("../UserClasses/Admin.php");
@@ -12,7 +11,7 @@ include ("../UserClasses/Receptionist.php");
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $username=$_REQUEST['username'];
-    $admin=new Admin($current_user);
+    $receptionist=new Receptionist($current_user);
     $userobject=null;
     $type=$_REQUEST['type'];
     switch ($type){
@@ -79,27 +78,27 @@ if(isset($_POST['submit'])){
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
             echo $_SESSION['message1'];
-            header("Location: ../Admin/update.php?type=$type&username=$username");
+            header("Location: update.php?type=$type&username=$username");
             break;
         case 'Patient':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-            header("Location: ../Admin/update.php?type=$type&username=$username");;
+            header("Location: update.php?type=$type&username=$username");;
             break;
         case 'Receptionist':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address,$email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue><?php echo $firstName; ?> Updated Successfully</font>";
-            header("Location: ../Admin/update.php?type=$type&username=$username");
+            header("Location: update.php?type=$type&username=$username");
             break;
         case 'Pharmacist':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-            header("Location: ../Admin/update.php?type=$type&username=$username");
+            header("Location: update.php?type=$type&username=$username");
             break;
         case 'Doctor':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-          header("Location: ../Admin/update.php?type=$type&username=$username");
+          header("Location: update.php?type=$type&username=$username");
             break;
     }
 
@@ -119,14 +118,14 @@ if(isset($_POST['submit'])){
 
     <head>
         <?php include '../controllers/base/meta-tags.php' ?>
-        <title>Admin Pannel</title>
+        <title>Receptionist Pannel</title>
         <?php include '../controllers/base/head.php' ?>
         <link href="../style/main.css" rel="stylesheet">
     </head>
 <div id="wrapper">
 
     <!-- Navigation -->
-    <?php include 'AdminTheme.php'?>
+    <?php include 'Receptionist_Theme.php'?>
 
     <div id="page-wrapper">
         <div class="row">
@@ -150,21 +149,19 @@ if(isset($_POST['submit'])){
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
-            <div class="col-lg-12">
-
+            <div class="col-md-12">
+                <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Update Profile
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-
-                        <div class="col-md-8">
                         <center>
                             <img src="../userfiles/avatars/<?php echo $userobject->getUserImage();?>" class="img-responsive profile-avatar">
                         </center>
                         <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="update.php?type=<?php echo $type; ?>&username=<?php echo $username; ?>" enctype="multipart/form-data">
-                            <div class="col-md-6 column">
+                            <div class="col-md-4 column">
                                 <label>Image</label>
                                 <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                 <label>First Name</label>
@@ -202,7 +199,7 @@ if(isset($_POST['submit'])){
                                         <option>Neutral</option>
                                     </select></p>
                             </div>
-                            <div class="col-md-6 column">
+                            <div class="col-md-4 column">
                                 <?php
                                 if ($type=='Doctor'){
                                     ?>
@@ -221,53 +218,30 @@ if(isset($_POST['submit'])){
                                 <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
                             </div>
                         </form>
-
                     </div>
-                        <div class="col-md-4">
-                            <h3> New Image Preview</h3>
-                            <div class="profile"  >
-                                <center>
-
-                                    <img id="blah" src="#" alt="your image"
-                                         class="img-responsive profile-avatar"/>
-                                </center>
-                            </div>
-                        </div>
-
-
-                    </div>
+                    </form>
                     <!-- /.col-lg-12 -->
                 </div>
-
-
-
             </div>
 
+            <div class="col-md-4">
+                <div class="profile"  >
+                    <center>
 
-        </div>
+                        <img id="blah" src="#" alt="your image"
+                             class="img-responsive profile-avatar"/>
+                    </center>
+                </div>
+            </div>
+            </div>
             <!-- /.panel-body -->
             <!-- </div> -->
         </div>
     </div>
 
-
-
-<?php include '../controllers/base/AfterBodyJS.php' ?>
     <script>
-        function readURL(input) {
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#blah').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
+        function goBack() {
+            window.history.back();
         }
-
-        $("#ImageFile").change(function () {
-            readURL(this);
-        });
     </script>
+<?php include '../controllers/base/AfterBodyJS.php' ?>

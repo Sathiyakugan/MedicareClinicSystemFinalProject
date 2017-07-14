@@ -31,14 +31,14 @@ class Admin_Doctor
         $this->db->update('doctor',array('first_name'=>'"'.$firstName.'"','last_name'=>'"'.$lastName.'"','sex'=>'"'.$sex.'"','DOB'=>'"'.$DOB.'"','address'=>'"'.$address.'"','email'=>'"'.$email.'"','user_image'=>'"'.$user_image.'"','field'=>'"'.$field.'"','description="'.$description.'"'),'username="'.$username.'"'); // Table name, column names and values, WHERE conditions
     }
 
-    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description,$fees,$timeslots){
+    public function Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$field,$description,$fees,$timeslots){
 
         $this->db->connect();
         $results=$this->getresultsforaperson($username);
         if (sizeof($results)==0){
             $address = $this->db->escapeString($address); // Escape any input before insert
             $email=$this->db->escapeString($email); // Escape any input before insert
-            $this->db->insert('doctor',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'staff_id'=>$staff_id,'phone'=>$phone,'field'=>$field,'description'=>$description,'fees'=>$fees));  // Table name, column names and respective values
+            $this->db->insert('doctor',array('username'=>$username,'password'=>$password,'first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'phone'=>$phone,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone,'field'=>$field,'description'=>$description,'fees'=>$fees));  // Table name, column names and respective values
             foreach ($timeslots as $value){
                 $this->db->insert('doctor_appointment_time',array('username'=>$username,'timeslot'=>$value));  // Table name, column names and respective values
             }
@@ -78,7 +78,6 @@ if(isset($_SESSION['current_user'])){
 if(isset($_POST['submit'])){
     $firstName=$_POST['first_name'];
     $lastName=$_POST['last_name'];
-    $staff_id=$_POST['staff_id'];
     $address=$_POST['postal_address'];
     $phone=$_POST['phone'];
     $email=$_POST['email'];
@@ -115,7 +114,7 @@ if(isset($_POST['submit'])){
         move_uploaded_file($_FILES['ImageFile']['tmp_name'], "$Destination/$user_image");
     }
 
-    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$staff_id,$field,$description,$fees,$timeslots);
+    $admin_doctor->Insert($username,$password,$firstName,$lastName,$DOB,$address,$email,$phone,$sex,$user_image,$field,$description,$fees,$timeslots);
 
 }
 ?>
@@ -126,66 +125,9 @@ if(isset($_POST['submit'])){
 <html lang="en">
 
 <head>
-
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
-
-
-
-    <!--Script for Validating the data-->
-    <script>
-        function validateForm()
-        {
-
-//for alphabet characters only
-            var str=document.form1.first_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
-            {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
-                {
-                    alert("First Name Cannot Contain Numerical Values");
-                    document.form1.first_name.value="";
-                    document.form1.first_name.focus();
-                    return false;
-                }}
-
-            if(document.form1.first_name.value=="")
-            {
-                alert("Name Field is Empty");
-                return false;
-            }
-
-//for alphabet characters only
-            var str=document.form1.last_name.value;
-            var valid="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            //comparing user input with the characters one by one
-            for(i=0;i<str.length;i++)
-            {
-                //charAt(i) returns the position of character at specific index(i)
-                //indexOf returns the position of the first occurence of a specified value in a string. this method returns -1 if the value to search for never ocurs
-                if(valid.indexOf(str.charAt(i))==-1)
-                {
-                    alert("Last Name Cannot Contain Numerical Values");
-                    document.form1.last_name.value="";
-                    document.form1.last_name.focus();
-                    return false;
-                }}
-
-
-            if(document.form1.last_name.value=="")
-            {
-                alert("Name Field is Empty");
-                return false;
-            }
-
-        }
-
-    </script>
 </head>
 
 <body>
@@ -281,84 +223,130 @@ if(isset($_POST['submit'])){
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
+
                             <div class="tab-pane fade" id="profile">
+                                <div class="col-md-12">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <form name="form1" class="form-signin" id="form1" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                                <div class="col-md-6 column">
+                                                    <br>
+                                                    <div class="form-group">
+                                                    <label>Username</label>
+                                                    <input type="text" id="username" onBlur="userAvailability();" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                                    <span id="user-availability-status1" style="font-size:14px;"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>Image</label>
+                                                    <input type="file" id="ImageFile" name="ImageFile" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>First Name</label>
+                                                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Last Name</label>
+                                                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <p><label>Specilaization</label>
+                                                        <select class="form-control" name="field" id="field">
+                                                            <option>CARDIAC SURGEON</option>
+                                                            <option>CARDIOTHORACIC SURGEON</option>
+                                                            <option>Dental Surgeon</option>
+                                                            <option>Ent-Surgeon</option>
+                                                            <option>NEUROLOGIST</option>
+                                                            <option>PHYSICIAN</option>
+                                                            <option>PLASTIC SURGEON</option>
+                                                            <option>CONSULTANT SURGEON</option>
+                                                            <option>NEPHOLODIST</option>
+                                                            <option>CANCER SURGEON</option>
+                                                            <option>PSYCHIATRIST</option>
+                                                        </select></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <p><label>Sex</label>
+                                                        <select class="form-control" name="sex" id="sex">
+                                                            <option selected="" value="Default">(Select Gender)</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female" >Female</option>
+                                                            <option value="Neutral">Neutral</option>
+                                                        </select></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Phone</label>
+                                                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Email address</label>
+                                                        <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" autofocus>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 column">
+                                                    <br>
 
-                                <div class="row">
-                                    <form name="form1" class="form-signin" id="form1" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
-                                        <div class="col-md-4 column">
-                                            <hr>
-                                            <label>Username</label>
-                                            <input type="text" id="username" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                            <label>Image</label>
-                                            <input type="file" id="ImageFile" name="ImageFile" class="form-control">
-                                            <label>First Name</label>
-                                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
-                                            <label>Last Name</label>
-                                            <input type="text" id="last_namer" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
-                                            <label>Staff ID</label>
-                                            <input type="text" id="staff_id" name="staff_id" class="form-control" placeholder="Staff_id"   required autofocus>
-                                            <p><label>Specilaization</label>
-                                                <select class="form-control" name="field" id="field">
-                                                    <option>CARDIAC SURGEON</option>
-                                                    <option>CARDIOTHORACIC SURGEON</option>
-                                                    <option>Dental Surgeon</option>
-                                                    <option>Ent-Surgeon</option>
-                                                    <option>NEUROLOGIST</option>
-                                                    <option>PHYSICIAN</option>
-                                                    <option>PLASTIC SURGEON</option>
-                                                    <option>CONSULTANT SURGEON</option>
-                                                    <option>NEPHOLODIST</option>
-                                                    <option>CANCER SURGEON</option>
-                                                    <option>PSYCHIATRIST</option>
-                                                </select></p>
-                                            <p><label>Sex</label>
-                                                <select class="form-control" name="sex" id="sex">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
-                                                    <option>Neutral</option>
-                                                </select></p>
+                                                    <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                                    <P><label>Fees</label>
+                                                        <select class="form-control" name="fees" id="fees">
+                                                            <option selected="" value="Default">(Select Fees)</option>
+                                                            <option>800Rs</option
+                                                            <option>1000Rs</option>
+                                                            <option>1500Rs</option>
+                                                            <option>2000Rs</option>
+                                                            <option>2500Rs</option>
+                                                        </select></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Time Slots</label>
+                                                        <select multiple  class="form-control" name="timeslots[]" id="timeslots">
+                                                            <option selected="" value="Default">(Select Time slots)</option>
+                                                            <option>06:00:00</option><option>07:00:00</option><option>08:00:00</option><option>09:00:00</option>
+                                                            <option>10:00:00</option><option>11:00:00</option><option>12:00:00</option><option>13:00:00</option>
+                                                            <option>14:00:00</option><option>15:00:00</option><option>16:00:00</option><option>17:00:00</option>
+                                                            <option>18:00:00</option><option>19:00:00</option><option>20:00:00</option><option>21:00:00</option>
+                                                            <option>22:00:00</option><option>23:00:00</option><option>00:00:00</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label>DOB</label>
+                                                    <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Postal Address</label>
+                                                    <input type="text" id="postal_address" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                                    </div>
+
+                                                        <div class="form-group">
+                                                        <label>Password</label>
+                                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                                        </div>
+                                                    <div class="form-group">
+                                                        <label>Confirm Password</label>
+                                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Password" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                            <P></P>
+                                                    <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" id="formbutton">Submit</button>
+                                                    </div>
+                                                    </div>
+                                            </form>
                                         </div>
-                                        <div class="col-md-4 column">
-                                            <hr>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="profile"  >
+                                            <center>
 
-
-                                            <label>Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                                            <P><label>Fees</label>
-                                                <select class="form-control" name="fees" id="fees">
-                                                    <option>800Rs</option
-                                                    <option>1000Rs</option>
-                                                    <option>1500Rs</option>
-                                                    <option>2000Rs</option>
-                                                    <option>2500Rs</option>
-                                                </select></p>
-                                            <div class="form-group">
-                                                <label>Time Slots</label>
-                                                <select multiple  class="form-control" name="timeslots[]" id="timeslots">
-                                                    <option>06:00:00</option><option>07:00:00</option><option>08:00:00</option><option>09:00:00</option>
-                                                    <option>10:00:00</option><option>11:00:00</option><option>12:00:00</option><option>13:00:00</option>
-                                                    <option>14:00:00</option><option>15:00:00</option><option>16:00:00</option><option>17:00:00</option>
-                                                    <option>18:00:00</option><option>19:00:00</option><option>20:00:00</option><option>21:00:00</option>
-                                                    <option>22:00:00</option><option>23:00:00</option><option>00:00:00</option>
-                                                </select>
-                                            </div>
-                                            <label>DOB</label>
-                                            <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
-                                            <label>Postal Address</label>
-                                            <input type="text" id="postal_address" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
-                                            <label>Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
-                                            <label>Email address</label>
-                                            <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" required autofocus>
-                                            <label>Password</label>
-                                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                                            <P></P>
-                                            <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" id="formbutton">Submit</button>
+                                                <img id="blah" src="#" alt="your image"
+                                                     class="img-responsive profile-avatar"/>
+                                            </center>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
-                                </form>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -373,45 +361,42 @@ if(isset($_POST['submit'])){
 </div>
 <!-- /#wrapper -->
 
-<!-- Modal -->
-<!-- MODAL EDITAR-->
-<div id="editarUsuario" class="modal fade modal" role="dialog">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php include '../controllers/base/AfterBodyJS.php' ?>
-<?php include 'GetNotifications.php' ?>
-
-
-
-
-
+<?php include 'end.php' ?>
 <script>
-    $('.modalEditarUsuario').click(function(){
-        var ID=$(this).attr('data-a');
-        $.ajax({url:""+ID,cache:false,success:function(result){
-            $(".modal-content").html(result);
-        }});
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#ImageFile").change(function () {
+        readURL(this);
     });
 </script>
 
-
-
-
-<!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
+    function userAvailability() {
+        var Case_Histroy=$('#Case_Histroy_ADD').val();
+        var Medication=$('#Medication_ADD').val();
+        var Note=$('#Note_ADD').val();
+
+        jQuery.ajax({
+            url: "check_availability.php",
+            data: {username:$("#username").val(),type:"Doctor"},
+            type: "POST",
+            success:function(data){
+                $("#user-availability-status1").html(data);
+            },
+            error:function (){}
         });
-    });
+    }
 </script>
 </body>
 
