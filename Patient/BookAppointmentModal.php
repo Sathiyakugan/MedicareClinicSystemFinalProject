@@ -78,6 +78,8 @@ if(isset($_SESSION['login'])){
             <!--                </button>-->
         </form>
     </div>
+
+
     <div class="col-md-6 column">
         <div class="profile">
             <center>
@@ -106,6 +108,7 @@ if(isset($_SESSION['login'])){
                 url: "Submit_Appointment.php",
                 data: $('#form_app').serialize(),
                 success: function(msg){
+                    alert(msg);
                     $("#alert").html(msg)},
                 error: function(){
                     alert("failure");

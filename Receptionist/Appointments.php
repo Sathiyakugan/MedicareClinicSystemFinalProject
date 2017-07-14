@@ -35,32 +35,28 @@ if(isset($_SESSION['login'])){
 <body onload="set__noti();">
 
 <div id="wrapper">
+
     <!-- Navigation -->
     <?php include 'Receptionist_Theme.php' ?>
 
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-
-                <h1 class="page-header">Appointments</h1>
-
+                <h1 class="page-header">Appoinment</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="col-md-4 col-md-offset-4" id="alert">
 
         </div>
-        <div class="col-md-4 col-md-offset-4" id="alert">
-        <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Appointments Details
+                        Appoinment details
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#home" data-toggle="tab">Pending</a>
                             </li>

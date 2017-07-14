@@ -23,7 +23,7 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $_SESSION['username']=$current_user;
     $doctor=new Doctor($current_user);
-    $paidpatiant= new Paidpatiant($username);
+    $paidpatiant= new Paidpatiant($current_user);
 }else{
     header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
     exit();
@@ -115,7 +115,7 @@ if(isset($_SESSION['login'])){
                                         */
                                         // get results from database
                                         $details=$paidpatiant->getresultstofday($doctor->getUsername());
-                                        $patient=new Patient($details[$i]['pusername']);
+                                       //  $patient=new Patient($details[$i]['pusername']);
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table

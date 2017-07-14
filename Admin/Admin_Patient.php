@@ -132,6 +132,7 @@ if(isset($_POST['submit'])){
                             characters: string
 
 
+
                         },
                         last_name{
                             required: true
@@ -172,8 +173,8 @@ if(isset($_POST['submit'])){
                     },
                     // Make sure the form is submitted to the destination defined
                     // in the "action" attribute of the form when valid
-                    submitHandler: function(form) {
-                        form.submit();
+                    submitHandler: function(form1) {
+                        form1.submit();
                     }
                 });
             });
