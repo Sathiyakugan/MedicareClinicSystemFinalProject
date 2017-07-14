@@ -1,6 +1,7 @@
 <script>
-    function formValidation()
-    {
+    $('#form1').submit(function(){
+        alert("fafafafaasfasfasfasfasfasfasf");
+        console.log("im in");
         var passid = document.form1.password;
         var uname = document.form1.username;
         var fname = document.form1.first_name;
@@ -10,27 +11,21 @@
         var uemail = document.form1.email;
         var field = document.form1.field;
         var fees = document.form1.fees;
-        var timeslots=document.form1.timeslots[];
+        var timeslots = document.form1.timeslots[];
 
 
+        if (passid_validation(passid, 7, 12)) {
+            if (allLetter(uname)) {
+                if (alphanumeric(uadd)) {
+                    if (genderSelect(sex)) {
+                        if (fieldSelect(field)) {
+                            if (feesSelect(fees)) {
+                                if (ValidateEmail(uemail)) {
+                                    if (checkfirstName(fname)) {
+                                        if (checkLastName(lname)) {
 
-        if(passid_validation(passid,7,12))
-        {
-            if(allLetter(uname))
-            {
-                if(alphanumeric(uadd))
-                {
-                    if(genderSelect(sex))
-                    {
-                        if(fieldSelect(field))
-                        {
-                            if(feesSelect(fees))
-                            {
-
-                                if(ValidateEmail(uemail))
-
-                                {m
-
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -42,42 +37,34 @@
         }
 
 
-        function passid_validation(passid,mx,my)
-        {
+        function passid_validation(passid, mx, my) {
             var passid_len = passid.value.length;
-            if (passid_len == 0 ||passid_len >= my || passid_len < mx)
-            {
-                alert("Password should not be empty / length be between "+mx+" to "+my);
+            if (passid_len == 0 || passid_len >= my || passid_len < mx) {
+                alert("Password should not be empty / length be between " + mx + " to " + my);
                 passid.focus();
                 return false;
             }
             return true;
         }
 
-        function allLetter(uname)
-        {
+        function allLetter(uname) {
             var letters = /^[A-Za-z]+$/;
-            if(uname.value.match(letters))
-            {
+            if (uname.value.match(letters)) {
                 return true;
             }
-            else
-            {
+            else {
                 alert('Username must have alphabet characters only');
                 uname.focus();
                 return false;
             }
         }
 
-        function checkfirstName(fname)
-        {
+        function checkfirstName(fname) {
             var letters = /^[A-Za-z]+$/;
-            if(fname.value.match(letters))
-            {
+            if (fname.value.match(letters)) {
                 return true;
             }
-            else
-            {
+            else {
                 alert('First Name must have alphabet characters only');
                 fname.focus();
                 return false;
@@ -85,108 +72,76 @@
         }
 
 
-        function checkLastName(fname)
-        {
+        function checkLastName(lname) {
             var letters = /^[A-Za-z]+$/;
-            if(fname.value.match(letters))
-            {
+            if (lname.value.match(letters)) {
                 return true;
             }
-            else
-            {
+            else {
                 alert('First Name must have alphabet characters only');
-                fname.focus();
+                lname.focus();
                 return false;
             }
         }
 
 
-        function allLetter(uname)
-        {
-            var letters = /^[A-Za-z]+$/;
-            if(uname.value.match(letters))
-            {
-                return true;
-            }
-            else
-            {
-                alert('Username must have alphabet characters only');
-                uname.focus();
-                return false;
-            }
-        }
 
-        function alphanumeric(uadd)
-        {
+        function alphanumeric(uadd) {
             var letters = /^[0-9a-zA-Z]+$/;
-            if(uadd.value.match(letters))
-            {
+            if (uadd.value.match(letters)) {
                 return true;
             }
-            else
-            {
+            else {
                 alert('User address must have alphanumeric characters only');
                 uadd.focus();
                 return false;
             }
         }
 
-        function feesSelect(fees)
-        {
-            if(fees.value == "Default")
-            {
+        function feesSelect(fees) {
+            if (fees.value == "Default") {
                 alert('Select the fees from the list');
                 fees.focus();
                 return false;
             }
-            else
-            {
+            else {
                 return true;
             }
         }
 
-        function fieldSelect(field)
-        {
-            if(field.value == "Default")
-            {
+        function fieldSelect(field) {
+            if (field.value == "Default") {
                 alert('Select the field from the list');
                 field.focus();
                 return false;
             }
-            else
-            {
+            else {
                 return true;
             }
         }
 
-        function genderSelect(sex)
-        {
-            if(sex.value == "Default")
-            {
+        function genderSelect(sex) {
+            if (sex.value == "Default") {
                 alert('Select Gender from the list');
                 sex.focus();
                 return false;
             }
-            else
-            {
+            else {
                 return true;
             }
         }
 
-        function ValidateEmail(uemail)
-        {
+        function ValidateEmail(uemail) {
             var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if(uemail.value.match(mailformat))
-            {
+            if (uemail.value.match(mailformat)) {
                 return true;
             }
-            else
-            {
+            else {
                 alert("You have entered an invalid email address!");
                 uemail.focus();
                 return false;
             }
         }
-
+    });
 
 </script>

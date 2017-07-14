@@ -228,7 +228,7 @@ if(isset($_POST['submit'])){
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <form name="form1" class="form-signin" id="form1" onsubmit="return validateForm(this);" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                            <form name="form1" class="form-signin" id="form1" onSubmit="return formValidation();" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                                 <div class="col-md-6 column">
                                                     <br>
                                                     <div class="form-group">
@@ -362,6 +362,7 @@ if(isset($_POST['submit'])){
 <!-- /#wrapper -->
 
 <?php include 'end.php' ?>
+<?php include  "Validationjs.php"?>
 <script>
     function readURL(input) {
 
