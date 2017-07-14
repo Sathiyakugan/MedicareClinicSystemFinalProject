@@ -5,7 +5,7 @@
  * Date: 7/1/2017
  * Time: 5:01 PM
  */
-class Prescription
+class Diagnosis
 {
     protected $db;
     public function __construct(){
@@ -61,7 +61,7 @@ class Prescription
         $this->db->select('prescription','*',NULL,$que,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         if(sizeof($res)>0)
-        return true;
+            return true;
     }
 
 

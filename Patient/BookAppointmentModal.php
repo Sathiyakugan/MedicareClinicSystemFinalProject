@@ -11,9 +11,8 @@ if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
     $patient=new Patient($current_user);
     if (!empty($_GET['username'])) {
-        $dusername=$_REQUEST['username'];
-        //$pusername=$_REQUEST['dusername'];
-        $doctor=new Doctor($dusername);
+        $username=$_REQUEST['username'];
+        $doctor=new Doctor($username);
     }
 
 
@@ -30,7 +29,7 @@ if(isset($_SESSION['login'])){
 </div>
 <div class="col-lg-12">
     <div class="col-md-6 column">
-        <form name="form_app" class="form-signin" id="]app"  method="post" action="BookAppointmentModal.php" enctype="multipart/form-data"  >
+        <form name="form_app" class="form-signin" id="form_app"  method="post" action="BookAppointmentModal.php" enctype="multipart/form-data"  >
             <br>
             <div class="form-group">
                 <label>Doctor</label>

@@ -11,33 +11,35 @@ include '../connect_db.php';
 include '../Adaptor/mysql_crud.php';
 include '../UserClasses/User.php';
 include '../UserClasses/Patient.php';
-include 'Prescription.php';
+include 'Diagnosis.php';
 
 
 if(isset($_SESSION['login'])){
-    $username=$_REQUEST['username'];
+    $current_user= (string)$_SESSION['current_user'];
     $userobject=new Patient($username);
-    $prescription= new Prescription($username);
+    $diagnoist= new Diagnoist($UserName);
+
+
+
+    $prescription->setbulk($Doctor, $UserName, $Date, $Case_Histroy, $medication, $note);
+    $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
+    echo $_SESSION['message1'];
+    header("Location: editable_form_prescription.php?type=$type&username=$username");
 
 }else{
     header("../index.php");
     exit();
 }
+if(isset($_POST['submit'])) {
 
-if(isset($_GET['submit'])) {
-    echo $username;
+    $UserName = $_POST['user_name'];
     $Doctor = $_POST['doctor_name'];
     $Date = $_POST['date'];
     $Case_Histroy = $_POST['case_histroy'];
     $medication = $_POST['medication'];
     $note = $_POST['note'];
-
-
-    $prescription->setbulk($Doctor, $Date, $Case_Histroy, $medication, $note);
-    $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
-    echo $_SESSION['message1'];
-    header("Location: editable_form_prescription.php?type=$type&username=$username");
 }
+
 ?>
 
 
@@ -75,7 +77,7 @@ if(isset($_GET['submit'])) {
 
 </head>
 <body>
-<div id="editarUsuario2" class="modal fade modal" role="dialog">
+<div id="editarUsuario1" class="modal fade modal" role="dialog">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
             <div class="modal-content">
@@ -108,42 +110,43 @@ if(isset($_GET['submit'])) {
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <form method="get" role="form" enctype="multipart/form-data">
+                                        <form method="post"  enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label>User Name</label>
+                                                <input type="text"  name="user_name" class="form-control" placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
 
-                                            <label>User Name</label>
-                                            <input type="text"  name="user_name" class="form-control" placeholder="<?php echo $userobject->getUsername();?>" value="<?php echo  $prescription->getUsername();?>"   required autofocus>
-
-                                            <p class="help-block">type pataint user name.</p>
-
-
-                                            <label>Doctor Name</label>
-                                            <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $prescription->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
-
-
+                                                <p class="help-block">type pataint user name.</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Doctor Name</label>
+                                                <input type="text"  name="doctor_name" class="form-control" placeholder="<?php echo $diagnoist->getDoctor();?>" value="<?php echo  $prescription->getDoctor();?>"   required autofocus>
 
 
-                                            <label>Date </label>
-                                            <input type="date"  name="date" class="form-control" placeholder="<?php echo $prescription->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date </label>
+                                                <input type="date"  name="date" class="form-control" placeholder="<?php echo $diagnoist->getDate();?>" value="<?php echo  $prescription->getDate();?>"   required autofocus>
 
 
+                                            </div>
 
 
-
-
-                                            <label>Case Histroy</label>
-                                            <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $prescription->getCase(); ?>"> <?php echo $prescription->getCase();?> </textarea>
-
-                                            <label>Medication</label>
-                                            <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getmedication();?>"> <?php echo  $prescription->getmedication();?> </textarea>
-
-
-                                            <label>Note </label>
-                                            <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $prescription->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
+                                            <div class="form-group">
+                                                <label>Case Histroy</label>
+                                                <textarea name="case_histroy"  class="form-control" rows="3" placeholder="<?php $diagnoist->getReport() ?>"> <?php echo $prescription->getCase();?> </textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Medication</label>
+                                                <textarea name="mdication"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getDiscription();?>"> <?php echo  $prescription->getmedication();?> </textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Note </label>
+                                                <textarea name="note"  class="form-control" rows="3" placeholder="<?php echo  $diagnoist->getNote();?>"> <?php  echo  $prescription->getCase();?> </textarea>
+                                            </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-success" name="submit">Submit</button>
                                                 <a href="#" class="btn" data-dismiss="modal">Close</a>
                                             </div>
-
                                         </form>
                                     </div>
 
@@ -163,6 +166,7 @@ if(isset($_GET['submit'])) {
         </div>
     </div>
 </div>
+
 </body>
 </html>
 <script>
