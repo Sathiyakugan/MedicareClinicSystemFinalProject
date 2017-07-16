@@ -19,7 +19,7 @@ var str=document.form1.first_name.value;
 	
 if(document.form1.first_name.value=="")
 {
-alert("Name Field is Empty");
+alert("Nameeeeeeeeeeeeeeeeeeeee Field is Empty");
 return false;
 }
 

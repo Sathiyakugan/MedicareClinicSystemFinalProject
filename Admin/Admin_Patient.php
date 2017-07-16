@@ -108,142 +108,11 @@ if(isset($_POST['submit'])){
 
 
 
-    <!--Script for Validating the data-->
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-    <!-- jquery validation plugin //-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
 
-    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.validate/1.7/jquery.validate.js"></script>
-    <script type="text/javascript" src="validation_reg.js"></script>
-    <script>
-
-
-    $(document).ready(function(
-            {
-                $("#form1").validate(
-
-                {
-
-                    rules: {
-                        first_name: {
-                            required: true
-                            maxlength: 10
-                            minLength: 5
-                            characters: string
-
-
-
-                        },
-                        last_name{
-                            required: true
-                            maxlength: 10
-                            minLength: 5
-                            characters: string
-
-                        },
-                        phone{
-                            required: true
-                            maxlength: 10
-                            characters: number
-                        },
-
-
-                        email: {
-                            required: true,
-                            email: true //email is required AND must be in the form of a valid email address
-
-                        },
-                        password: {
-                            required: true,
-                            minlength: 6
-
-                        }
-                    },
-
-//specify validation error messages
-                    messages: {
-                        firs_tname: "First Name field cannot be blank!",
-                        last_name: "Last Name field cannot be blank!",
-                        password: {
-                            required: "Password field cannot be blank!",
-                            minlength: "Your password must be at least 6 characters long"
-                        },
-                        email: "Please enter a valid email address",
-                        phone: "enter numbers"
-                    },
-                    // Make sure the form is submitted to the destination defined
-                    // in the "action" attribute of the form when valid
-                    submitHandler: function(form1) {
-                        form1.submit();
-                    }
-                });
-            });
-
-    </script>
-   <script >
-       function checkname(val){
-
-           var name=val;
-
-           if(name)
-           {
-               $.ajax({
-                   type: 'POST',
-                   url: 'checkUserName.php?type=patient',
-                   data: {
-                       user_name:name,
-                   },
-                   success: function (response) {
-                       $( '#name_status' ).html(response);
-                       if(response=="OK")
-                       {
-                           return true;
-                       }
-                       else
-                       {
-                           return false;
-                       }
-                   }
-               });
-           }
-           else
-           {
-               $( '#name_status' ).html("");
-               return false;
-           }
-       }</script>
-    <script>function checkemail(va)
-        {
-            var email=va;
-
-            if(email)
-            {
-                $.ajax({
-                    type: 'post',
-                    url: 'checkEmail.php',
-                    data: {
-                        user_email:email,
-                    },
-                    success: function (response) {
-                        $( '#email-status' ).html(response);
-                        if(response=="OK")
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                });
-            }
-            else
-            {
-                $( '#email-status' ).html("");
-                return false;
-            }
-        }</script>
-</head>
+   </head>
 
 <body>
 
@@ -336,11 +205,11 @@ if(isset($_POST['submit'])){
                                 <!-- /.table-responsive -->
                             </div>
                             <div class="tab-pane fade" id="profile">
-                                <form name="form1" id="form1" class="form-signin form-control"  method="post" action="Admin_Patient.php" enctype="multipart/form-data">
+                                <form onsubmit="formValidate()" name="form1" id="form1" class="form-signin form-control"  method="post" action="Admin_Patient.php" enctype="multipart/form-data">
                                     <div class="col-md-4 column">
                                         <hr>
                                         <label>Username</label>
-                                        <input type="text" name="username" id="UserName" onkeyup="checkname(this.value);" class="form-control" required autofocus>
+                                        <input type="text" name="username" id="UserName" onkeyup="return(checkname(this.value));" class="form-control" required autofocus>
                                         <span id="name_status"></span>
                                         <br>
                                         <label>Image</label>

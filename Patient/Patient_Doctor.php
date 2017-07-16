@@ -71,53 +71,53 @@ if(isset($_SESSION['current_user'])){
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
-                                <br>
-                                <div class="table-responsive">
-                                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>First Name</th>
-                                            <th>Field</th>
-                                            <th>View Profile</th>
-                                            <th>Appointment</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        /*
-                                        View
-                                        Displays all data from 'Pharmacist' table
-                                        */
-                                        // get results from database
-                                        $details=$patient_Doctor->getresults();
-                                        // display data in table
-                                        $count=sizeof($details);
-                                        // loop through results of database query, displaying them in the table
-                                        for($i=0;$i<$count;$i++) {
-                                            // echo out the contents of each row into a table
-                                            echo "<tr>";
-                                            echo '<td>' . $details[$i]['doctor_id'] . '</td>';
-                                            echo '<td>' . $details[$i]['first_name'] . '</td>';
-                                            echo '<td>' . $details[$i]['field'] . '</td>';;
-                                            ?>
-                                            <td><button type='button' data-a="profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><button type='button' data-b="BookAppointmentModal.php?username=<?php echo $details[$i]['username']?>" id="bookappointment" href='#editarUsuario1' class=" modalEditarUsuario1 btn btn-danger"  data-toggle='modal' data-backdrop='static' data-keyboard='false'>Get Appointment</button></td>
-                                            <?php
-                                        }
-                                        ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
+                        <br>
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Field</th>
+                                    <th>View Profile</th>
+                                    <th>Appointment</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                /*
+                                View
+                                Displays all data from 'Pharmacist' table
+                                */
+                                // get results from database
+                                $details=$patient_Doctor->getresults();
+                                // display data in table
+                                $count=sizeof($details);
+                                // loop through results of database query, displaying them in the table
+                                for($i=0;$i<$count;$i++) {
+                                    // echo out the contents of each row into a table
+                                    echo "<tr>";
+                                    echo '<td>' . $details[$i]['doctor_id'] . '</td>';
+                                    echo '<td>' . $details[$i]['first_name'] . '</td>';
+                                    echo '<td>' . $details[$i]['field'] . '</td>';;
+                                    ?>
+                                    <td><button type='button' data-a="profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
+                                    <td><button type='button' data-b="BookAppointmentModal.php?username=<?php echo $details[$i]['username']?>" id="bookappointment" href='#editarUsuario1' class=" modalEditarUsuario1 btn btn-danger"  data-toggle='modal' data-backdrop='static' data-keyboard='false'>appoaiantment</button></td>
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
         </div>
     </div>
-</div>
-<!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
@@ -184,70 +184,53 @@ include '../NotificationManager/Notification.php';
 </script>
 
 <script>
-//    jQuery(function($) {
-//        $('form[data-async]').on('submit', function(event) {
-//            var $form = $(this);
-//            var $target = $($form.attr('data-target'));
-//
-//            $.ajax({
-//                type: $form.attr('method'),
-//                url: $form.attr('action'),
-//                data: $form.serialize(),
-//
-//                success: function(data, status) {
-//                    $target.modal('hide');
-//                }
-//            });
-//
-//            event.preventDefault();
-//        });
-//    });
+    //    jQuery(function($) {
+    //        $('form[data-async]').on('submit', function(event) {
+    //            var $form = $(this);
+    //            var $target = $($form.attr('data-target'));
+    //
+    //            $.ajax({
+    //                type: $form.attr('method'),
+    //                url: $form.attr('action'),
+    //                data: $form.serialize(),
+    //
+    //                success: function(data, status) {
+    //                    $target.modal('hide');
+    //                }
+    //            });
+    //
+    //            event.preventDefault();
+    //        });
+    //    });
 
 
-$(document).ready(function () {
-    $("#form_app").on("submit", function(e) {
-        var postData = $(this).serializeArray();
-        var formURL = $(this).attr("action");
-        $.ajax({
-            url: formURL,
-            type: "POST",
-            data: postData,
-            success: function(data, textStatus, jqXHR) {
-                $('#contact_dialog .modal-header .modal-title').html("Result");
-                $("#form_app").remove();
-            },
-            error: function(jqXHR, status, error) {
-                console.log(status + ": " + error);
-            }
+    $(document).ready(function () {
+        $("#form_app").on("submit", function(e) {
+            var postData = $(this).serializeArray();
+            var formURL = $(this).attr("action");
+            $.ajax({
+                url: formURL,
+                type: "POST",
+                data: postData,
+                success: function(data, textStatus, jqXHR) {
+                    $('#contact_dialog .modal-header .modal-title').html("Result");
+                    $("#form_app").remove();
+                },
+                error: function(jqXHR, status, error) {
+                    console.log(status + ": " + error);
+                }
+            });
+            e.preventDefault();
         });
-        e.preventDefault();
-    });
 
-    $("#submitForm").on('click', function() {
-        $("#contact_form").submit();
+        $("#submitForm").on('click', function() {
+            $("#contact_form").submit();
+        });
     });
-});
 
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </body>
 </html>

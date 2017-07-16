@@ -87,6 +87,7 @@ if(isset($_SESSION['login'])){
 
 
 <script>
+
     $(function() {
 //twitter bootstrap script
         $("#submit").click(function(){
@@ -95,7 +96,7 @@ if(isset($_SESSION['login'])){
                 url: "Submit_Appointment.php?pusername=<?php echo $pusername ?>",
                 data: $('#form_app').serialize(),
                 success: function(msg){
-                    alert(msg);
+                   // alert(msg);
                     $("#alert").html(msg)},
                 error: function(){
                     alert("failure");

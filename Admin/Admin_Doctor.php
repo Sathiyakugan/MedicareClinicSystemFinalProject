@@ -128,8 +128,87 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
-</head>
+    <?php
+    include "validation.php";
+    ?><script>
+        function confirmPass() {
 
+        if ($("#password").val() != $("#confirm_password").val()) {
+            alert("Passwords do not match.");
+            return false
+        }
+        else {
+            return true;
+        }
+
+        }
+    </script>
+    <script >
+        function checkname(val){
+
+            var name=val;
+
+            if(name)
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: 'checkUserName.php?type=doctor',
+                    data: {
+                        user_name:name,
+                    },
+                    success: function (response) {
+                        $( '#user-availability-status1' ).html(response);
+                        if(response=="OK")
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $( '#user-availability-status1' ).html("");
+                return false;
+            }
+        }</script>
+    <script>function checkemail(va)
+        {
+            var email=va;
+
+            if(email)
+            {
+                $.ajax({
+                    type: 'post',
+                    url: 'checkEmail.php?type=doctor',
+                    data: {
+                        user_email:email,
+                    },
+                    success: function (response) {
+                        $( '#email-status' ).html(response);
+                        if(response=="OK")
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $( '#email-status' ).html("");
+                return false;
+            }
+        }</script>
+
+</head>
+<script src="../js/validation_script.js"></script>
 <body>
 
 <div id="wrapper">
@@ -214,7 +293,7 @@ if(isset($_POST['submit'])){
 
                                             <td><button type='button' data-a="../Admin/profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
                                             <td><a href="../Admin/update.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
-                                            <td><a href="../Admin/delete.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-danger">Delete</button></a></td>
+                                            <td><a href="../Admin/delete.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button"  onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger">Delete</button></a></td>
                                             <?php
                                         }
                                         ?>
@@ -228,75 +307,84 @@ if(isset($_POST['submit'])){
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <form name="form1" class="form-signin" id="form1" onSubmit="return formValidation();" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                            <form role="form" name="form1" onsubmit="return formValidate();" class="form-signin" id="form1"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                                 <div class="col-md-6 column">
                                                     <br>
                                                     <div class="form-group">
-                                                    <label>Username</label>
-                                                    <input type="text" id="username" onBlur="userAvailability();" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                                    <span id="user-availability-status1" style="font-size:14px;"></span>
+                                                        <label>Username</label>
+                                                        <input type="text" id="username" onkeyup="return checkname(this.value);" onblur="return checkuser(this.value);" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                                        <span id="user-availability-status1" </span>
+                                                    </br>
+                                                        <span id="user-availability-status2" </span>
                                                     </div>
                                                     <div class="form-group">
-                                                    <label>Image</label>
-                                                    <input type="file" id="ImageFile" name="ImageFile" class="form-control">
+                                                        <label>Image</label>
+                                                        <input type="file" id="ImageFile" name="ImageFile" class="form-control">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>First Name</label>
-                                                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name"   required autofocus>
+                                                        <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value).error();" class="form-control" placeholder="First Name"   required autofocus>
+
+                                                        <span id="first_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Last Name</label>
-                                                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name"   required autofocus>
+                                                        <input type="text" id="last_name" name="last_name" onkeyup="return checkLastname(this.value);" class="form-control" placeholder="Last Name"   required autofocus>
+                                                        <span id="last_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <p><label>Specilaization</label>
-                                                        <select class="form-control" name="field" id="field">
-                                                            <option>CARDIAC SURGEON</option>
-                                                            <option>CARDIOTHORACIC SURGEON</option>
-                                                            <option>Dental Surgeon</option>
-                                                            <option>Ent-Surgeon</option>
-                                                            <option>NEUROLOGIST</option>
-                                                            <option>PHYSICIAN</option>
-                                                            <option>PLASTIC SURGEON</option>
-                                                            <option>CONSULTANT SURGEON</option>
-                                                            <option>NEPHOLODIST</option>
-                                                            <option>CANCER SURGEON</option>
-                                                            <option>PSYCHIATRIST</option>
-                                                        </select></p>
+                                                            <select class="form-control" name="field" id="field">
+                                                                <option>CARDIAC SURGEON</option>
+                                                                <option>CARDIOTHORACIC SURGEON</option>
+                                                                <option>Dental Surgeon</option>
+                                                                <option>Ent-Surgeon</option>
+                                                                <option>NEUROLOGIST</option>
+                                                                <option>PHYSICIAN</option>
+                                                                <option>PLASTIC SURGEON</option>
+                                                                <option>CONSULTANT SURGEON</option>
+                                                                <option>NEPHOLODIST</option>
+                                                                <option>CANCER SURGEON</option>
+                                                                <option>PSYCHIATRIST</option>
+                                                            </select></p>
                                                     </div>
                                                     <div class="form-group">
-                                                    <p><label>Sex</label>
-                                                        <select class="form-control" name="sex" id="sex">
-                                                            <option selected="" value="Default">(Select Gender)</option>
+                                                        <label>Sex</label>
+                                                        <select class="form-control" onblur="return genderSelect(this.value);" name="sex" id="sex">
+                                                            <option selected="" value="Default"> </option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female" >Female</option>
                                                             <option value="Neutral">Neutral</option>
-                                                        </select></p>
+                                                        </select>
+                                                        <span id="gender_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Phone</label>
-                                                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                        <input type="text" id="phone"onkeyup=" return Numbercheck(this.value,10);" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                        <span id="phone_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Email address</label>
-                                                        <input type="email" id="email"  name="email" class="form-control" placeholder="Email address" autofocus>
+                                                        <input type="email" id="email" onkeyup="return checkemail(this.value);" onblur= "return ValidateEmail(this.value);" name="email" class="form-control" placeholder="Email address" autofocus>
+                                                        <span id="email1_name_status" </span>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 column">
                                                     <br>
 
                                                     <div class="form-group">
-                                                    <label>Description</label>
-                                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                                                    <P><label>Fees</label>
-                                                        <select class="form-control" name="fees" id="fees">
-                                                            <option selected="" value="Default">(Select Fees)</option>
-                                                            <option>800Rs</option
-                                                            <option>1000Rs</option>
-                                                            <option>1500Rs</option>
-                                                            <option>2000Rs</option>
-                                                            <option>2500Rs</option>
-                                                        </select></p>
+                                                        <label>Description</label>
+                                                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                                        <P><label>Fees</label>
+                                                            <select class="form-control" name="fees" id="fees">
+                                                                <option selected="" value="Default">(Select Fees)</option>
+                                                                <option>800Rs</option
+                                                                <option>1000Rs</option>
+                                                                <option>1500Rs</option>
+                                                                <option>2000Rs</option>
+                                                                <option>2500Rs</option>
+                                                            </select></p>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Time Slots</label>
@@ -310,27 +398,30 @@ if(isset($_POST['submit'])){
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                    <label>DOB</label>
-                                                    <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
+                                                        <label>DOB</label>
+                                                        <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Postal Address</label>
-                                                    <input type="text" id="postal_address" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                                        <input type="text" id="postal_address" onkeyup="checkAddress(this.value);" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                                        <span id="address_name_status" </span>
                                                     </div>
 
-                                                        <div class="form-group">
+                                                    <div class="form-group">
                                                         <label>Password</label>
-                                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                                                        </div>
+                                                        <input type="password" id="password" name="password" onkeyup="return checkPassword(this.value,10,6);" class="form-control" placeholder="Password" required>
+                                                        <span id="password1_name_status" </span>
+                                                    </div>
                                                     <div class="form-group">
                                                         <label>Confirm Password</label>
-                                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Password" required>
+                                                        <input type="password" id="confirm_password" onblur="return confirmPass();" onkeyup="return confirmpassword(document.getElementById('password'),this.value);" name="confirm_password" class="form-control" placeholder="Password" required>
+                                                        <span id="password2_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
-                                                            <P></P>
-                                                    <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit" id="formbutton">Submit</button>
+                                                        <P></P>
+                                                        <button class="btn btn-lg btn-primary btn-block" class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
                                                     </div>
-                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -362,7 +453,7 @@ if(isset($_POST['submit'])){
 <!-- /#wrapper -->
 
 <?php include 'end.php' ?>
-<?php include  "Validationjs.php"?>
+
 <script>
     function readURL(input) {
 
@@ -399,6 +490,12 @@ if(isset($_POST['submit'])){
         });
     }
 </script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="Validations.js"></script>
+
 </body>
 
 </html>

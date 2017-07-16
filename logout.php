@@ -19,4 +19,5 @@ unset($_SESSION['username']);
 unset($_SESSION['login']);
 unset($_SESSION['session_id']);
 header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
+header('Cache-Control: no-cache, must-revalidate');
 ?>

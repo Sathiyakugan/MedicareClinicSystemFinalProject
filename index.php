@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-include 'connect_db.php';
+//include 'connect_db.php';
 //if(isset($_SESSION['user_username'])){
 //    header("location:home.php");
 //}
@@ -58,21 +58,12 @@ include 'connect_db.php';
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/main.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
+
+
 </head>
 
 <body>
-
-
-<div class="col-md-4 col-md-offset-4">
-    <?php
-    if ( isset($_SESSION['message'])){
-        echo '<div class="alert alert-danger"><strong>Invalid Login!</strong>'.$_SESSION['message'].'</div>';
-        unset($_SESSION['message']);
-    }
-    ?>
-</div>
-<div id="wrapper">
-<section class= "navs">
+<div class= "navs">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -98,7 +89,8 @@ include 'connect_db.php';
             </div><!-- navbar-collapse -->
         </div><!-- container-fluid -->
     </nav>
-</section>
+</div>
+
 
 
 <section id= "testimonial" class="text-center">
@@ -209,6 +201,11 @@ include 'connect_db.php';
                     </div>
                 </div>
                 <div class="col-md-4">
+                    <div class="row">
+                    <h1> <style> animateColor </style> Hospital System</h1>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class= "appointment">
 
                         <div class="header text-center">
@@ -228,8 +225,8 @@ include 'connect_db.php';
 
                                 <div class="input-group margin-bottom-sm col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
                                     <select class="form-control" name="postition"  required autofocus>
-                                        <option selected value="default">Select Type</option>
-                                        <option>Admin</option>
+                                        <option selected > Admin</option>
+
                                         <option>Patient</option>
                                         <option>Doctor</option>
                                         <option>Receptionist</option>
@@ -249,12 +246,25 @@ include 'connect_db.php';
                         <!-- end of form -->
                     </div><!-- end of appointment-->
                 </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <?php
+                            if ( isset($_SESSION['message'])){
+                                echo '<div class="alert alert-danger">'.$_SESSION['message'].'</div>';
+                                unset($_SESSION['message']);
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div> <!--  client-content  -->
         </div>
     </div>
 </section>	<!-- testimonial -->
 
 </div>
+</body>
 
 <section id="footer">
     <div class="container">
@@ -283,7 +293,7 @@ include 'connect_db.php';
         <div class="row">
             <div class="col-md-12">
                 <div class="copy-right-text text-center">
-                    Copyright 2014 © illusion. All Rights Reserved.
+                    Copyright 2017 © illusion. All Rights Reserved.
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ if(isset($_SESSION['login'])){
 </div>
 <div class="col-lg-12">
     <div class="col-md-6 column">
-        <form name="form_app" class="form-signin" id="form_app"  method="post" action="BookAppointmentModal.php" enctype="multipart/form-data"  >
+        <form name="form_a" class="form-signin" id="form_a"  method="post" action="BookAppointmentModal.php" enctype="multipart/form-data"  >
             <br>
             <div class="form-group">
                 <label>Doctor</label>
@@ -73,13 +73,9 @@ if(isset($_SESSION['login'])){
                         ?>
                     </select></p>
             </div>
-            <!--                <button  type="submit" name="submit" class="btn btn-o btn-primary"  id="formbtn">-->
-            <!--                    Submit-->
-            <!--                </button>-->
+
         </form>
     </div>
-
-
     <div class="col-md-6 column">
         <div class="profile">
             <center>
@@ -93,22 +89,20 @@ if(isset($_SESSION['login'])){
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-success" id="submit" data-dismiss="modal">submit</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary submitBtn" id="submit" onclick="submitContactForm();" data-dismiss="modal">SUBMIT</button>
 </div>
 
 
-
-
 <script>
-    $(function() {
-//twitter bootstrap script
-        $("#submit").click(function(){
+    $(function(){
+        $("button#submit").click(function(){
+            alert("dsddde");
             $.ajax({
                 type: "POST",
                 url: "Submit_Appointment.php",
-                data: $('#form_app').serialize(),
+                data: $('form#form_a').serialize(),
                 success: function(msg){
-                    alert(msg);
                     $("#alert").html(msg)},
                 error: function(){
                     alert("failure");

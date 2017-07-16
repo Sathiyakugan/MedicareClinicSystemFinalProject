@@ -99,7 +99,7 @@ class Appointment_cl
         return $res;
     }
 
-    public function getresultsbyPatiPaid($pusername)
+    public function getresultsbyPatif($pusername)
     {
         $patientStatus = 2;
         $quer = 'pusername="' . $pusername . '" AND patientStatus="' . $patientStatus . '"';

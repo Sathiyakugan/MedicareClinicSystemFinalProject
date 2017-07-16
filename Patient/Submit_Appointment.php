@@ -35,10 +35,11 @@ if ( !empty($_POST) ) {
     $db->insert('appointment',array('doctorSpecialization'=>$specilization,'dusername'=>$dusername,'pusername'=>$pusername,'consultancyFees'=>$fees,'appointmentDate'=>$date,'appointmentTime'=>$time)); // Table name, column names and values
     $notification=new Notification();
     $notification->Insert($dusername,$pusername,'appointment','wants Appointment with');
-?>
+    $db->disconnect();
+    ?>
 
     <div class="alert alert-success" id="alert"><strong><?php echo "Submitted succesfully"; ?></strong></div>
-<?php
+    <?php
 
 }
 ?>
