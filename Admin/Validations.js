@@ -21,6 +21,7 @@ function formValidate() {
                     if (checkfirstName(fname)) {
                         if (checkLastName(lname)) {
                             if(confirmpassword(pass1,pass2)){
+                                return true;
                             }
                         }
 
@@ -31,7 +32,7 @@ function formValidate() {
         }
 
     }
-
+    event.preventDefault();
     return false;
 }
 
