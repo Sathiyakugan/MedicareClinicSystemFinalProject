@@ -115,7 +115,7 @@ if(isset($_SESSION['login'])){
                                         */
                                         // get results from database
                                         $details=$paidpatiant->getresultstofday($doctor->getUsername());
-                                       //  $patient=new Patient($details[$i]['pusername']);
+                                        //  $patient=new Patient($details[$i]['pusername']);
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
@@ -129,7 +129,7 @@ if(isset($_SESSION['login'])){
                                             ?>
 
                                             <td><a href="Patienetprofilefullview.php?username=<?php echo $details[$i]['pusername']?>&id=<?php echo $details[$i]['id']?>"><button type='button'   class='btn btn-primary'  title='Lookup'>Lookup</button></a></td>
-                                            <td><button type='button' class="btn btn-success" data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary' >Checkviewed</button></td>
+                                            <td><a href="checkViewed.php?id=<?php echo $details[$i]['id']?>"><button type='button' class="btn btn-success">Checkviewed</button></a></td>
                                             <?php
                                         }
 
@@ -140,16 +140,6 @@ if(isset($_SESSION['login'])){
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
-
-
-
-
-
-
-
-
-
-
 
                             <div class="tab-pane fade" id="profile">
 
@@ -200,37 +190,7 @@ if(isset($_SESSION['login'])){
                                     </table>
                                 </div>
                                 <!-- /.table-responsive -->
-
-
-
-
-
-
-
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             <div class="tab-pane fade" id="messages">
                                 <br>

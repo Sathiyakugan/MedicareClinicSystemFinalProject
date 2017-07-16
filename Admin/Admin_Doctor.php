@@ -128,18 +128,21 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
-    <?php
-    include "validation.php";
-    ?><script>
+    <?php include  "validation.php"; ?>
+    <script src="../Jquery/jquery-migrate-1.4.1.js"></script>
+    <script src="../Jquery/jquery-migrate-3.0.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script src="Validations.js"> </script>
+    <script>
         function confirmPass() {
 
-        if ($("#password").val() != $("#confirm_password").val()) {
-            alert("Passwords do not match.");
-            return false
-        }
-        else {
-            return true;
-        }
+            if ($("#password").val() != $("#confirm_password").val()) {
+                $('#password2_name_status').html("Passwords do not match.");
+                return false
+            }
+            else {
+                return true;
+            }
 
         }
     </script>
@@ -188,7 +191,7 @@ if(isset($_POST['submit'])){
                         user_email:email,
                     },
                     success: function (response) {
-                        $( '#email-status' ).html(response);
+                        $( '#email1_name_status' ).html(response).focus();
                         if(response=="OK")
                         {
                             return true;
@@ -208,9 +211,8 @@ if(isset($_POST['submit'])){
         }</script>
 
 </head>
-<script src="../js/validation_script.js"></script>
-<body>
 
+<body>
 <div id="wrapper">
 
     <!-- Navigation -->
@@ -307,14 +309,14 @@ if(isset($_POST['submit'])){
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <form role="form" name="form1" onsubmit="return formValidate();" class="form-signin" id="form1"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                            <form role="form" name="form1" class="form-signin"  onsubmit="return FormSubmit();" id="form1" data-toggle="validate"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                                 <div class="col-md-6 column">
                                                     <br>
                                                     <div class="form-group">
                                                         <label>Username</label>
                                                         <input type="text" id="username" onkeyup="return checkname(this.value);" onblur="return checkuser(this.value);" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                                        <span id="user-availability-status1" </span>
-                                                    </br>
+                                                        <span id="user-availability-status1" class="text-danger" ></span>
+                                                        </br>
                                                         <span id="user-availability-status2" </span>
                                                     </div>
                                                     <div class="form-group">
@@ -325,7 +327,7 @@ if(isset($_POST['submit'])){
                                                         <label>First Name</label>
                                                         <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value).error();" class="form-control" placeholder="First Name"   required autofocus>
 
-                                                        <span id="first_name_status" </span>
+                                                        <span id="first_name_status" class="text-danger"> </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Last Name</label>
@@ -365,7 +367,7 @@ if(isset($_POST['submit'])){
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Email address</label>
-                                                        <input type="email" id="email" onkeyup="return checkemail(this.value);" onblur= "return ValidateEmail(this.value);" name="email" class="form-control" placeholder="Email address" autofocus>
+                                                        <input type="email" id="email" onkeyup="return checkemail(this.value);"  name="email" class="form-control" placeholder="Email address" autofocus>
                                                         <span id="email1_name_status" </span>
 
                                                     </div>
@@ -414,12 +416,12 @@ if(isset($_POST['submit'])){
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Confirm Password</label>
-                                                        <input type="password" id="confirm_password" onblur="return confirmPass();" onkeyup="return confirmpassword(document.getElementById('password'),this.value);" name="confirm_password" class="form-control" placeholder="Password" required>
+                                                        <input type="password" id="confirm_password" onkeyup="return confirmPass();"  name="confirm_password" class="form-control" placeholder="Password" required>
                                                         <span id="password2_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <P></P>
-                                                        <button class="btn btn-lg btn-primary btn-block" class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
+                                                        <button class="btn btn-lg btn-primary btn-block"  class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
                                                     </div>
                                                 </div>
                                             </form>

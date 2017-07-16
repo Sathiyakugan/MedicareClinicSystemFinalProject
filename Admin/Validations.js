@@ -1,8 +1,10 @@
-
-function formValidate() {
-    evt.preventDefault();
-    var pass1 = document.getElementById("password").value;
-    var pass2 = document.getElementById("confirm_password").value;
+/**
+ * @return {boolean}
+ */
+function FormSubmit() {
+    alert("fffffv");
+    var pass2 = document.getElementById("password").value;
+    var pass1 = document.getElementById("confirm_password").value;
     var uname = document.getElementById("username").value;
     var fname = document.getElementById("first_name").value;
     var lname = document.getElementById("last_name").value;
@@ -11,46 +13,78 @@ function formValidate() {
 
 
 
+    alert("cdfdf");
 
 
-
-    if (passid_validation(passid, 7, 12)) {
+    if (passid_validation(pass1, 7, 12)) {
         if (allLetter(uname)) {
             if (alphanumeric(uadd)) {
                 if (ValidateEmail(uemail)) {
                     if (checkfirstName(fname)) {
                         if (checkLastName(lname)) {
                             if(confirmpassword(pass1,pass2)){
+                                return true;
                             }
+                            event.preventDefault();
+                            return false;
+
                         }
 
+                        event.preventDefault();
+                        return false;
 
                     }
+                    event.preventDefault();
+                    return false;
+
                 }
+                event.preventDefault();
+                return false;
+
             }
+            event.preventDefault();
+            return false;
+
         }
+        event.preventDefault();
+        return false;
 
     }
 
+    event.preventDefault();
     return false;
+
+
+}
+
+
+
+function returnToPreviouspage() {
+    window.history.back();
 }
 
 function confirmpassword(pass1,pass2) {
 
     if (pass1 != pass2) {
-        //alert("Passwords Do not match");
+        alert("Passwords Do not match");
         document.getElementById("pass1").style.borderColor = "#E34234";
         document.getElementById("pass2").style.borderColor = "#E34234";
+       // event.preventDefault();
+        return false;
     }
     else {
         alert("Passwords Match!!!");
+        return true;
     }
 }
 function passid_validation(pass1, mx, my) {
     var passid_len = pass1.length;
     if (passid_len == 0 || passid_len >= my || passid_len < mx) {
+        //document.getElementById("pass1").style.borderColor = "#E34234";
         alert("Password should not be empty / length be between " + mx + " to " + my);
-        pass1.focus();
+        //returnToPreviouspage();
+        //evt.preventDefault();
+       // event.preventDefault();
         return false;
     }
     return true;
@@ -63,7 +97,7 @@ function allLetter(uname) {
     }
     else {
         alert('Username must have alphabet characters only');
-        uname.focus();
+       // event.preventDefault();
         return false;
     }
 }
@@ -75,7 +109,7 @@ function checkfirstName(fname) {
     }
     else {
         alert('First Name must have alphabet characters only');
-        fname.focus();
+       // event.preventDefault();
         return false;
     }
 }
@@ -87,8 +121,7 @@ function checkLastName(lname) {
         return true;
     }
     else {
-        alert('First Name must have alphabet characters only');
-        lname.focus();
+        alert('Last Name must have alphabet characters only');
         return false;
     }
 }
@@ -101,7 +134,6 @@ function alphanumeric(uadd) {
     }
     else {
         alert('User address must have alphanumeric characters only');
-        uadd.focus();
         return false;
     }
 }

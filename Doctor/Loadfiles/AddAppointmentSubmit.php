@@ -18,7 +18,9 @@ if(isset($_POST)){
         $prescription->insert($pname,$danme,$Case_Histroy,$medication,$Note,$id);
     }
     ?>
+
     <div class="alert alert-success" id="alert"><strong><?php echo "Saved succesfully"; ?></strong></div>
+
 <?php
 }
 ?>
