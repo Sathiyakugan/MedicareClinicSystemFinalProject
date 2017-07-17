@@ -7,7 +7,7 @@ include ("../UserClasses/Admin.php");
 include ("../UserClasses/Nurse.php");
 include ("../UserClasses/Doctor.php");
 include ("../UserClasses/Patient.php");
-include ("../UserClasses/Pharmasist.php");
+include ("../UserClasses/Pharmacist.php");
 include ("../UserClasses/Receptionist.php");
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
@@ -26,7 +26,7 @@ if(isset($_SESSION['login'])){
             $userobject=new Receptionist($username);
             break;
         case 'Pharmacist':
-            $userobject=new Pharmasist($username);
+            $userobject=new Pharmacist($username);
             break;
         case 'Doctor':
             $userobject=new Doctor($username);
@@ -80,26 +80,32 @@ if(isset($_POST['submit'])){
             $_SESSION['message1']="<font color=blue>Updated Successfully</font>";
             echo $_SESSION['message1'];
             header("Location: ../Admin/update.php?type=$type&username=$username");
+			header("Location: ../Admin/Admin_Nurse.php");
             break;
         case 'Patient':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-            header("Location: ../Admin/update.php?type=$type&username=$username");;
+            header("Location: ../Admin/update.php?type=$type&username=$username");
+			header("Location: ../Admin/Admin_Patient.php");
             break;
         case 'Receptionist':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address,$email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue><?php echo $firstName; ?> Updated Successfully</font>";
             header("Location: ../Admin/update.php?type=$type&username=$username");
+			header("Location: ../Admin/Admin_Receptionist.php");
             break;
         case 'Pharmacist':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
             header("Location: ../Admin/update.php?type=$type&username=$username");
+			header("Location: ../Admin/Admin_Pharmacist.php");
             break;
         case 'Doctor':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-          header("Location: ../Admin/update.php?type=$type&username=$username");
+            header("Location: ../Admin/update.php?type=$type&username=$username");
+            header("Location: ../Admin/Admin_Doctor.php");
+			
             break;
     }
 
@@ -121,6 +127,7 @@ if(isset($_POST['submit'])){
         <?php include '../controllers/base/meta-tags.php' ?>
         <title>Admin Pannel</title>
         <?php include '../controllers/base/head.php' ?>
+		<?php include  "validation.php"; ?>
         <link href="../style/main.css" rel="stylesheet">
     </head>
 <div id="wrapper">
@@ -163,66 +170,101 @@ if(isset($_POST['submit'])){
                         <center>
                             <img src="../userfiles/avatars/<?php echo $userobject->getUserImage();?>" class="img-responsive profile-avatar">
                         </center>
-                        <form name="form1" class="form-signin" onsubmit="return validateForm(this);" method="post" action="update.php?type=<?php echo $type; ?>&username=<?php echo $username; ?>" enctype="multipart/form-data">
-                            <div class="col-md-6 column">
-                                <label>Image</label>
-                                <input type="file" id="ImageFile" name="ImageFile" class="form-control">
-                                <label>First Name</label>
-                                <input type="text" id="first_name" name="first_name" class="form-control" placeholder="<?php echo $userobject->getFirstName();?>" value="<?php echo  $userobject->getFirstName();?>"   required autofocus>
-                                <label>Last Name</label>
-                                <input type="text" id="last_namer" name="last_name" class="form-control"  placeholder="<?php echo $userobject->getLastName();?>" value="<?php echo $userobject->getLastName();?>"   required autofocus>
-                                <?php
-                                if ($type=='Doctor'){
-                                    ?>
-                                    <p><label>Specilaization</label>
-                                        <select class="form-control" name="field" id="field">
-                                            <option selected="selected">
-                                                <?php echo $userobject->getField();?>
-                                            </option>
-                                            <option>CARDIAC SURGEON</option>
-                                            <option>CARDIOTHORACIC SURGEON</option>
-                                            <option>Dental Surgeon</option>
-                                            <option>Ent-Surgeon</option>
-                                            <option>NEUROLOGIST</option>
-                                            <option>PHYSICIAN</option>
-                                            <option>PLASTIC SURGEON</option>
-                                            <option>CONSULTANT SURGEON</option>
-                                            <option>NEPHOLODIST</option>
-                                            <option>CANCER SURGEON</option>
-                                            <option>PSYCHIATRIST</option>
-                                        </select></p>
-                                <?php } ?>
-                                <p><label>Sex</label>
-                                    <select class="form-control" name="sex" id="sex">
-                                        <option selected="selected">
-                                            <?php echo $userobject->getSex();?>
-                                        </option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                        <option>Neutral</option>
-                                    </select></p>
-                            </div>
-                            <div class="col-md-6 column">
-                                <?php
-                                if ($type=='Doctor'){
-                                    ?>
-                                    <label>Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3"  placeholder="<?php echo $userobject->getDescription();?>" rows="3" placeholder="<?php echo $userobject->getAddress();?>  value="<?php echo $userobject->getDescription();?>"></textarea>
-                                <?php } ?>
-                                <label>DOB</label>
-                                <input type="date" id="DOB" name="DOB" class="form-control"  placeholder="<?php echo $userobject->getDOB();?>" value="<?php echo $userobject->getDOB();?>"  required autofocus>
-                                <label>Postal Address</label>
-                                <input type="text" id="postal_address" name="postal_address" class="form-control"  placeholder="<?php echo $userobject->getAddress();?>"  value="<?php echo $userobject->getAddress();?>"<?php echo $userobject->getAddress();?>   required autofocus>
-                                <label>Phone</label>
-                                <input type="text" id="phone" name="phone" class="form-control"  placeholder="<?php echo $userobject->getPhone();?>" value="<?php echo $userobject->getPhone();?>"   required autofocus>
-                                <label>Email address</label>
-                                <input type="email" id="email"  name="email" class="form-control"  placeholder="<?php echo $userobject->getEmail();?>" value="<?php echo $userobject->getEmail();?>" required autofocus>
-                                <P></P>
-                                <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Submit</button>
-                            </div>
-                        </form>
+                                            <form role="form" name="form1" class="form-signin"  onsubmit="return add_Staff();" id="form1" data-toggle="validate"  method="post" action="update.php?type=<?php echo $type; ?>&username=<?php echo $username; ?>" enctype="multipart/form-data">
+                                                <div class="col-md-6 column">
+                                                    <br>
 
-                    </div>
+                                                    <div class="form-group">
+                                                        <label>Image</label>
+                                                        <input type="file" id="ImageFile" name="ImageFile" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>First Name</label>
+                                                        <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value);" class="form-control" placeholder="First Name" value="<?php echo  $userobject->getFirstName();?>"  required autofocus>
+
+                                                        <span id="first_name_status" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Last Name</label>
+                                                        <input type="text" id="last_name" name="last_name" onkeyup="return checkLastname(this.value);" class="form-control" placeholder="Last Name" value="<?php echo  $userobject->getLastName();?>"   required autofocus>
+                                                        <span id="last_name_status"></span>
+                                                    </div>
+                                                    <div class="form-group">
+														<?php
+														if ($type=='Doctor'){
+														?>
+															<p><label>Specilaization</label>
+																<select class="form-control" name="field" id="field">
+																	<option selected="selected">
+																		<?php echo $userobject->getField();?>
+																	</option>
+																	<option>CARDIAC SURGEON</option>
+																	<option>CARDIOTHORACIC SURGEON</option>
+																	<option>Dental Surgeon</option>
+																	<option>Ent-Surgeon</option>
+																	<option>NEUROLOGIST</option>
+																	<option>PHYSICIAN</option>
+																	<option>PLASTIC SURGEON</option>
+																	<option>CONSULTANT SURGEON</option>
+																	<option>NEPHOLODIST</option>
+																	<option>CANCER SURGEON</option>
+																	<option>PSYCHIATRIST</option>
+																</select></p>
+														<?php } ?>
+														<span id="Specilaization_status"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Sex</label>
+                                                        <select class="form-control" onkeyup="return genderSelect(this.value);" name="sex" id="sex">
+                                                            <option selected="selected" value="Default"> <?php echo  $userobject->getSex();?></option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female" >Female</option>
+                                                            <option value="Neutral">Neutral</option>
+                                                        </select>
+                                                        <span id="gender_name_status"> </span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6 column">
+                                                  
+                                                    <div class="form-group">
+														<?php
+														if ($type=='Doctor'){
+														?>
+															<label>Description</label>
+															<textarea class="form-control" id="description" name="description" rows="3" value="<?php echo  $userobject->getDiscription();?>" placeholder="<?php echo $userobject->getDescription();?>" rows="3" placeholder="<?php echo $userobject->getAddress();?>  value="<?php echo $userobject->getDescription();?>"></textarea>
+														<?php } ?>
+														
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Phone</label>
+                                                        <input type="text" id="phone" onkeyup=" return Numbercheck(this.value,10);" value="<?php echo  $userobject->getPhone();?>" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                        <span id="phone_name_status"> </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Email address</label>
+                                                        <input type="email" id="email" onblur="return checkemail(this.value);" onkeyup= "return ValidateEmail(this.value);" value="<?php echo  $userobject->getEmail();?>" name="email" class="form-control" placeholder="Email address" required autofocus>
+                                                        <span id="email1_name_status"> </span><br/>
+                                                        <span id="email-status"> </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>DOB</label>
+                                                        <input type="date" id="DOB" name="DOB" onkeyup="return DOBSelect(this.value);" value="<?php echo  $userobject->getDOB();?>" class="form-control"  required autofocus>
+														<span id="DOB_status" </span>
+													</div>
+                                                    <div class="form-group">
+                                                        <label>Postal Address</label>
+                                                        <input type="text" id="postal_address" onkeyup="checkAddress(this.value);" value="<?php echo  $userobject->getAddress();?>" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                                        <span id="address_name_status" </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <P></P>
+                                                        <button class="btn btn-lg btn-primary btn-block"  class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+						</div>
                         <div class="col-md-4">
                             <h3> New Image Preview</h3>
                             <div class="profile"  >
@@ -247,8 +289,8 @@ if(isset($_POST['submit'])){
         </div>
             <!-- /.panel-body -->
             <!-- </div> -->
-        </div>
     </div>
+</div>
 
 
 

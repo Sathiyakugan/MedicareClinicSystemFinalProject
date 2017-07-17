@@ -9,11 +9,11 @@ if(isset($_POST['user_name']))
 
     if(mysqli_num_rows($query)>0)
     {
-        echo " <b>  <span style='font-size:13px; color: red'> User Name Already Exist</span></b>";
+        echo " <b>  <span style='font-size:13px; color: red'> User Name is Already Exist</span></b>";
     }
     else
     {
-        echo " <b>  <span style='font-size:13px; color: green'>OK fine </span></b>";
+        echo " <b>  <span style='font-size:13px; color: green'> User name is Available </span></b>";
     }
     exit();
 }

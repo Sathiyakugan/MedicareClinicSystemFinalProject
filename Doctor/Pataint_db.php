@@ -115,7 +115,7 @@ if(isset($_SESSION['login'])){
                                         */
                                         // get results from database
                                         $details=$paidpatiant->getresultstofday($doctor->getUsername());
-                                       //  $patient=new Patient($details[$i]['pusername']);
+                                        //  $patient=new Patient($details[$i]['pusername']);
                                         // display data in table
                                         $count=sizeof( $details);
                                         // loop through results of database query, displaying them in the table
@@ -140,16 +140,6 @@ if(isset($_SESSION['login'])){
                                 </div>
                                 <!-- /.table-responsive -->
                             </div>
-
-
-
-
-
-
-
-
-
-
 
                             <div class="tab-pane fade" id="profile">
 
@@ -200,37 +190,7 @@ if(isset($_SESSION['login'])){
                                     </table>
                                 </div>
                                 <!-- /.table-responsive -->
-
-
-
-
-
-
-
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             <div class="tab-pane fade" id="messages">
                                 <br>

@@ -237,7 +237,7 @@ class Admin extends User
     public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone){
         $this->db->connect();
         $this->db->update('admin',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'phone'=>$phone),'username="'.$this->username.'"');  // Table name, column names and values, WHERE conditions
-        $this->loadotherProperties();
+		$this->loadotherProperties();
 
     }
 

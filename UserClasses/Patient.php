@@ -2,6 +2,7 @@
 
 class Patient extends User
 {
+
     public function __construct($username){
         parent::__construct($username);
         $this->loadotherProperties();
@@ -150,6 +151,7 @@ class Patient extends User
         $this->email=$res[0]['email'];
         $this->user_image=$res[0]['user_image'];
         $this->phone=$res[0]['phone'];
+        $this->bloodgroup=$res[0]['BloodGroup'];
 
     }
     public function loadBulk($username){
@@ -158,5 +160,15 @@ class Patient extends User
         $this->db->select('patient','*',NULL,$quer,NULL); // Table name, Column Names, JOIN, WHERE conditions, ORDER BY conditions
         $res =$this->db->getResult();
         return $res;
+    }
+
+    public function getBloodGroup()
+    {
+        return $this->bloodgroup;
+    }
+
+    public function setBloodgroup($bloodgroup)
+    {
+        // TODO: Implement setBloodgroup() method.
     }
 }

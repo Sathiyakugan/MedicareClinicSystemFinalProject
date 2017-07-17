@@ -84,7 +84,7 @@ if(isset($_SESSION['login'])){
                                 </tr>
                                 <tr>
                                     <td>B-G :</td>
-                                    <td>O+</td>
+                                    <td> <?php echo $patient->getBloodGroup()?></td>
                                 </tr>
                                 <tr>
                                     <td>Email :</td>

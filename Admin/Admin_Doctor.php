@@ -118,8 +118,6 @@ if(isset($_POST['submit'])){
 
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -128,18 +126,21 @@ if(isset($_POST['submit'])){
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Admin Pannel</title>
     <?php include '../controllers/base/head.php' ?>
-    <?php
-    include "validation.php";
-    ?><script>
+    <?php include  "validation.php"; ?>
+    <script src="../Jquery/jquery-migrate-1.4.1.js"></script>
+    <script src="../Jquery/jquery-migrate-3.0.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <!--<script src="Validations.js"> </script>-->
+    <script>
         function confirmPass() {
 
-        if ($("#password").val() != $("#confirm_password").val()) {
-            alert("Passwords do not match.");
-            return false
-        }
-        else {
-            return true;
-        }
+            if ($("#password").val() != $("#confirm_password").val()) {
+                $('#password2_name_status').html("Passwords do not match.");
+                return false
+            }
+            else {
+                return true;
+            }
 
         }
     </script>
@@ -188,7 +189,7 @@ if(isset($_POST['submit'])){
                         user_email:email,
                     },
                     success: function (response) {
-                        $( '#email-status' ).html(response);
+                        $( '#email-status' ).html(response).focus();
                         if(response=="OK")
                         {
                             return true;
@@ -208,9 +209,8 @@ if(isset($_POST['submit'])){
         }</script>
 
 </head>
-<script src="../js/validation_script.js"></script>
-<body>
 
+<body>
 <div id="wrapper">
 
     <!-- Navigation -->
@@ -307,15 +307,15 @@ if(isset($_POST['submit'])){
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <form role="form" name="form1" onsubmit="return formValidate();" class="form-signin" id="form1"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                            <form role="form" name="form1" class="form-signin"  onsubmit="return add_Doctor();" id="form1" data-toggle="validate"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                                 <div class="col-md-6 column">
                                                     <br>
                                                     <div class="form-group">
                                                         <label>Username</label>
-                                                        <input type="text" id="username" onkeyup="return checkname(this.value);" onblur="return checkuser(this.value);" name="username" class="form-control" placeholder="Username"   required autofocus>
-                                                        <span id="user-availability-status1" </span>
-                                                    </br>
-                                                        <span id="user-availability-status2" </span>
+                                                        <input type="text" id="username" onkeyup="return checkUsername(this.value);" onblur="return checkname(this.value);" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                                        <span id="first_name_status0" class="text-danger"></span>
+                                                        </br>
+                                                        <span id="user-availability-status1"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Image</label>
@@ -323,18 +323,19 @@ if(isset($_POST['submit'])){
                                                     </div>
                                                     <div class="form-group">
                                                         <label>First Name</label>
-                                                        <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value).error();" class="form-control" placeholder="First Name"   required autofocus>
+                                                        <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value);" class="form-control" placeholder="First Name"   required autofocus>
 
-                                                        <span id="first_name_status" </span>
+                                                        <span id="first_name_status" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Last Name</label>
                                                         <input type="text" id="last_name" name="last_name" onkeyup="return checkLastname(this.value);" class="form-control" placeholder="Last Name"   required autofocus>
-                                                        <span id="last_name_status" </span>
+                                                        <span id="last_name_status"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <p><label>Specilaization</label>
-                                                            <select class="form-control" name="field" id="field">
+                                                            <select class="form-control" name="field" id="field" onkeyup="return fieldSelect(this.value);" >
+																<option selected="" value="Default"></option>
                                                                 <option>CARDIAC SURGEON</option>
                                                                 <option>CARDIOTHORACIC SURGEON</option>
                                                                 <option>Dental Surgeon</option>
@@ -346,27 +347,31 @@ if(isset($_POST['submit'])){
                                                                 <option>NEPHOLODIST</option>
                                                                 <option>CANCER SURGEON</option>
                                                                 <option>PSYCHIATRIST</option>
-                                                            </select></p>
+                                                            </select>
+														</p>
+														<span id="Specilaization_status"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Sex</label>
-                                                        <select class="form-control" onblur="return genderSelect(this.value);" name="sex" id="sex">
+                                                        <select class="form-control" onkeyup="return genderSelect(this.value);" name="sex" id="sex">
                                                             <option selected="" value="Default"> </option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female" >Female</option>
                                                             <option value="Neutral">Neutral</option>
                                                         </select>
-                                                        <span id="gender_name_status" </span>
+                                                        <span id="gender_name_status"> </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Phone</label>
-                                                        <input type="text" id="phone"onkeyup=" return Numbercheck(this.value,10);" name="phone" class="form-control" placeholder="Phone"   required autofocus>
-                                                        <span id="phone_name_status" </span>
+                                                        <input type="text" id="phone" onkeyup=" return Numbercheck(this.value,10);" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                        <span id="phone_name_status"> </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Email address</label>
-                                                        <input type="email" id="email" onkeyup="return checkemail(this.value);" onblur= "return ValidateEmail(this.value);" name="email" class="form-control" placeholder="Email address" autofocus>
-                                                        <span id="email1_name_status" </span>
+                                                        <input type="email" id="email" onblur="return checkemail(this.value);" onkeyup= "return ValidateEmail(this.value);" name="email" class="form-control" placeholder="Email address" required autofocus>
+                                                        <span id="email1_name_status"> </span><br/>
+                                                        <span id="email-status"> </span>
+														
 
                                                     </div>
                                                 </div>
@@ -377,30 +382,34 @@ if(isset($_POST['submit'])){
                                                         <label>Description</label>
                                                         <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                                                         <P><label>Fees</label>
-                                                            <select class="form-control" name="fees" id="fees">
-                                                                <option selected="" value="Default">(Select Fees)</option>
-                                                                <option>800Rs</option
+                                                            <select class="form-control" onkeyup="return selectfee(this.value);" name="fees" id="fees">
+]																<option selected="" value="Default"></option>
+                                                                <option>800Rs</option>
                                                                 <option>1000Rs</option>
                                                                 <option>1500Rs</option>
                                                                 <option>2000Rs</option>
                                                                 <option>2500Rs</option>
-                                                            </select></p>
+                                                            </select>
+														</p>
+														<span id="fee_status"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Time Slots</label>
-                                                        <select multiple  class="form-control" name="timeslots[]" id="timeslots">
-                                                            <option selected="" value="Default">(Select Time slots)</option>
+                                                        <select class="form-control" name="timeslots[]" id="timeslots" onkeyup="return timeSelect(this.value);">
+                                                            <option selected="" value="Default"></option>
                                                             <option>06:00:00</option><option>07:00:00</option><option>08:00:00</option><option>09:00:00</option>
                                                             <option>10:00:00</option><option>11:00:00</option><option>12:00:00</option><option>13:00:00</option>
                                                             <option>14:00:00</option><option>15:00:00</option><option>16:00:00</option><option>17:00:00</option>
                                                             <option>18:00:00</option><option>19:00:00</option><option>20:00:00</option><option>21:00:00</option>
                                                             <option>22:00:00</option><option>23:00:00</option><option>00:00:00</option>
                                                         </select>
+														<span id="timeslots_status"> </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>DOB</label>
-                                                        <input type="date" id="DOB" name="DOB" class="form-control" placeholder="Date Of Birth"   required autofocus>
-                                                    </div>
+                                                        <input type="date" id="DOB" name="DOB" onkeyup="return DOBSelect(this.value);" class="form-control"  required autofocus>
+														<span id="DOB_status" </span>
+													</div>
                                                     <div class="form-group">
                                                         <label>Postal Address</label>
                                                         <input type="text" id="postal_address" onkeyup="checkAddress(this.value);" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
@@ -409,17 +418,17 @@ if(isset($_POST['submit'])){
 
                                                     <div class="form-group">
                                                         <label>Password</label>
-                                                        <input type="password" id="password" name="password" onkeyup="return checkPassword(this.value,10,6);" class="form-control" placeholder="Password" required>
+                                                        <input type="password" id="password" name="password" onkeyup="return checkPassword(this.value,8,15);" class="form-control" placeholder="Password" required autofocus>
                                                         <span id="password1_name_status" </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Confirm Password</label>
-                                                        <input type="password" id="confirm_password" onblur="return confirmPass();" onkeyup="return confirmpassword(document.getElementById('password'),this.value);" name="confirm_password" class="form-control" placeholder="Password" required>
-                                                        <span id="password2_name_status" </span>
+                                                        <input type="password" id="confirm_password" onkeyup="return confirmpassword();"  name="confirm_password" class="form-control" placeholder="Password" required autofocus>
+                                                        <span id="password2_name_status"> </span>
                                                     </div>
                                                     <div class="form-group">
                                                         <P></P>
-                                                        <button class="btn btn-lg btn-primary btn-block" class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
+                                                        <button class="btn btn-lg btn-primary btn-block"  class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -454,47 +463,46 @@ if(isset($_POST['submit'])){
 
 <?php include 'end.php' ?>
 
-<script>
-    function readURL(input) {
+// <script>
+    // function readURL(input) {
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+        // if (input.files && input.files[0]) {
+            // var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-            }
+            // reader.onload = function (e) {
+                // $('#blah').attr('src', e.target.result);
+            // }
 
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+            // reader.readAsDataURL(input.files[0]);
+        // }
+    // }
 
-    $("#ImageFile").change(function () {
-        readURL(this);
-    });
-</script>
+    // $("#ImageFile").change(function () {
+        // readURL(this);
+    // });
+// </script>
 
-<script>
-    function userAvailability() {
-        var Case_Histroy=$('#Case_Histroy_ADD').val();
-        var Medication=$('#Medication_ADD').val();
-        var Note=$('#Note_ADD').val();
+// <script>
+    // function userAvailability() {
+        // var Case_Histroy=$('#Case_Histroy_ADD').val();
+        // var Medication=$('#Medication_ADD').val();
+        // var Note=$('#Note_ADD').val();
 
-        jQuery.ajax({
-            url: "check_availability.php",
-            data: {username:$("#username").val(),type:"Doctor"},
-            type: "POST",
-            success:function(data){
-                $("#user-availability-status1").html(data);
-            },
-            error:function (){}
-        });
-    }
+        // jQuery.ajax({
+            // url: "check_availability.php",
+            // data: {username:$("#username").val(),type:"Doctor"},
+            // type: "POST",
+            // success:function(data){
+                // $("#user-availability-status1").html(data);
+            // },
+            // error:function (){}
+        // });
+    // }
 </script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="Validations.js"></script>
 
 </body>
 

@@ -1,12 +1,3 @@
-
-<?php
-session_start();
-//include 'connect_db.php';
-//if(isset($_SESSION['user_username'])){
-//    header("location:home.php");
-//}
-?>
-
 <!DOCTYPE html>
 
 <html>

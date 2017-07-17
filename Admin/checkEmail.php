@@ -20,7 +20,7 @@ if(isset($_POST['user_email']))
     }
     else
     {
-        echo " <b>  <span style='font-size:13px; color: green'>OK fine </span></b>";
+        echo " <b>  <span style='font-size:13px; color: green'> Email is Available </span></b>";
     }
     exit();
 

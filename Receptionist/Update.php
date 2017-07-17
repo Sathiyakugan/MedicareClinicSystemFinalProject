@@ -89,6 +89,7 @@ if(isset($_POST['submit'])){
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address,$email,$user_image,$phone);
             $_SESSION['message1']="<font color=blue><?php echo $firstName; ?> Updated Successfully</font>";
             header("Location: update.php?type=$type&username=$username");
+            header("Location: receptionistdashboard.php");
             break;
         case 'Pharmacist':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$phone);

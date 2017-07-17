@@ -7,7 +7,7 @@ include ("../UserClasses/Admin.php");
 include ("../UserClasses/Nurse.php");
 include ("../UserClasses/Doctor.php");
 include ("../UserClasses/Patient.php");
-include ("../UserClasses/Pharmasist.php");
+include ("../UserClasses/Pharmacist.php");
 include ("../UserClasses/Receptionist.php");
 if(isset($_SESSION['login'])){
     $current_user= (string)$_SESSION['current_user'];
@@ -46,13 +46,13 @@ if(isset($_SESSION['login'])){
             header('Location: ..\Admin\Admin_Receptionist.php');
             break;
         case 'Pharmacist':
-            $userobject=new Pharmasist($username);
+            $userobject=new Pharmacist($username);
             $db=Database::getInstance();
             $db->connect();
-            $db->insert('deletepharmacist',$userobject->loadBulk($username)[0]);  // Table name, column names and respective values
+            $db->insert('deletedpharmacist',$userobject->loadBulk($username)[0]);  // Table name, column names and respective values
             $db->delete('pharmacist','username="'.$username.'"');  // Table name, WHERE conditions
             $_SESSION['message1']="<font color=blue>Deleted Successful</font>";
-            header('Location: ..\Admin\Admin_Pharamacist.php');
+            header('Location: ..\Admin\Admin_Pharmacist.php');
             break;
         case 'Doctor':
             $userobject=new Doctor($username);

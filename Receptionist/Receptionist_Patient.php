@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
     <?php include '../controllers/base/meta-tags.php' ?>
     <title>Receptionist Pannel</title>
     <?php include '../controllers/base/head.php' ?>
-
+	<?php include  "validation.php"; ?>
 
 </head>
 
@@ -211,66 +211,104 @@ if (isset($_POST['submit'])) {
                             <div class="tab-pane fade" id="profile">
                                 <div class="col-md-12">
                                     <div class="col-md-8">
-                                        <form name="form1" class="form-signin" onsubmit="return validateForm(this);"
-                                              method="post" action="Receptionist_Patient.php"
-                                              enctype="multipart/form-data">
-                                            <div class="col-md-6 column">
-                                                <br>
-                                                <label>Username</label>
-                                                <input type="text" id="username" name="username" class="form-control"
-                                                       placeholder="Username" required autofocus>
-                                                <label>Image</label>
-                                                <input type="file" id="ImageFile" name="ImageFile" class="form-control">
-                                                <label>First Name</label>
-                                                <input type="text" id="first_name" name="first_name"
-                                                       class="form-control" placeholder="First Name" required autofocus>
-                                                <label>Last Name</label>
-                                                <input type="text" id="last_namer" name="last_name" class="form-control"
-                                                       placeholder="Last Name" required autofocus>
-                                                <p><label>Sex</label>
-                                                    <select class="form-control" name="sex" id="sex">
-                                                        <option>Male</option>
-                                                        <option>Female</option>
-                                                        <option>Neutral</option>
-                                                    </select></p>
-                                            </div>
-                                            <div class="col-md-6 column">
-                                                <br>
-                                                <label>DOB</label>
-                                                <input type="date" id="DOB" name="DOB" class="form-control"
-                                                       placeholder="Date Of Birth" required autofocus>
-                                                <label>Postal Address</label>
-                                                <input type="text" id="postal_address" name="postal_address"
-                                                       class="form-control" placeholder="Postal Address" required
-                                                       autofocus>
-                                                <label>Phone</label>
-                                                <input type="text" id="phone" name="phone" class="form-control"
-                                                       placeholder="Phone" required autofocus>
-                                                <label>Email address</label>
-                                                <input type="email" id="email" name="email" class="form-control"
-                                                       placeholder="Email address" required autofocus>
-                                                <label>Password</label>
-                                                <input type="password" id="password" name="password"
-                                                       class="form-control" placeholder="Password" required>
-                                                <P></P>
-                                                <button class="btn btn-lg btn-primary btn-block" name="submit"
-                                                        type="submit">Submit
-                                                </button>
-                                            </div>
-                                        </form>
+                                        <div class="row">
+                                            <form role="form" name="form1" class="form-signin"  onsubmit="return add_Staff();" id="form1" data-toggle="validate"  method="post" action="Receptionist_Patient.php" enctype="multipart/form-data">
+                                                <div class="col-md-6 column">
+                                                    <br>
+                                                    <div class="form-group">
+                                                        <label>Username</label>
+                                                        <input type="text" id="username" onkeyup="return checkUsername(this.value);" onblur="return checkname(this.value);" name="username" class="form-control" placeholder="Username"   required autofocus>
+                                                        <span id="first_name_status0" class="text-danger"></span>
+                                                        </br>
+                                                        <span id="user-availability-status1"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Image</label>
+                                                        <input type="file" id="ImageFile" name="ImageFile" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>First Name</label>
+                                                        <input type="text" id="first_name" name="first_name"  onkeyup="return checkFirstname(this.value);" class="form-control" placeholder="First Name"   required autofocus>
+
+                                                        <span id="first_name_status" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Last Name</label>
+                                                        <input type="text" id="last_name" name="last_name" onkeyup="return checkLastname(this.value);" class="form-control" placeholder="Last Name"   required autofocus>
+                                                        <span id="last_name_status"></span>
+                                                    </div>
+                                                
+                                                    <div class="form-group">
+                                                        <label>Sex</label>
+                                                        <select class="form-control" onkeyup="return genderSelect(this.value);" name="sex" id="sex">
+                                                            <option selected="" value="Default"> </option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female" >Female</option>
+                                                            <option value="Neutral">Neutral</option>
+                                                        </select>
+                                                        <span id="gender_name_status"> </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Phone</label>
+                                                        <input type="text" id="phone" onkeyup=" return Numbercheck(this.value,10);" name="phone" class="form-control" placeholder="Phone"   required autofocus>
+                                                        <span id="phone_name_status"> </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Email address</label>
+                                                        <input type="email" id="email" onblur="return checkemail(this.value);" onkeyup= "return ValidateEmail(this.value);" name="email" class="form-control" placeholder="Email address" required autofocus>
+                                                        <span id="email1_name_status"> </span><br/>
+                                                        <span id="email-status"> </span>
+														
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 column">
+                                                    <br>
+
+                                                    <div class="form-group">
+                                                        <label>Description</label>
+                                                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                                    </div>
+                                                
+                                                    <div class="form-group">
+                                                        <label>DOB</label>
+                                                        <input type="date" id="DOB" name="DOB" onkeyup="return DOBSelect(this.value);" class="form-control"  required autofocus>
+														<span id="DOB_status" </span>
+													</div>
+                                                    <div class="form-group">
+                                                        <label>Postal Address</label>
+                                                        <input type="text" id="postal_address" onkeyup="checkAddress(this.value);" name="postal_address" class="form-control" placeholder="Postal Address"   required autofocus>
+                                                        <span id="address_name_status" </span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Password</label>
+                                                        <input type="password" id="password" name="password" onkeyup="return checkPassword(this.value,8,15);" class="form-control" placeholder="Password" required autofocus>
+                                                        <span id="password1_name_status" </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Confirm Password</label>
+                                                        <input type="password" id="confirm_password" onkeyup="return confirmpassword();"  name="confirm_password" class="form-control" placeholder="Password" required autofocus>
+                                                        <span id="password2_name_status"> </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <P></P>
+                                                        <button class="btn btn-lg btn-primary btn-block"  class="form-controls" name="submit" type="submit" id="sumit">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="profile"  >
                                             <center>
 
-                                            <img id="blah" src="#" alt="your image"
-                                                 class="img-responsive profile-avatar"/>
+                                                <img id="blah" src="#" alt="your image"
+                                                     class="img-responsive profile-avatar"/>
                                             </center>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
