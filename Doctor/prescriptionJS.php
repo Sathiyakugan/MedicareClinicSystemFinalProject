@@ -74,13 +74,14 @@
         var dname='<?php echo($doctor->getUsername()); ?>';
         var id='<?php echo($id); ?>';
         frmData={pname:pname,dname:dname,id:id}
-        console.log(frmData);
+        alert(pname);
+        alert(dname);
         $.ajax({
             type: "POST",
             url: "loadfiles/getoldprescriptiondetails.php",
             data:frmData,
             success: function(data){
-                alert("succeeeded"+data);
+
                 $("#selectoldprescription").html(data);
             }
         });
@@ -99,7 +100,6 @@
             url: "loadfiles/getOtherprescriptiondetails.php",
             data:frmData,
             success: function(data){
-                alert("succeeeded"+data);
                 $("#selectOtherprescription").html(data);
             }
         });

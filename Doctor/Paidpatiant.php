@@ -149,4 +149,13 @@ class Paidpatiant extends paidpatiaintAbs
         return $res;
 
     }
+    public function setResultbyViewed($id)
+    {
+        $viewed = 1;
+        echo($id);
+        $quer = 'id="' . $id . '"';
+        $this->db->connect();
+        $this->db->update('paidpatients', array('viewed' => $viewed), $quer); // Table name, column names and values, WHERE conditions
+
+    }
 }

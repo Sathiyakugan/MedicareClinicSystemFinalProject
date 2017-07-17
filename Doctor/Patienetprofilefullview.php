@@ -101,10 +101,7 @@ if(isset($_SESSION['login'])){
                 </div>
                 <div class="col-sm-12">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Details Pannel
-                        </div>
+
                         <!-- .panel-heading -->
                         <div class="panel-body">
                             <div class="panel-group" id="accordion">
@@ -145,8 +142,8 @@ if(isset($_SESSION['login'])){
                                                     <div class="col-md-12">
                                                         <br>
                                                             <label>Select The Date</label>
-                                                            <p><select name="selectoldprescription" id="selectoldprescription" class="form-control" onChange="getCase_Histroy(this.value);getMedication(this.value);getNote(this.value)" required="required">
-                                                                    <option value="">Select Prescription</option>
+                                                            <p><select name="selectoldprescription" id="selectoldprescription" d class="form-control" onChange="getCase_Histroy(this.value);getMedication(this.value);getNote(this.value)" required="required">
+                                                                    <option value="">Select Date</option>
                                                                 </select></p>
                                                     </div>
                                                     <?php  include "Loadfiles/OldPrescription.php"?>
@@ -173,6 +170,8 @@ if(isset($_SESSION['login'])){
                                         </div>
                                     </div>
                                 </div>
+
+                                <!--
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
@@ -187,12 +186,10 @@ if(isset($_SESSION['login'])){
                                                 <li><a href="#pending-r" data-toggle="tab">Pending Report</a>
                                                 </li>
                                                 <li><a href="#old-r" data-toggle="tab">Old Prescription</a>
-                                                </li>
-                                                <li><a href="#other-r" data-toggle="tab">Others Prescription</a>
-                                                </li>
+
                                             </ul>
 
-                                            <!-- Tab panes -->
+                                            <!-- Tab panes
                                             <div class="tab-content">
                                                 <div class="tab-pane fade in active" id="ask-r">
                                                     <h4>Ask Reports From Nurse</h4>
@@ -203,24 +200,19 @@ if(isset($_SESSION['login'])){
                                                 <div class="tab-pane fade" id="old-r">
                                                     <h4>Old reports from Nurse</h4>
                                                 </div>
-                                                <div class="tab-pane fade" id="other-r">
-                                                    <h4>Other doctor asked reports</h4>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
-                        <!-- .panel-body -->
-                    </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- /.row -->
 </div>
+
 <!-- /#page-wrapper -->
 
 </div>

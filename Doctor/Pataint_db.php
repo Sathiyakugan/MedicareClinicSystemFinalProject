@@ -129,7 +129,7 @@ if(isset($_SESSION['login'])){
                                             ?>
 
                                             <td><a href="Patienetprofilefullview.php?username=<?php echo $details[$i]['pusername']?>&id=<?php echo $details[$i]['id']?>"><button type='button'   class='btn btn-primary'  title='Lookup'>Lookup</button></a></td>
-                                            <td><button type='button' class="btn btn-success" data-a="../Admin/profile.php?type=Patient&username=<?php echo $details[$i]['pusername']?>" href="#editarUsuario1" class='modalEditarUsuario1 btn btn-primary' >Checkviewed</button></td>
+                                            <td><a href="checkViewed.php?id=<?php echo $details[$i]['id']?>"><button type='button' class="btn btn-success">Checkviewed</button></a></td>
                                             <?php
                                         }
 
