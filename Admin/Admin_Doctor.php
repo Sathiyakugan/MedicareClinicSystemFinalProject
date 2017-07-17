@@ -294,7 +294,7 @@ if(isset($_POST['submit'])){
 
 
                                             <td><button type='button' data-a="../Admin/profile.php?type=Doctor&username=<?php echo $details[$i]['username']?>" href='#editarUsuario' class='modalEditarUsuario btn btn-primary'  data-toggle='modal' data-backdrop='static' data-keyboard='false' title='Editar usuario'>ViewProfile</button></td>
-                                            <td><a href="../Admin/update.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
+                                            <td><a href="../Admin/Update.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button" class="btn btn-primary">Update</button></a></td>
                                             <td><a href="../Admin/delete.php?type=Doctor&username=<?php echo $details[$i]['username']?>"><button type="button"  onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger">Delete</button></a></td>
                                             <?php
                                         }

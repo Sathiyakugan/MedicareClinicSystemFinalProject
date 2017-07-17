@@ -219,10 +219,10 @@ class Doctor extends User
         $this->db->delete('doctor_appointment_time','username="'.$this->username.'"');  // Table name, WHERE conditions
     }
 
-    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone,$fees,$timeslots){
+    public function SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone){
         $this->db->connect();
-        $this->db->update('doctor',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'field'=>$field,'description'=>$description,'phone'=>$phone,'fees'=>$fees),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
-        $this->setTimeslots($timeslots);
+        $this->db->update('doctor',array('first_name'=>$firstName,'last_name'=>$lastName,'sex'=>$sex,'DOB'=>$DOB,'address'=>$address,'email'=>$email,'user_image'=>$user_image,'field'=>$field,'description'=>$description,'phone'=>$phone),'username="'.$this->username.'"'); // Table name, column names and values, WHERE conditions
+
 
     }
 

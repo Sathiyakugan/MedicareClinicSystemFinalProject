@@ -1,10 +1,14 @@
+
 <?php
+session_start();
 include "../../Adaptor/mysql_crud.php";
 include ("Prescription.php");
-if(!empty($_POST["id"]))
+if(isset($_SESSION['login']))
 {
+
     $prescription_old=new Prescription();
     $prescription_old_res=$prescription_old->getresultsbydoctor($_POST["pname"],$_POST["dname"],$_POST["id"]);
+    print_r($prescription_old_res);
     $count=sizeof($prescription_old_res);
     ?>
     <option value="">Select Prescription</option>

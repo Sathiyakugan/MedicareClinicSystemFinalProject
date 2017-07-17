@@ -99,18 +99,13 @@ if(isset($_POST['submit'])){
         case 'Doctor':
             $userobject->SetBulk($firstName,$lastName,$sex,$DOB,$address, $email,$user_image,$field,$description,$phone);
             $_SESSION['message1']="<font color=blue>Updated Successful</font>";
-          header("Location: ../Admin/update.php?type=$type&username=$username");
+             header("Location: ../Admin/update.php?type=$type&username=$username");
             break;
     }
 
 
 
 }
-
-
-
-
-
 
 
 ?>
