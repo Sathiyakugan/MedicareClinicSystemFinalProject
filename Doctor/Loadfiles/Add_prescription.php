@@ -1,4 +1,7 @@
 <?php
+$ide= $_REQUEST['id'];
+
+
 ?>
 
 
@@ -10,17 +13,36 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Case_Histroy</label>
-                <textarea class="form-control" id="Case_Histroy_ADD"  name="Case_Histroy" rows="4" placeholder=""> </textarea>
+                <textarea class="form-control" id="Case_Histroy_ADD"  name="Case_Histroy" rows="4" placeholder=""> <?php
+                    if($prescription->checkentry($ide)) {
+                        $resultsaddprs = $prescription->getresultsbyID($ide);
+                        echo $resultsaddprs[0]['Case_Histroy'];
+                    }
+                    else{
+                        echo " ";
+                    }?></textarea>
             </div>
             <div class="form-group">
                 <label>Medication</label>
-                <textarea class="form-control" id="Medication_ADD"  name="medication" rows="4" placeholder="" ></textarea>
+                <textarea class="form-control" id="Medication_ADD"  name="medication" rows="4" placeholder="" > <?php if($prescription->checkentry($ide)) {
+                        $resultsaddprs = $prescription->getresultsbyID($ide);
+                        echo $resultsaddprs[0]['medication'];
+                    }
+                    else{
+                        echo " ";
+                    }?></textarea>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label>Note</label>
-                <textarea class="form-control" id="Note_ADD" name="Note" rows="7" placeholder=""></textarea>
+                <textarea class="form-control" id="Note_ADD" name="Note" rows="7" placeholder=""><?php if($prescription->checkentry($ide)) {
+                        $resultsaddprs = $prescription->getresultsbyID($ide);
+                        echo $resultsaddprs[0]['Note'];
+                    }
+                    else{
+                        echo " ";
+                    }?></textarea>
             </div>
             <button class="btn btn-lg btn-primary btn-block" name="submit" id="button_Add_p"> Save</button>
         </div>
