@@ -228,7 +228,7 @@ if(isset($_POST['submit'])){
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <form name="form1" class="form-signin" id="form1" onSubmit="return formValidation();" method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
+                                            <form name="form1" class="form-signin" id="form1" onsubmit="validateForm();"  method="post" action="Admin_Doctor.php" enctype="multipart/form-data">
                                                 <div class="col-md-6 column">
                                                     <br>
                                                     <div class="form-group">
@@ -362,7 +362,153 @@ if(isset($_POST['submit'])){
 <!-- /#wrapper -->
 
 <?php include 'end.php' ?>
-<?php include  "Validationjs.php"?>
+<?php //include  "Validationjs.php"?>
+<script>
+    function validateForm() {
+        alert("kkkxsx");
+        console.log("im in");
+        var passid = document.forms["form1"]["password"].value;
+        var uname = document.forms["form1"]["username"].value;
+        var fname = document.forms["form1"]["first_name"].value;
+        var lname = document.forms["form1"]["last_name"].value;
+        var uadd = document.forms["form1"]["postal_address"].value;
+        var sex = document.forms["form1"]["sex"].value;
+        var uemail = document.forms["form1"]["email"].value;
+        var fees = document.forms["form1"]["field"].value;
+        var field = document.forms["form1"]["field"].value;
+        var timeslots = document.forms["form1"]["timeslots[]"].value;
+        alert(passid);
+
+        if (passid_validation(passid, 7, 12)) {
+            if (allLetter(uname)) {
+                if (alphanumeric(uadd)) {
+                    if (genderSelect(sex)) {
+                        if (fieldSelect(field)) {
+                            if (feesSelect(fees)) {
+                                if (ValidateEmail(uemail)) {
+                                    if (checkfirstName(fname)) {
+                                        if (checkLastName(lname)) {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        function passid_validation(passid, mx, my) {
+            var passid_len = passid.value.length;
+            if (passid_len == 0 || passid_len >= my || passid_len < mx) {
+                alert("Password should not be empty / length be between " + mx + " to " + my);
+                passid.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function allLetter(uname) {
+            var letters = /^[A-Za-z]+$/;
+            if (uname.value.match(letters)) {
+                return true;
+            }
+            else {
+                alert('Username must have alphabet characters only');
+                uname.focus();
+                return false;
+            }
+        }
+
+        function checkfirstName(fname) {
+            var letters = /^[A-Za-z]+$/;
+            if (fname.value.match(letters)) {
+                return true;
+            }
+            else {
+                alert('First Name must have alphabet characters only');
+                fname.focus();
+                return false;
+            }
+        }
+
+
+        function checkLastName(lname) {
+            var letters = /^[A-Za-z]+$/;
+            if (lname.value.match(letters)) {
+                return true;
+            }
+            else {
+                alert('First Name must have alphabet characters only');
+                lname.focus();
+                return false;
+            }
+        }
+
+
+
+        function alphanumeric(uadd) {
+            var letters = /^[0-9a-zA-Z]+$/;
+            if (uadd.value.match(letters)) {
+                return true;
+            }
+            else {
+                alert('User address must have alphanumeric characters only');
+                uadd.focus();
+                return false;
+            }
+        }
+
+        function feesSelect(fees) {
+            if (fees.value == "Default") {
+                alert('Select the fees from the list');
+                fees.focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function fieldSelect(field) {
+            if (field.value == "Default") {
+                alert('Select the field from the list');
+                field.focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function genderSelect(sex) {
+            if (sex.value == "Default") {
+                alert('Select Gender from the list');
+                sex.focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function ValidateEmail(uemail) {
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (uemail.value.match(mailformat)) {
+                return true;
+            }
+            else {
+                alert("You have entered an invalid email address!");
+                uemail.focus();
+                return false;
+            }
+        }
+    }
+</script>
 <script>
     function readURL(input) {
 

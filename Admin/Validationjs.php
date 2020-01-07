@@ -1,6 +1,6 @@
 <script>
-    $('#form1').submit(function(){
-        alert("fafafafaasfasfasfasfasfasfasf");
+    function formValidation() {
+        alert("kkkxsx");
         console.log("im in");
         var passid = document.form1.password;
         var uname = document.form1.username;
@@ -142,6 +142,6 @@
                 return false;
             }
         }
-    });
+    }
 
 </script>
