@@ -62,7 +62,7 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="pharmasistdashboard.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                    <a href="pharmacistdashboard.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
                 <li>
                     <a href=""><i class="fa fa-user fa-fw"></i> Profile<span class="fa arrow"></span></a>
@@ -77,7 +77,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="pharmasistdashboard.php"><i class="fa  fa-wheelchair fa-fw"></i>Doctors</a>
+                    <a href="pharmacistdashboard.php"><i class="fa  fa-wheelchair fa-fw"></i>Doctors</a>
                 </li>
                 <li>
                     <a href="Appointments.php"><i class="fa fa-user-md fa-fw"></i> Appointments</a>

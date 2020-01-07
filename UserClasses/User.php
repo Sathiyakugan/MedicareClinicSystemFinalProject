@@ -10,6 +10,7 @@ abstract class User{
     protected $email;
     protected $user_image;
     protected $phone;
+    protected $bloodgroup;
 
     protected $db;
     //essential constructor

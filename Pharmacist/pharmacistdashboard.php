@@ -32,7 +32,7 @@ if(isset($_SESSION['login'])){
 
 <div id="wrapper">
     <!-- Navigation -->
-    <?php include 'Pharmasist_Theme.php' ?>
+    <?php include 'Pharmacist_Theme.php' ?>
 
     <div id="page-wrapper">
         <div class="row">
